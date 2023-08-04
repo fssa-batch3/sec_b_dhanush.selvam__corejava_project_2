@@ -1,4 +1,4 @@
-package in.fwsa.demoapp;
+package in.fssa.leavepulse;
 
 public class AppTest {
 
