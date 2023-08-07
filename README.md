@@ -4,9 +4,9 @@
 
 
 - [ ] Create an ER diagram of the database
-- [ ] Write Create table scripts [script](path/to/sql/file)
+- [ ] Write Create table scripts [script](path/to/ER/diagram)
 
-![ER Diagram](path/to/ER/diagram)
+![ER Diagram](https://iili.io/Ht3t4se.png)
 
 ## Project Setup
 
