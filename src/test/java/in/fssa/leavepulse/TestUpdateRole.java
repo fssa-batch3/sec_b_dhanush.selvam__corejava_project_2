@@ -17,7 +17,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("Devops");
 		assertDoesNotThrow(() -> {
-			roleService.update(11,role);
+			roleService.update(4,role);
 		});
 	}
 	
@@ -25,7 +25,7 @@ public class TestUpdateRole {
 	public void testUpdateRoleWithInvalidDataNull() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(11,null);
+			roleService.update(12,null);
 		});
 		String expectedMessage = "Role cannot be null";
 		String actualMessage = exception.getMessage();
@@ -37,9 +37,9 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role(null);
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(11, role);
+			roleService.update(12, role);
 		});
-		String expectedMessage = "Role Name cannot be Null or Empty";
+		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -49,9 +49,9 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(11, role);
+			roleService.update(12, role);
 		});
-		String expectedMessage = "Role Name cannot be Null or Empty";
+		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -61,9 +61,9 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("Team Lead");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(5, role);
+			roleService.update(8, role);
 		});
-		String expectedMessage = "Role Id is not exist in the table";
+		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -71,9 +71,9 @@ public class TestUpdateRole {
 	@Test
 	public void testUpdateRoleWithExistRoleName () {
 		RoleService roleService = new RoleService();
-		Role role = new Role("Developer");
+		Role role = new Role("CEO");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(11, role);
+			roleService.update(4, role);
 		});
 		String expectedMessage = "Role Name already exist";
 		String actualMessage = exception.getMessage();

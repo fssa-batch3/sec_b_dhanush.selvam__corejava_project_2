@@ -1,6 +1,6 @@
 package in.fssa.leavepulse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow; 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,20 +12,20 @@ import in.fssa.leavepulse.service.RoleService;
 public class TestDeleteRole {
 	
 	@Test
-	public void testDeleteRoleWithValidId() {
+	public void testDeleteRoleWithValidRoleId() {
 		RoleService roleService = new RoleService();
 		assertDoesNotThrow(() -> {
-			roleService.delete(11);
+			roleService.delete(4);
 		});
 	}
 	
 	@Test
-	public void testDeleteRoleWithInvalidId() {
+	public void testDeleteRoleWithInvalidRoleId() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			roleService.delete(0);
 		});
-		String expectedMessage = "Role Id is invalid";
+		String expectedMessage = "Invalid Role Id";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -34,9 +34,9 @@ public class TestDeleteRole {
 	public void testDeleteRoleWithNotExistRoleId() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.delete(5);
+			roleService.delete(8);
 		});
-		String expectedMessage = "Role Id is not exist in the table";
+		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}

@@ -7,8 +7,6 @@ import in.fssa.leavepulse.model.Role;
 import in.fssa.leavepulse.util.StringUtil;
 
 public class RoleValidator {
-	
-	private static RoleDAO roleDao;
 
 	/**
 	 * 
@@ -33,18 +31,31 @@ public class RoleValidator {
 		StringUtil.rejectIfInvalidId(roleId, "Role Id");
 
 	}
-	
-//	public static void checkRoleIdExist(int roleId) throws ValidationException {
-//		
-//		
-//		
-//	}
+
+	/**
+	 * 
+	 * @param roleId
+	 * @throws ValidationException
+	 */
+	public static void checkRoleIdExist(int roleId) throws ValidationException {
+
+		try {
+			RoleDAO roleDao = new RoleDAO();
+			if (roleDao.findRoleByRoleId(roleId) == null)
+				throw new ValidationException("Role Id not found");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ValidationException(e.getMessage());
+		}
+
+	}
 
 	/**
 	 * 
 	 * @param roleName
 	 * @throws ValidationException
 	 */
+	
 	public static void validateRoleName(String roleName) throws ValidationException {
 
 		StringUtil.rejectIfInvalidString(roleName, "Role Name");
@@ -58,8 +69,8 @@ public class RoleValidator {
 	 */
 	public static void checkRoleNameExist(String roleName) throws ValidationException {
 
-		roleDao = new RoleDAO();
 		try {
+			RoleDAO roleDao = new RoleDAO();
 			if (roleDao.findRoleByRoleName(roleName) != null)
 				throw new ValidationException("Role Name already exist");
 		} catch (PersistenceException e) {

@@ -13,7 +13,7 @@ public class StringUtil {
 	public static void rejectIfInvalidString(String input, String inputName) throws ValidationException {
 
 		if (input == null || "".equals(input.trim())) {
-			throw new ValidationException(inputName.concat(" cannot be Null or Empty"));
+			throw new ValidationException(inputName.concat(" cannot be null or empty"));
 		}
 
 	}
@@ -50,7 +50,7 @@ public class StringUtil {
 	 */
 	public static void rejectIfInvalidId(int input, String inputName) throws ValidationException {
 		
-		if (input < 1) throw new ValidationException(inputName.concat(" is invalid"));
+		if (input < 1) throw new ValidationException("Invalid ".concat(inputName));
 		
 	}
 

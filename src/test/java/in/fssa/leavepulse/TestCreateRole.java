@@ -1,6 +1,6 @@
 package in.fssa.leavepulse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow; 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -15,7 +15,7 @@ public class TestCreateRole {
 	@Test
 	public void testCreateRoleWithValidData() {
 		RoleService roleService = new RoleService();
-		Role role = new Role("Devops");
+		Role role = new Role("Tester");
 		assertDoesNotThrow(() -> {
 			roleService.create(role);
 		});
@@ -39,7 +39,7 @@ public class TestCreateRole {
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			roleService.create(role);
 		});
-		String expectedMessage = "Role Name cannot be Null or Empty";
+		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -51,7 +51,7 @@ public class TestCreateRole {
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			roleService.create(role);
 		});
-		String expectedMessage = "Role Name cannot be Null or Empty";
+		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}

@@ -33,7 +33,7 @@ public class TestGetAllRoleAndGetRoleByUniqueValue {
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(roleService.findRoleByRoleId(0));
 		});
-		String expectedMessage = "Role Id is invalid";
+		String expectedMessage = "Invalid Role Id";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -52,7 +52,7 @@ public class TestGetAllRoleAndGetRoleByUniqueValue {
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(roleService.findRoleByRoleName(null));
 		});
-		String expectedMessage = "Role Name cannot be Null or Empty";
+		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -61,9 +61,9 @@ public class TestGetAllRoleAndGetRoleByUniqueValue {
 	public void testGetRoleByInvalidRoleNameEmpty() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(roleService.findRoleByRoleName(null));
+			System.out.println(roleService.findRoleByRoleName(""));
 		});
-		String expectedMessage = "Role Name cannot be Null or Empty";
+		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}

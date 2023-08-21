@@ -1,6 +1,6 @@
 package in.fssa.leavepulse.service;
 
-import java.util.List;  
+import java.util.List;
 
 import in.fssa.leavepulse.dao.RoleDAO;
 import in.fssa.leavepulse.exception.PersistenceException;
@@ -11,12 +11,6 @@ import in.fssa.leavepulse.validator.RoleValidator;
 
 public class RoleService {
 
-	private RoleDAO roleDao;
-
-	public RoleService() {
-		this.roleDao = new RoleDAO();
-	}
-
 	/**
 	 * 
 	 * @return
@@ -25,6 +19,7 @@ public class RoleService {
 	public List<Role> getAll() throws ServiceException {
 
 		try {
+			RoleDAO roleDao = new RoleDAO();
 			return roleDao.getAll();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -42,6 +37,7 @@ public class RoleService {
 	public Role findRoleByRoleId(int roleId) throws ServiceException, ValidationException {
 
 		try {
+			RoleDAO roleDao = new RoleDAO();
 			RoleValidator.validateRoleId(roleId);
 			return roleDao.findRoleByRoleId(roleId);
 		} catch (PersistenceException e) {
@@ -60,6 +56,7 @@ public class RoleService {
 	public Role findRoleByRoleName(String roleName) throws ServiceException, ValidationException {
 
 		try {
+			RoleDAO roleDao = new RoleDAO();
 			RoleValidator.validateRoleName(roleName);
 			return roleDao.findRoleByRoleName(roleName);
 		} catch (PersistenceException e) {
@@ -78,6 +75,7 @@ public class RoleService {
 	public void create(Role role) throws ServiceException, ValidationException {
 
 		try {
+			RoleDAO roleDao = new RoleDAO();
 			RoleValidator.validate(role);
 			RoleValidator.checkRoleNameExist(role.getRoleName());
 			roleDao.create(role);
@@ -98,10 +96,10 @@ public class RoleService {
 	public void update(int roleId, Role role) throws ServiceException, ValidationException {
 		
 		try {
+			RoleDAO roleDao = new RoleDAO();
 			RoleValidator.validateRoleId(roleId);
 			RoleValidator.validate(role);
-			if (roleDao.findRoleByRoleId(roleId) == null)
-				throw new ValidationException("Role Id is not exist in the table");
+			RoleValidator.checkRoleIdExist(roleId);
 			RoleValidator.checkRoleNameExist(role.getRoleName());
 			roleDao.update(roleId, role);
 		} catch (PersistenceException e) {
@@ -120,9 +118,9 @@ public class RoleService {
 	public void delete (int roleId) throws ServiceException, ValidationException {
 		
 		try {
+			RoleDAO roleDao = new RoleDAO();
 			RoleValidator.validateRoleId(roleId);
-			if (roleDao.findRoleByRoleId(roleId) == null)
-				throw new ValidationException("Role Id is not exist in the table");
+			RoleValidator.checkRoleIdExist(roleId);
 			roleDao.delete(roleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
