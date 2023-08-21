@@ -1,11 +1,11 @@
 package in.fssa.leavepulse.dao;
 
-import java.sql.Connection;
+import java.sql.Connection;  
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.model.Employee;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
-public class EmployeeDAO implements EmployeeInterface {
+public class EmployeeDAO implements EmployeeInterface{
 
 	/**
 	 @return
@@ -213,25 +213,24 @@ public class EmployeeDAO implements EmployeeInterface {
 	}
 
 	/**
-	 * @param employee
+	 * @param employee, managerId, roleId
 	 * @throws PersistenceException
 	 */
-	public void create(Employee employee) throws PersistenceException {
+	public int create(Employee employee) throws PersistenceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int generatedId = -1;
 
 		try {
 
 			LocalDate date = LocalDate.now();
 			String hire_date = date.toString();
-			LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			String dateTime = time.format(formatter);
 
-			String query = "INSERT INTO employees (first_name, last_name, email, phone_no, password, address, hire_date, created_at, modified_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String query = "INSERT INTO employees (first_name, last_name, email, phone_no, password, address, hire_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
 			con = ConnectionUtil.getConnection();
-			ps = con.prepareStatement(query);
+			ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, employee.getFirst_name());
 			ps.setString(2, employee.getLast_name());
 			ps.setString(3, employee.getEmail());
@@ -239,9 +238,11 @@ public class EmployeeDAO implements EmployeeInterface {
 			ps.setString(5, employee.getPassword());
 			ps.setString(6, employee.getAddress());
 			ps.setString(7, hire_date);
-			ps.setString(8, dateTime);
-			ps.setString(9, dateTime);
 			ps.executeUpdate();
+			
+			rs = ps.getGeneratedKeys();
+			if (rs.next()) generatedId = rs.getInt(1);
+			
 			System.out.println("New Employee Created Successfully");
 
 		} catch (SQLException e) {
@@ -249,9 +250,11 @@ public class EmployeeDAO implements EmployeeInterface {
 			System.out.println(e.getMessage());
 			throw new PersistenceException(e.getMessage());
 		} finally {
-			ConnectionUtil.close(con, ps);
+			ConnectionUtil.close(con, ps, rs);
 		}
-
+		
+		return generatedId;
+		
 	}
 
 	/**
@@ -265,18 +268,13 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			String dateTime = time.format(formatter);
-
-			String query = "UPDATE employees SET first_name = ?, last_name = ?, password = ?, address = ?, modified_at = ? WHERE employee_id = ? AND is_active = 1";
+			String query = "UPDATE employees SET first_name = ?, last_name = ?, password = ?, address = ? WHERE employee_id = ? AND is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, employee.getFirst_name());
 			ps.setString(2, employee.getLast_name());
 			ps.setString(3, employee.getPassword());
 			ps.setString(4, employee.getAddress());
-			ps.setString(5, dateTime);
 			ps.setInt(6, employeeId);
 			ps.executeUpdate();
 			System.out.println("Employee Updated Successfully");
@@ -302,15 +300,10 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			String dateTime = time.format(formatter);
-
-			String query = "UPDATE employees SET is_active = 0, modified_at = ? WHERE employee_id = ? AND is_active = 1";
+			String query = "UPDATE employees SET is_active = 0 WHERE employee_id = ? AND is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setString(1, dateTime);
-			ps.setInt(2, employeeId);
+			ps.setInt(1, employeeId);
 			ps.executeUpdate();
 			System.out.println("Employee Deleted Successfully");
 

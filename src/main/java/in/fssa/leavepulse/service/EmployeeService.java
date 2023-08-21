@@ -1,6 +1,6 @@
 package in.fssa.leavepulse.service;
 
-import java.util.List ;
+import java.util.List; 
 
 import in.fssa.leavepulse.dao.EmployeeDAO;
 import in.fssa.leavepulse.exception.PersistenceException;
@@ -8,31 +8,27 @@ import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.model.Employee;
 import in.fssa.leavepulse.validator.EmployeeValidator;
+import in.fssa.leavepulse.validator.RoleValidator;
 
 public class EmployeeService {
 
-	private EmployeeDAO employeeDao;
-	
-	public EmployeeService() {
-		this.employeeDao = new EmployeeDAO();
-	}
-	
 	/**
 	 * 
 	 * @return
 	 * @throws ServiceException
 	 */
 	public List<Employee> getAll() throws ServiceException {
-		
+
 		try {
+			EmployeeDAO employeeDao = new EmployeeDAO();
 			return employeeDao.getAll();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param employeeId
@@ -41,17 +37,18 @@ public class EmployeeService {
 	 * @throws ValidationException
 	 */
 	public Employee findEmployeeByEmployeeId(int employeeId) throws ServiceException, ValidationException {
-		
+
 		try {
+			EmployeeDAO employeeDao = new EmployeeDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
 			return employeeDao.findEmployeeByEmployeeId(employeeId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param email
@@ -60,17 +57,18 @@ public class EmployeeService {
 	 * @throws ValidationException
 	 */
 	public Employee findEmployeeByEmployeeEmail(String email) throws ServiceException, ValidationException {
-		
+
 		try {
+			EmployeeDAO employeeDao = new EmployeeDAO();
 			EmployeeValidator.validateEmail(email);
 			return employeeDao.findEmployeeByEmployeeEmail(email);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param phoneNo
@@ -79,39 +77,46 @@ public class EmployeeService {
 	 * @throws ValidationException
 	 */
 	public Employee findEmployeeByEmployeePhoneNo(long phoneNo) throws ServiceException, ValidationException {
-		
+
 		try {
+			EmployeeDAO employeeDao = new EmployeeDAO();
 			EmployeeValidator.validatePhoneNo(phoneNo);
 			return employeeDao.findEmployeeByEmployeePhoneNo(phoneNo);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param employee
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void create(Employee employee) throws ServiceException, ValidationException {
-		
+	public void create(Employee employee, int managerId, int roleId) throws ServiceException, ValidationException {
+
+		int generatedId = -1;
+
 		try {
+			EmployeeDAO employeeDao = new EmployeeDAO();
 			EmployeeValidator.validate(employee);
-			if (employeeDao.findEmployeeByEmployeeEmail(employee.getEmail()) != null)
-				throw new ValidationException("Email ID already exist");
-			if (employeeDao.findEmployeeByEmployeePhoneNo(employee.getPhone_no()) != null)
-				throw new ValidationException("Phone Number already exist");
-			employeeDao.create(employee);
+			EmployeeValidator.validateManagerId(managerId);
+			RoleValidator.validateRoleId(roleId);
+			EmployeeValidator.checkEmployeeEmailExist(employee.getEmail());
+			EmployeeValidator.checkEmployeePhoneNoExist(employee.getPhone_no());
+			EmployeeValidator.checkManagerIdExist(managerId);
+			RoleValidator.checkRoleIdExist(roleId);
+			generatedId = employeeDao.create(employee);
+			new EmployeeRoleService().create(generatedId, managerId, roleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param employeeId
@@ -119,32 +124,32 @@ public class EmployeeService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void update (int employeeId, Employee employee) throws ServiceException, ValidationException {
-		
+	public void update(int employeeId, Employee employee) throws ServiceException, ValidationException {
+
 		try {
+			EmployeeDAO employeeDao = new EmployeeDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
 			EmployeeValidator.validate(employee);
-			if (employeeDao.findEmployeeByEmployeeId(employeeId) == null)
-				throw new ValidationException("Employee Id is not exist in the table");
+			EmployeeValidator.checkEmployeeIdExist(employeeId);
 			employeeDao.update(employeeId, employee);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param employeeId
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void delete (int employeeId) throws ServiceException, ValidationException {
-		
+	public void delete(int employeeId) throws ServiceException, ValidationException {
+
 		try {
+			EmployeeDAO employeeDao = new EmployeeDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
-			if (employeeDao.findEmployeeByEmployeeId(employeeId) == null)
-				throw new ValidationException("Employee Id is not exist in the table");
+			EmployeeValidator.checkEmployeeIdExist(employeeId);
 			employeeDao.delete(employeeId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -152,5 +157,5 @@ public class EmployeeService {
 		}
 
 	}
-	
+
 }

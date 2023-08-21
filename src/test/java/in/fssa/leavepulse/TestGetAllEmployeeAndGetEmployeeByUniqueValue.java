@@ -33,13 +33,13 @@ public class TestGetAllEmployeeAndGetEmployeeByUniqueValue {
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(employeeService.findEmployeeByEmployeeId(0));
 		});
-		String expectedMessage = "Employee Id is invalid";
+		String expectedMessage = "Invalid Employee Id";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
 	@Test
-	public void testGetEmployeeByValidEmailId() {
+	public void testGetEmployeeByValidEmail() {
 		EmployeeService employeeService = new EmployeeService();
 		assertDoesNotThrow(() -> {
 			System.out.println(employeeService.findEmployeeByEmployeeEmail("dhanush@kowmart.com"));
@@ -47,29 +47,29 @@ public class TestGetAllEmployeeAndGetEmployeeByUniqueValue {
 	}
 	
 	@Test
-	public void testGetEmployeeByInvalidEmailIdNull() {
+	public void testGetEmployeeByInvalidEmailNull() {
 		EmployeeService employeeService = new EmployeeService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(employeeService.findEmployeeByEmployeeEmail(null));
 		});
-		String expectedMessage = "Email cannot be Null or Empty";
+		String expectedMessage = "Email cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
 	@Test
-	public void testGetEmployeeByInvalidEmailIdEmpty() {
+	public void testGetEmployeeByInvalidEmailEmpty() {
 		EmployeeService employeeService = new EmployeeService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(employeeService.findEmployeeByEmployeeEmail(""));
 		});
-		String expectedMessage = "Email cannot be Null or Empty";
+		String expectedMessage = "Email cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
 	@Test
-	public void testGetEmployeeByInvalidEmailIdFormat() {
+	public void testGetEmployeeByInvalidEmailFormat() {
 		EmployeeService employeeService = new EmployeeService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(employeeService.findEmployeeByEmployeeEmail("dhanush@kowmartcom"));

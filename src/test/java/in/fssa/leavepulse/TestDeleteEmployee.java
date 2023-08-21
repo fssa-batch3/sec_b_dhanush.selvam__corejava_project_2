@@ -12,20 +12,20 @@ import in.fssa.leavepulse.service.EmployeeService;
 public class TestDeleteEmployee {
 	
 	@Test
-	public void testDeleteEmployeeWithValidId() {
+	public void testDeleteEmployeeWithValidEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
 		assertDoesNotThrow(() -> {
-			employeeService.delete(5);
+			employeeService.delete(4);
 		});
 	}
 	
 	@Test
-	public void testDeleteEmployeeWithInvalidId() {
+	public void testDeleteEmployeeWithInvalidEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.delete(0);
 		});
-		String expectedMessage = "Employee Id is invalid";
+		String expectedMessage = "Invalid Employee Id";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 
@@ -35,9 +35,9 @@ public class TestDeleteEmployee {
 	public void testDeleteEmployeeWithNotExistEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.delete(6);
+			employeeService.delete(8);
 		});
-		String expectedMessage = "Employee Id is not exist in the table";
+		String expectedMessage = "Employee Id not found";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
