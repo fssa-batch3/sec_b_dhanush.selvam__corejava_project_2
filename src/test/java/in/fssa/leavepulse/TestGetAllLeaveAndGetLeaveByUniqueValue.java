@@ -11,7 +11,6 @@ import in.fssa.leavepulse.service.LeaveService;
 
 public class TestGetAllLeaveAndGetLeaveByUniqueValue {
 	
-	
 	@Test
 	public void testGetAllLeave() {
 		LeaveService leaveService = new LeaveService();
@@ -34,13 +33,13 @@ public class TestGetAllLeaveAndGetLeaveByUniqueValue {
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(leaveService.findLeaveByLeaveId(0));
 		});
-		String expectedMessage = "Leave Id is invalid";
+		String expectedMessage = "Invalid Leave Id";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
 	@Test 
-	public void testGetLeaveByLeaveName() {
+	public void testGetLeaveByLeaveType() {
 		LeaveService leaveService = new LeaveService();
 		assertDoesNotThrow(() -> {
 			System.out.println(leaveService.findLeaveByLeaveName("Personal Leave"));
@@ -48,23 +47,23 @@ public class TestGetAllLeaveAndGetLeaveByUniqueValue {
 	}
 	
 	@Test
-	public void testGetLeaveByInvalidLeaveNameNull() {
+	public void testGetLeaveByInvalidLeaveTypeNull() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(leaveService.findLeaveByLeaveName(null));
 		});
-		String expectedMessage = "Leave Name cannot be Null or Empty";
+		String expectedMessage = "Leave Type cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
 	@Test
-	public void testGetLeaveByInvalidLeaveNameEmpty() {
+	public void testGetLeaveByInvalidLeaveTypeEmpty() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(leaveService.findLeaveByLeaveName(""));
 		});
-		String expectedMessage = "Leave Name cannot be Null or Empty";
+		String expectedMessage = "Leave Type cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}

@@ -11,12 +11,6 @@ import in.fssa.leavepulse.validator.LeaveValidator;
 
 public class LeaveService {
 	
-	private LeaveDAO leaveDao;
-	
-	public LeaveService() {
-		this.leaveDao = new LeaveDAO();
-	}
-	
 	/**
 	 * 
 	 * @return
@@ -25,6 +19,7 @@ public class LeaveService {
 	public List<Leave> getAll() throws ServiceException {
 		
 		try {
+			LeaveDAO leaveDao = new LeaveDAO();
 			return leaveDao.getAll();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -43,6 +38,7 @@ public class LeaveService {
 	public Leave findLeaveByLeaveId(int leaveId) throws ServiceException, ValidationException {
 		
 		try {
+			LeaveDAO leaveDao = new LeaveDAO();
 			LeaveValidator.validateLeaveId(leaveId);
 			return leaveDao.findLeaveByLeaveId(leaveId);
 		} catch (PersistenceException e) {
@@ -62,7 +58,8 @@ public class LeaveService {
 	public Leave findLeaveByLeaveName(String leaveType) throws ServiceException, ValidationException {
 		
 		try {
-			LeaveValidator.validateLeaveType(leaveType);
+			LeaveDAO leaveDao = new LeaveDAO();
+			LeaveValidator.validateLeaveName(leaveType);
 			return leaveDao.findLeaveByLeaveType(leaveType);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -80,9 +77,9 @@ public class LeaveService {
 	public void create(Leave leave) throws ServiceException, ValidationException {
 		
 		try {
+			LeaveDAO leaveDao = new LeaveDAO();
 			LeaveValidator.validate(leave);
-			if (leaveDao.findLeaveByLeaveType(leave.getLeaveType()) != null)
-				throw new ValidationException("Leave Name already exist");
+			LeaveValidator.checkLeaveNameExist(leave.getLeaveType());
 			leaveDao.create(leave);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -101,12 +98,11 @@ public class LeaveService {
 	public void update(int leaveId, Leave leave) throws ServiceException, ValidationException {
 		
 		try {
+			LeaveDAO leaveDao = new LeaveDAO();
 			LeaveValidator.validateLeaveId(leaveId);
 			LeaveValidator.validate(leave);
-			if (leaveDao.findLeaveByLeaveId(leaveId) == null)
-				throw new ValidationException("Leave Id is not exist in the table");
-			if (leaveDao.findLeaveByLeaveType(leave.getLeaveType()) != null)
-				throw new ValidationException("Leave Name already exist");
+			LeaveValidator.checkLeaveIdExist(leaveId);
+			LeaveValidator.checkLeaveNameExist(leave.getLeaveType());
 			leaveDao.update(leaveId, leave);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -124,9 +120,9 @@ public class LeaveService {
 	public void delete(int leaveId) throws ServiceException, ValidationException {
 		
 		try {
+			LeaveDAO leaveDao = new LeaveDAO();
 			LeaveValidator.validateLeaveId(leaveId);
-			if (leaveDao.findLeaveByLeaveId(leaveId) == null)
-				throw new ValidationException("Leave Id is not exist in the table");
+			LeaveValidator.checkLeaveIdExist(leaveId);
 			leaveDao.delete(leaveId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();

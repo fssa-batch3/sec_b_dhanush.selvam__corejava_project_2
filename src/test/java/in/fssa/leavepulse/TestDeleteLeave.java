@@ -12,7 +12,7 @@ import in.fssa.leavepulse.service.LeaveService;
 public class TestDeleteLeave {
 	
 	@Test
-	public void testDeleteLeaveWithValidId() {
+	public void testDeleteLeaveWithValidLeaveId() {
 		LeaveService leaveService = new LeaveService();
 		assertDoesNotThrow(() -> {
 			leaveService.delete(4);
@@ -20,12 +20,12 @@ public class TestDeleteLeave {
 	}
 	
 	@Test
-	public void testDeleteLeaveWithInvalidId() {
+	public void testDeleteLeaveWithInvalidLeaveId() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			leaveService.delete(0);
 		});
-		String expectedMessage = "Leave Id is invalid";
+		String expectedMessage = "Invalid Leave Id";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -34,9 +34,9 @@ public class TestDeleteLeave {
 	public void testDeleteLeaveWithNotExistLeaveId() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.delete(5);
+			leaveService.delete(8);
 		});
-		String expectedMessage = "Leave Id is not exist in the table";
+		String expectedMessage = "Leave Id not found";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}

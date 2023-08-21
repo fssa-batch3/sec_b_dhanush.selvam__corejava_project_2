@@ -15,10 +15,22 @@ public class TestUpdateLeave {
 	@Test
 	public void testUpdateLeaveWithValidData() {
 		LeaveService leaveService = new LeaveService();
-		Leave leave = new Leave("Casual Leave");
+		Leave leave = new Leave("Maternity Leave");
 		assertDoesNotThrow(() -> {
 			leaveService.update(4, leave);
 		});
+	}
+	
+	@Test
+	public void testUpdateLeaveWithInvalidLeaveId() {
+		LeaveService leaveService = new LeaveService();
+		Leave leave = new Leave("Casual Leave");
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			leaveService.update(0, leave);
+		});
+		String expectedMessage = "Invalid Leave Id";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
 	@Test
@@ -33,25 +45,25 @@ public class TestUpdateLeave {
 	}
 	
 	@Test
-	public void testUpdateLeaveWithLeaveNameNull() {
+	public void testUpdateLeaveWithLeaveTypeNull() {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave(null);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			leaveService.update(4, leave);
 		});
-		String expectedMessage = "Leave Name cannot be Null or Empty";
+		String expectedMessage = "Leave Type cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
 	@Test
-	public void testUpdateLeaveWithLeaveNameEmpty() {
+	public void testUpdateLeaveWithLeaveTypeEmpty() {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave("");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			leaveService.update(4, leave);
 		});
-		String expectedMessage = "Leave Name cannot be Null or Empty";
+		String expectedMessage = "Leave Type cannot be null or empty";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -61,21 +73,21 @@ public class TestUpdateLeave {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave("Casual Leave");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.update(5, leave);
+			leaveService.update(8, leave);
 		});
-		String expectedMessage = "Leave Id is not exist in the table";
+		String expectedMessage = "Leave Id not found";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
 	@Test
-	public void testUpdateLeaveWithExistLeaveName() {
+	public void testUpdateLeaveWithExistLeaveType() {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave("Sick Leave");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			leaveService.update(4, leave);
 		});
-		String expectedMessage = "Leave Name already exist";
+		String expectedMessage = "Leave Type already exist";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}

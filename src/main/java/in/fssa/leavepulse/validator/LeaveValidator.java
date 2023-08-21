@@ -1,5 +1,7 @@
 package in.fssa.leavepulse.validator;
 
+import in.fssa.leavepulse.dao.LeaveDAO;
+import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.model.Leave;
 import in.fssa.leavepulse.util.StringUtil;
@@ -15,18 +17,7 @@ public class LeaveValidator {
 
 		if (leave == null)
 			throw new ValidationException("Leave cannot be null");
-		validateLeaveType(leave.getLeaveType());
-
-	}
-
-	/**
-	 * 
-	 * @param leaveType
-	 * @throws ValidationException
-	 */
-	public static void validateLeaveType(String leaveType) throws ValidationException {
-
-		StringUtil.rejectIfInvalidString(leaveType, "Leave Name");
+		validateLeaveName(leave.getLeaveType());
 
 	}
 	
@@ -40,5 +31,53 @@ public class LeaveValidator {
 		StringUtil.rejectIfInvalidId(leaveId, "Leave Id");
 		
 	}
+	
+	/**
+	 * 
+	 * @param leaveId
+	 * @throws ValidationException
+	 */
+	public static void checkLeaveIdExist(int leaveId) throws ValidationException {
+		
+		try {
+			LeaveDAO leaveDao = new LeaveDAO();
+			if (leaveDao.findLeaveByLeaveId(leaveId) == null)
+				throw new ValidationException("Leave Id not found");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ValidationException(e.getMessage());
+		}
+		
+	}
+	
 
+	/**
+	 * 
+	 * @param leaveType
+	 * @throws ValidationException
+	 */
+	public static void validateLeaveName(String leaveName) throws ValidationException {
+
+		StringUtil.rejectIfInvalidString(leaveName, "Leave Type");
+	
+	}
+	
+	/**
+	 * 
+	 * @param leaveName
+	 * @throws ValidationException
+	 */
+	public static void checkLeaveNameExist(String leaveName) throws ValidationException {
+		
+		try {
+			LeaveDAO leaveDao = new LeaveDAO();
+			if (leaveDao.findLeaveByLeaveType(leaveName) != null)
+				throw new ValidationException("Leave Type already exist");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ValidationException(e.getMessage());
+		}
+		
+	}
+	
 }
