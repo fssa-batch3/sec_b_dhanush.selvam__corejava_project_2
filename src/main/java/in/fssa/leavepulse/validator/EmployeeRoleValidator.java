@@ -1,6 +1,8 @@
 package in.fssa.leavepulse.validator;
 
-import in.fssa.leavepulse.exception.ValidationException;
+import in.fssa.leavepulse.dao.EmployeeRoleDAO;
+import in.fssa.leavepulse.exception.PersistenceException;
+import in.fssa.leavepulse.exception.ValidationException; 
 import in.fssa.leavepulse.model.EmployeeRole;
 import in.fssa.leavepulse.util.StringUtil;
 
@@ -15,9 +17,8 @@ public class EmployeeRoleValidator {
 
 		if (empRole == null)
 			throw new ValidationException("EmployeeRole cannot be null");
-		validateEmployeeId(empRole.getEmployeeId());
-		validateManagerId(empRole.getManagerId());
-		validateRoleId(empRole.getRoleId());
+			EmployeeValidator.validateManagerId(empRole.getManagerId());
+			RoleValidator.validateRoleId(empRole.getRoleId());
 
 	}
 	
@@ -26,43 +27,28 @@ public class EmployeeRoleValidator {
 	 * @param employeeRoleId
 	 * @throws ValidationException
 	 */
-	public static void validateEmployeeRoleId(int employeeRoleId) throws ValidationException {
+	public static void validateEmpRoleId(int employeeRoleId) throws ValidationException {
 
-		StringUtil.rejectIfInvalidId(employeeRoleId, "Employee Role Id");
-
-	}
-
-	/**
-	 * 
-	 * @param employeeId
-	 * @throws ValidationException
-	 */
-	public static void validateEmployeeId(int employeeId) throws ValidationException {
-
-		StringUtil.rejectIfInvalidId(employeeId, "Employee Id");
-
-	}
-
-	/**
-	 * 
-	 * @param employeeId
-	 * @throws ValidationException
-	 */
-	public static void validateManagerId(int employeeId) throws ValidationException {
-
-		StringUtil.rejectIfInvalidId(employeeId, "Manager Id");
+		StringUtil.rejectIfInvalidId(employeeRoleId, "Employee-Role Id");
 
 	}
 	
 	/**
 	 * 
-	 * @param roleId
+	 * @param empRoleId
 	 * @throws ValidationException
 	 */
-	public static void validateRoleId(int roleId) throws ValidationException {
-
-		StringUtil.rejectIfInvalidId(roleId, "Role Id");
-
+	public static void checkEmpRoleIdExist(int empRoleId) throws ValidationException {
+		
+		try {
+			EmployeeRoleDAO empRoleDao = new EmployeeRoleDAO();
+			if (empRoleDao.findEmpRoleByEmpRoleId(empRoleId) == null)
+				throw new ValidationException("Employee-Role Id not found");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ValidationException(e.getMessage());
+		}
+		
 	}
 
 }
