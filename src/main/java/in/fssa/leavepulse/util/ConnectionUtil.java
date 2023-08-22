@@ -17,15 +17,25 @@ public class ConnectionUtil {
 	public static Connection getConnection() {
 
 		Connection connection = null;
-		Dotenv env = Dotenv.load();
-		String url = env.get("DATABASE_HOSTNAME");
-		String userName = env.get("DATABASE_USERNAME");
-		String password = env.get("DATABASE_PASSWORD");
+		 String url;
+	        String userName;
+	        String passWord;
+
+	        if (System.getenv("CI") != null) {
+	            url = System.getenv("DATABASE_HOSTNAME");
+	            userName = System.getenv("DATABASE_USERNAME");
+	            passWord = System.getenv("DATABASE_PASSWORD");
+	        } else {
+	            Dotenv env = Dotenv.load();
+	            url = env.get("DATABASE_HOSTNAME");
+	            userName = env.get("DATABASE_USERNAME");
+	            passWord = env.get("DATABASE_PASSWORD");
+	        }
 
 		try {
 			
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection(url, userName, password);
+			connection = DriverManager.getConnection(url, userName, passWord);
 
 		} catch (Exception e) {
 			e.printStackTrace();
