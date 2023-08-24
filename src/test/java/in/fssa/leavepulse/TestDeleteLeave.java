@@ -36,7 +36,7 @@ public class TestDeleteLeave {
 	public void testDeleteLeaveWithNotExistLeaveId() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.delete(20);
+			leaveService.delete(500);
 		});
 		String expectedMessage = "Leave Id not found";
 		String actualMessage = exception.getMessage();

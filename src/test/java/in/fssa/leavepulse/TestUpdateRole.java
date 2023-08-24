@@ -64,7 +64,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("Team Lead");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(20, role);
+			roleService.update(500, role);
 		});
 		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();

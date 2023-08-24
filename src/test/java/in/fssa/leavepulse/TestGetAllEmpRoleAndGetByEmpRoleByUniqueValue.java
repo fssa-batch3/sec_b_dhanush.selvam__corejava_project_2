@@ -61,7 +61,7 @@ public class TestGetAllEmpRoleAndGetByEmpRoleByUniqueValue {
 	public void testGetEmpRoleByNotExistEmployeeId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
 		Exception exception  = assertThrows(ValidationException.class, () -> {
-			System.out.println(empRoleService.findEmpRoleByEmployeeId(9));
+			System.out.println(empRoleService.findEmpRoleByEmployeeId(500));
 		});
 		String expectedMessage = "Employee Id not found";
 		String actualMessage = exception.getMessage();
@@ -91,7 +91,7 @@ public class TestGetAllEmpRoleAndGetByEmpRoleByUniqueValue {
 	public void testFindAllEmpRoleByNotExistManagerId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
 		Exception exception  = assertThrows(ValidationException.class, () -> {
-			System.out.println(empRoleService.findAllEmpRoleByManagerId(10));
+			System.out.println(empRoleService.findAllEmpRoleByManagerId(500));
 		});
 		String expectedMessage = "Manager Id not found";
 		String actualMessage = exception.getMessage();
@@ -121,7 +121,7 @@ public class TestGetAllEmpRoleAndGetByEmpRoleByUniqueValue {
 	public void testFindAllEmpRoleByNotExistRoleId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
 		Exception exception  = assertThrows(ValidationException.class, () -> {
-			System.out.println(empRoleService.findAllEmpRoleByRoleId(8));
+			System.out.println(empRoleService.findAllEmpRoleByRoleId(500));
 		});
 		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();

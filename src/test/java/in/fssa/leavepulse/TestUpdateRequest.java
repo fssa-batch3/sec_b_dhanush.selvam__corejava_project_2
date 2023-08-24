@@ -41,7 +41,7 @@ public class TestUpdateRequest {
 		RequestService requestService = new RequestService();
 		Request request = new Request(LeaveStatus.Accepted, 3, "Permission Granted");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.update(20, request);
+			requestService.update(500, request);
 		});
 		String expectedMessage = "Request Id not found";
 		String actualMessage = exception.getMessage();

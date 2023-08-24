@@ -37,7 +37,7 @@ public class TestDeleteRequest {
 	public void testDeleteRequestWithNotExistRequestId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.delete(20);
+			requestService.delete(500);
 		});
 		String expectedMessage = "Request Id not found";
 		String actualMessage = exception.getMessage();

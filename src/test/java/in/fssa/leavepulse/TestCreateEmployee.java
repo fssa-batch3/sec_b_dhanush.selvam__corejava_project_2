@@ -207,7 +207,7 @@ public class TestCreateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith1@gmail.com",9876543211l,"Aa!12345","No.10/25, East Church Street, Boat Club - 600032");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.create(employee,20,4);
+			employeeService.create(employee,500,4);
 		});
 		String expectedMessage = "Manager Id not found";
 		String actualMessage = exception.getMessage();
@@ -231,7 +231,7 @@ public class TestCreateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith1@gmail.com",9876543211l,"Aa!12345","No.10/25, East Church Street, Boat Club - 600032");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.create(employee,2,20);
+			employeeService.create(employee,2,500);
 		});
 		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();

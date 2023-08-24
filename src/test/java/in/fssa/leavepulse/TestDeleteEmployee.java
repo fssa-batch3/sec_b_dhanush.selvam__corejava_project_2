@@ -1,13 +1,12 @@
 package in.fssa.leavepulse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow; 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import in.fssa.leavepulse.dao.EmployeeDAO;
-import in.fssa.leavepulse.dao.RoleDAO;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.service.EmployeeService;
 
@@ -38,7 +37,7 @@ public class TestDeleteEmployee {
 	public void testDeleteEmployeeWithNotExistEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.delete(20);
+			employeeService.delete(500);
 		});
 		String expectedMessage = "Employee Id not found";
 		String actualMessage = exception.getMessage();

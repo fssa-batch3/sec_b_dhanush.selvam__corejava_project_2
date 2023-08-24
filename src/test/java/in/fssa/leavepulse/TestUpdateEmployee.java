@@ -42,7 +42,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(20, employee);
+			employeeService.update(500, employee);
 		});
 		String expectedMessage = "Employee Id not found";
 		String actualMessage = exception.getMessage();

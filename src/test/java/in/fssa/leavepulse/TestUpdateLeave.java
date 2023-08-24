@@ -76,7 +76,7 @@ public class TestUpdateLeave {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave("Casual Leave");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.update(20, leave);
+			leaveService.update(500, leave);
 		});
 		String expectedMessage = "Leave Id not found";
 		String actualMessage = exception.getMessage();

@@ -35,7 +35,7 @@ public class TestDeleteRole {
 	public void testDeleteRoleWithNotExistRoleId() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.delete(20);
+			roleService.delete(500);
 		});
 		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();

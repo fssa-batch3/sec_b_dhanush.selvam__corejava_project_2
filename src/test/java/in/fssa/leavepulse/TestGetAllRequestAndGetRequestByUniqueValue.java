@@ -60,7 +60,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	public void testFindRequestByNotExistLeaveId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(requestService.findRequestByLeaveId(20));
+			System.out.println(requestService.findRequestByLeaveId(500));
 		});
 		String expectedMessage = "Leave Id not found";
 		String actualMessage = exception.getMessage();
@@ -90,7 +90,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	public void testGetRequestByNotExistManagerId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(requestService.findRequestByManagerId(20));
+			System.out.println(requestService.findRequestByManagerId(500));
 		});
 		String expectedMessage = "Manager Id not found";
 		String actualMessage = exception.getMessage();
