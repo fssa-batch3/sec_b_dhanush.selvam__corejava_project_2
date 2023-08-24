@@ -10,12 +10,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.fssa.leavepulse.Interface.RequestInterface;
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.model.Request;
 import in.fssa.leavepulse.model.Request.LeaveStatus;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
-public class RequestDAO {
+public class RequestDAO implements RequestInterface{
 
 	/**
 	 * 
@@ -163,7 +164,7 @@ public class RequestDAO {
 		return request;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param managerId
@@ -214,19 +215,19 @@ public class RequestDAO {
 		return requestList;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param request
 	 * @throws PersistenceException
 	 */
-	public void create (Request request) throws PersistenceException {
+	public void create(Request request) throws PersistenceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			
+
 			String query = "INSERT INTO requests (leave_id, start_date, end_date, reason, created_by, modified_by, manager_id) VALUES (?,?,?,?,?,?,?)";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
@@ -238,9 +239,9 @@ public class RequestDAO {
 			ps.setInt(6, request.getCreatedBy());
 			ps.setInt(7, request.getManagerId());
 			ps.executeUpdate();
-			
+
 			System.out.println("New Request Created Successfully");
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -250,20 +251,20 @@ public class RequestDAO {
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * @param requestId
 	 * @param request
 	 * @throws PersistenceException
 	 */
-	public void update (int requestId, Request request) throws PersistenceException {
+	public void update(int requestId, Request request) throws PersistenceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
-			
+
 			String query = "UPDATE requests SET status = ?, comments = ?, modified_by = ? WHERE is_active = 1 AND request_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
@@ -272,9 +273,9 @@ public class RequestDAO {
 			ps.setInt(3, request.getModifiedBy());
 			ps.setInt(4, requestId);
 			ps.executeUpdate();
-			
+
 			System.out.println("Request Updated Successfully");
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -284,13 +285,13 @@ public class RequestDAO {
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * @param requestId
 	 * @throws PersistenceException
 	 */
-	public void delete (int requestId) throws PersistenceException {
+	public void delete(int requestId) throws PersistenceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -313,5 +314,28 @@ public class RequestDAO {
 		}
 
 	}
-	
+
+	public int getLastRequestId() {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int requestId = 0;
+		try {
+			String query = "SELECT request_id FROM requests WHERE is_active = 1 ORDER BY request_id DESC LIMIT 1";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				requestId = rs.getInt("request_id");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+//	        throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, ps, rs);
+		}
+		return requestId;
+	}
+
 }

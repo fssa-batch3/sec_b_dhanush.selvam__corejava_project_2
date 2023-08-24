@@ -1,6 +1,6 @@
 package in.fssa.leavepulse.dao;
 
-import java.sql.Connection;  
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,11 +15,11 @@ import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.model.Employee;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
-public class EmployeeDAO implements EmployeeInterface{
+public class EmployeeDAO implements EmployeeInterface {
 
 	/**
-	 @return
-	 @throws PersistenceException
+	 * @return
+	 * @throws PersistenceException
 	 */
 	public List<Employee> getAll() throws PersistenceException {
 
@@ -239,10 +239,11 @@ public class EmployeeDAO implements EmployeeInterface{
 			ps.setString(6, employee.getAddress());
 			ps.setString(7, hire_date);
 			ps.executeUpdate();
-			
+
 			rs = ps.getGeneratedKeys();
-			if (rs.next()) generatedId = rs.getInt(1);
-			
+			if (rs.next())
+				generatedId = rs.getInt(1);
+
 			System.out.println("New Employee Created Successfully");
 
 		} catch (SQLException e) {
@@ -252,9 +253,9 @@ public class EmployeeDAO implements EmployeeInterface{
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
-		
+
 		return generatedId;
-		
+
 	}
 
 	/**
@@ -275,7 +276,7 @@ public class EmployeeDAO implements EmployeeInterface{
 			ps.setString(2, employee.getLast_name());
 			ps.setString(3, employee.getPassword());
 			ps.setString(4, employee.getAddress());
-			ps.setInt(6, employeeId);
+			ps.setInt(5, employeeId);
 			ps.executeUpdate();
 			System.out.println("Employee Updated Successfully");
 
@@ -290,8 +291,8 @@ public class EmployeeDAO implements EmployeeInterface{
 	}
 
 	/**
-	 @param employeeId
-	 @throws PersistenceException
+	 * @param employeeId
+	 * @throws PersistenceException
 	 */
 	public void delete(int employeeId) throws PersistenceException {
 
@@ -315,6 +316,29 @@ public class EmployeeDAO implements EmployeeInterface{
 			ConnectionUtil.close(con, ps);
 		}
 
+	}
+
+	public int getLastEmployeeId() {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int employeeId = 0;
+		try {
+			String query = "SELECT employee_id FROM employees WHERE is_active = 1 ORDER BY created_at DESC LIMIT 1";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				employeeId = rs.getInt("employee_id");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+//	        throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, ps, rs);
+		}
+		return employeeId;
 	}
 
 }

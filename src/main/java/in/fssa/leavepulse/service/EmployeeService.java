@@ -150,7 +150,10 @@ public class EmployeeService {
 			EmployeeDAO employeeDao = new EmployeeDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
 			EmployeeValidator.checkEmployeeIdExist(employeeId);
+			EmployeeRoleService empRoleService = new EmployeeRoleService();
+			int empRoleId = empRoleService.findEmpRoleByEmployeeId(employeeId).getEmpRoleId();
 			employeeDao.delete(employeeId);
+			empRoleService.delete(empRoleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());

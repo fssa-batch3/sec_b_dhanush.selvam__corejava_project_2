@@ -1,12 +1,14 @@
 package in.fssa.leavepulse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow; 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import in.fssa.leavepulse.dao.RoleDAO;
 import in.fssa.leavepulse.exception.ValidationException;
+import in.fssa.leavepulse.generator.EmployeeGenerator;
 import in.fssa.leavepulse.model.Role;
 import in.fssa.leavepulse.service.RoleService;
 
@@ -15,9 +17,10 @@ public class TestUpdateRole {
 	@Test
 	public void testUpdateRoleWithValidData() {
 		RoleService roleService = new RoleService();
-		Role role = new Role("Devops");
+		int roleId = new RoleDAO().getLastRoleId();
+		Role role = new Role(new EmployeeGenerator().nameGenerator());
 		assertDoesNotThrow(() -> {
-			roleService.update(4,role);
+			roleService.update(roleId,role);
 		});
 	}
 	
@@ -25,7 +28,7 @@ public class TestUpdateRole {
 	public void testUpdateRoleWithInvalidDataNull() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(12,null);
+			roleService.update(2,null);
 		});
 		String expectedMessage = "Role cannot be null";
 		String actualMessage = exception.getMessage();
@@ -37,7 +40,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role(null);
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(12, role);
+			roleService.update(2, role);
 		});
 		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -49,7 +52,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(12, role);
+			roleService.update(2, role);
 		});
 		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -61,7 +64,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("Team Lead");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(8, role);
+			roleService.update(20, role);
 		});
 		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();
@@ -73,7 +76,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("CEO");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(4, role);
+			roleService.update(2, role);
 		});
 		String expectedMessage = "Role Name already exist";
 		String actualMessage = exception.getMessage();

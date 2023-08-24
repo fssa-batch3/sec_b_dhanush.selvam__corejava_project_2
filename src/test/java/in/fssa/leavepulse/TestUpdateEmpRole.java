@@ -38,7 +38,7 @@ public class TestUpdateEmpRole {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
 		EmployeeRole empRole = new EmployeeRole(3, 1, 3);
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			empRoleService.update(8, empRole);
+			empRoleService.update(20, empRole);
 		});
 		String expectedMessage = "Employee-Role Id not found";
 		String actualMessage = exception.getMessage();
@@ -60,7 +60,7 @@ public class TestUpdateEmpRole {
 	@Test
 	public void testUpdateEmpRoleByNotExistManagerId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		EmployeeRole empRole = new EmployeeRole(3, 10, 3);
+		EmployeeRole empRole = new EmployeeRole(3, 20, 3);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			empRoleService.update(4, empRole);
 		});
@@ -84,7 +84,7 @@ public class TestUpdateEmpRole {
 	@Test
 	public void testUpdateEmpRoleByNotExistRoleId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		EmployeeRole empRole = new EmployeeRole(3, 1, 8);
+		EmployeeRole empRole = new EmployeeRole(3, 1, 20);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			empRoleService.update(4, empRole);
 		});

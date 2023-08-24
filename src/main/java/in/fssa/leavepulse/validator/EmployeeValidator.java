@@ -53,6 +53,7 @@ public class EmployeeValidator {
 
 		try {
 			EmployeeDAO employeeDao = new EmployeeDAO();
+			System.out.println(employeeDao.findEmployeeByEmployeeId(employeeId));
 			if (employeeDao.findEmployeeByEmployeeId(employeeId) == null)
 				throw new ValidationException("Employee Id not found");
 		} catch (PersistenceException e) {

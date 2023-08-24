@@ -1,12 +1,14 @@
 package in.fssa.leavepulse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow; 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import in.fssa.leavepulse.dao.EmployeeDAO;
 import in.fssa.leavepulse.exception.ValidationException;
+import in.fssa.leavepulse.generator.EmployeeGenerator;
 import in.fssa.leavepulse.model.Employee;
 import in.fssa.leavepulse.service.EmployeeService;
 
@@ -15,9 +17,11 @@ public class TestUpdateEmployee {
 	@Test
 	public void testUpdateEmployeeWithValidData() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		EmployeeGenerator employeeGenerator = new EmployeeGenerator();
+		int employeeId = new EmployeeDAO().getLastEmployeeId();
+		Employee employee = new Employee(employeeGenerator.nameGenerator(), employeeGenerator.nameGenerator(),"ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		assertDoesNotThrow(() -> {
-			employeeService.update(4, employee);
+			employeeService.update(employeeId, employee);
 		});
 	}
 
@@ -38,7 +42,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(8, employee);
+			employeeService.update(20, employee);
 		});
 		String expectedMessage = "Employee Id not found";
 		String actualMessage = exception.getMessage();

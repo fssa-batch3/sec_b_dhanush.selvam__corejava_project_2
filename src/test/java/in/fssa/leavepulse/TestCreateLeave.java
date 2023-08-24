@@ -1,12 +1,13 @@
 package in.fssa.leavepulse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow; 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;  
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import in.fssa.leavepulse.exception.ValidationException;
+import in.fssa.leavepulse.generator.EmployeeGenerator;
 import in.fssa.leavepulse.model.Leave;
 import in.fssa.leavepulse.service.LeaveService;
 
@@ -15,7 +16,7 @@ public class TestCreateLeave {
 	@Test
 	public void testCreateLeaveWithValidData() {
 		LeaveService leaveService = new LeaveService();
-		Leave leave = new Leave("Maternity Leave");
+		Leave leave = new Leave(new EmployeeGenerator().nameGenerator());
 		assertDoesNotThrow(() -> {
 			leaveService.create(leave);
 		});

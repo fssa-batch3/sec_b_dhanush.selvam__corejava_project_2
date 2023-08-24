@@ -55,7 +55,7 @@ public class TestCreateRequest {
 		LocalDate startDate = LocalDate.of(2023, 8, 22);
 		LocalDate endDate = LocalDate.of(2023, 8, 23);
 		RequestService requestService = new RequestService();
-		Request request = new Request(8, startDate, endDate, "Fever", 4, 3);
+		Request request = new Request(20, startDate, endDate, "Fever", 4, 3);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			requestService.create(request);
 		});
@@ -83,7 +83,7 @@ public class TestCreateRequest {
 		LocalDate startDate = LocalDate.of(2023, 8, 22);
 		LocalDate endDate = LocalDate.of(2023, 8, 23);
 		RequestService requestService = new RequestService();
-		Request request = new Request(1, startDate, endDate, "Fever", 8, 3);
+		Request request = new Request(1, startDate, endDate, "Fever", 20, 3);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			requestService.create(request);
 		});
@@ -111,7 +111,7 @@ public class TestCreateRequest {
 		LocalDate startDate = LocalDate.of(2023, 8, 22);
 		LocalDate endDate = LocalDate.of(2023, 8, 23);
 		RequestService requestService = new RequestService();
-		Request request = new Request(1, startDate, endDate, "Fever", 4, 8);
+		Request request = new Request(1, startDate, endDate, "Fever", 4, 20);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			requestService.create(request);
 		});

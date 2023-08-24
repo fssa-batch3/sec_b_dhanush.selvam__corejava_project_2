@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import in.fssa.leavepulse.dao.RequestDAO;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.model.Request;
 import in.fssa.leavepulse.model.Request.LeaveStatus;
@@ -16,9 +17,10 @@ public class TestUpdateRequest {
 	@Test
 	public void testUpdateRequestWithValidData() {
 		RequestService requestService = new RequestService();
+		int requestId = new RequestDAO().getLastRequestId();
 		Request request = new Request(LeaveStatus.Accepted, 3, "Permission Granted");
 		assertDoesNotThrow(() -> {
-			requestService.update(3, request);
+			requestService.update(requestId, request);
 		});
 	}
 	
@@ -39,7 +41,7 @@ public class TestUpdateRequest {
 		RequestService requestService = new RequestService();
 		Request request = new Request(LeaveStatus.Accepted, 3, "Permission Granted");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.update(6, request);
+			requestService.update(20, request);
 		});
 		String expectedMessage = "Request Id not found";
 		String actualMessage = exception.getMessage();
@@ -72,7 +74,7 @@ public class TestUpdateRequest {
 	@Test
 	public void testUpdateRequestWithNotExistManagerId() {
 		RequestService requestService = new RequestService();
-		Request request = new Request(LeaveStatus.Accepted, 8, "Permission Granted");
+		Request request = new Request(LeaveStatus.Accepted, 20, "Permission Granted");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			requestService.update(3, request);
 		});

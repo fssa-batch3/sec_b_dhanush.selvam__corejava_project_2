@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import in.fssa.leavepulse.dao.RequestDAO;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.service.RequestService;
 
@@ -14,8 +15,9 @@ public class TestDeleteRequest {
 	@Test
 	public void testDeleteRequestWithValidRequestId() {
 		RequestService requestService = new RequestService();
+		int requestId = new RequestDAO().getLastRequestId();
 		assertDoesNotThrow(() -> {
-			requestService.delete(3);
+			requestService.delete(requestId);
 		});
 	}
 	
@@ -35,7 +37,7 @@ public class TestDeleteRequest {
 	public void testDeleteRequestWithNotExistRequestId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.delete(6);
+			requestService.delete(20);
 		});
 		String expectedMessage = "Request Id not found";
 		String actualMessage = exception.getMessage();

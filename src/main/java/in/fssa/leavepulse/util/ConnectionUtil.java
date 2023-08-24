@@ -30,6 +30,11 @@ public class ConnectionUtil {
 	            url = env.get("DATABASE_HOSTNAME");
 	            userName = env.get("DATABASE_USERNAME");
 	            passWord = env.get("DATABASE_PASSWORD");
+	        	
+	        	
+//	        	url = "jdbc:mysql://164.52.216.41:3306/dhanush_selvam_corejava_project";
+//	        	userName = "734auowQyG4V";
+//	        	passWord = "4ae14a6b-86ad-4767-989a-c49941406b0c";
 	        }
 
 		try {

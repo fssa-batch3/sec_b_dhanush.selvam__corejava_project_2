@@ -1,6 +1,6 @@
 package in.fssa.leavepulse.dao;
 
-import java.sql.Connection; 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,8 +15,8 @@ import in.fssa.leavepulse.util.ConnectionUtil;
 public class LeaveDAO implements LeaveInterface {
 
 	/**
-	 @return
-	 @throws PersistenceException
+	 * @return
+	 * @throws PersistenceException
 	 */
 	public List<Leave> getAll() throws PersistenceException {
 
@@ -135,7 +135,7 @@ public class LeaveDAO implements LeaveInterface {
 		return leave;
 
 	}
-	
+
 	/**
 	 * @param leave
 	 * @throws PersistenceException
@@ -163,7 +163,7 @@ public class LeaveDAO implements LeaveInterface {
 		}
 
 	}
-	
+
 	/**
 	 * @param leaveId, leave
 	 * @throws PersistenceException
@@ -192,7 +192,7 @@ public class LeaveDAO implements LeaveInterface {
 		}
 
 	}
-	
+
 	/**
 	 * @param leaveId
 	 * @throws PersistenceException
@@ -221,5 +221,27 @@ public class LeaveDAO implements LeaveInterface {
 
 	}
 
+	public int getLastLeaveId() {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int leaveiId = 0;
+		try {
+			String query = "SELECT leave_id FROM leave_type WHERE is_active = 1 ORDER BY leave_id DESC LIMIT 1";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				leaveiId = rs.getInt("leave_id");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+//	        throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, ps, rs);
+		}
+		return leaveiId;
+	}
 
 }

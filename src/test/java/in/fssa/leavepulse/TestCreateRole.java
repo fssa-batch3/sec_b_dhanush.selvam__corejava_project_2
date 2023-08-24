@@ -1,12 +1,13 @@
 package in.fssa.leavepulse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow; 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;  
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import in.fssa.leavepulse.exception.ValidationException;
+import in.fssa.leavepulse.generator.EmployeeGenerator;
 import in.fssa.leavepulse.model.Role;
 import in.fssa.leavepulse.service.RoleService;
 
@@ -15,7 +16,7 @@ public class TestCreateRole {
 	@Test
 	public void testCreateRoleWithValidData() {
 		RoleService roleService = new RoleService();
-		Role role = new Role("Tester");
+		Role role = new Role(new EmployeeGenerator().nameGenerator());
 		assertDoesNotThrow(() -> {
 			roleService.create(role);
 		});
@@ -59,7 +60,7 @@ public class TestCreateRole {
 	@Test
 	public void testCreateRoleWithExistRoleName() {
 		RoleService roleService = new RoleService();
-		Role role = new Role("Devops");
+		Role role = new Role("CEO");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			roleService.create(role);
 		});

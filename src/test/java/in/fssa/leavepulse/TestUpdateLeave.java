@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import in.fssa.leavepulse.dao.LeaveDAO;
 import in.fssa.leavepulse.exception.ValidationException;
+import in.fssa.leavepulse.generator.EmployeeGenerator;
 import in.fssa.leavepulse.model.Leave;
 import in.fssa.leavepulse.service.LeaveService;
 
@@ -15,9 +17,10 @@ public class TestUpdateLeave {
 	@Test
 	public void testUpdateLeaveWithValidData() {
 		LeaveService leaveService = new LeaveService();
-		Leave leave = new Leave("Maternity Leave");
+		Leave leave = new Leave(new EmployeeGenerator().nameGenerator());
+		int leaveId = new LeaveDAO().getLastLeaveId();
 		assertDoesNotThrow(() -> {
-			leaveService.update(4, leave);
+			leaveService.update(leaveId, leave);
 		});
 	}
 	
@@ -73,7 +76,7 @@ public class TestUpdateLeave {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave("Casual Leave");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.update(8, leave);
+			leaveService.update(20, leave);
 		});
 		String expectedMessage = "Leave Id not found";
 		String actualMessage = exception.getMessage();

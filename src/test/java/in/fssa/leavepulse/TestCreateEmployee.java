@@ -1,12 +1,13 @@
 package in.fssa.leavepulse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow; 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import in.fssa.leavepulse.exception.ValidationException;
+import in.fssa.leavepulse.generator.EmployeeGenerator;
 import in.fssa.leavepulse.model.Employee;
 import in.fssa.leavepulse.service.EmployeeService;
 
@@ -15,7 +16,8 @@ public class TestCreateEmployee {
 	@Test
 	public void testCreateEmployeeWithValidData() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Kamal","Hasan","kamal@gmail.com",9798876748l,"Aa!12345","No.10/25, East Church Street, Boat Club - 600032");
+		EmployeeGenerator employeeGenerator = new EmployeeGenerator();
+		Employee employee = new Employee(employeeGenerator.nameGenerator(), employeeGenerator.nameGenerator(), employeeGenerator.emailGenerator(), employeeGenerator.numberGenenrator(), "Aa!12345", "No.10/25, East Church Street, Boat Club - 600032");
 		assertDoesNotThrow(() -> {
 			employeeService.create(employee,3,4);
 		});
@@ -205,7 +207,7 @@ public class TestCreateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith1@gmail.com",9876543211l,"Aa!12345","No.10/25, East Church Street, Boat Club - 600032");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.create(employee,10,4);
+			employeeService.create(employee,20,4);
 		});
 		String expectedMessage = "Manager Id not found";
 		String actualMessage = exception.getMessage();
@@ -229,7 +231,7 @@ public class TestCreateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith1@gmail.com",9876543211l,"Aa!12345","No.10/25, East Church Street, Boat Club - 600032");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.create(employee,2,8);
+			employeeService.create(employee,2,20);
 		});
 		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();
