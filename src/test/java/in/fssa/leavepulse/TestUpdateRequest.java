@@ -74,9 +74,9 @@ public class TestUpdateRequest {
 	@Test
 	public void testUpdateRequestWithNotExistManagerId() {
 		RequestService requestService = new RequestService();
-		Request request = new Request(LeaveStatus.Accepted, 20, "Permission Granted");
+		Request request = new Request(LeaveStatus.Accepted, 50, "Permission Granted");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.update(3, request);
+			requestService.update(2, request);
 		});
 		String expectedMessage = "Manager Id not found";
 		String actualMessage = exception.getMessage();
