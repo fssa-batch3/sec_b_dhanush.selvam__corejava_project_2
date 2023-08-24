@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import in.fssa.leavepulse.dao.EmployeeRoleDAO;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.model.EmployeeRole;
 import in.fssa.leavepulse.service.EmployeeRoleService;
@@ -16,8 +17,9 @@ public class TestUpdateEmpRole {
 	public void testUpdateEmpRole() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
 		EmployeeRole empRole = new EmployeeRole(3, 1, 3);
+		int empRoleId = new EmployeeRoleDAO().getLastEmpRoleId();
 		assertDoesNotThrow(() -> {
-			empRoleService.update(3, empRole);
+			empRoleService.update(empRoleId, empRole);
 		});
 	}	
 	

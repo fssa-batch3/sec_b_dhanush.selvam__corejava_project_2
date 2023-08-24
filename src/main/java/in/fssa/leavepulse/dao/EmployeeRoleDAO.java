@@ -1,6 +1,6 @@
 package in.fssa.leavepulse.dao;
 
-import java.sql.Connection;
+import java.sql.Connection; 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -322,6 +322,29 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 			ConnectionUtil.close(con, ps);
 		}
 
+	}
+	
+	public int getLastEmpRoleId() {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int employeeId = 0;
+		try {
+			String query = "SELECT emp_role_id FROM employee_role WHERE is_active = 1 ORDER BY emp_role_id DESC LIMIT 1";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				employeeId = rs.getInt("emp_role_id");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+//	        throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, ps, rs);
+		}
+		return employeeId;
 	}
 	
 }
