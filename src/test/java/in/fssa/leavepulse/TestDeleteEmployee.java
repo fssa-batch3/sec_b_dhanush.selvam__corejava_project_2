@@ -17,7 +17,7 @@ public class TestDeleteEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		int employeeId = new EmployeeDAO().getLastEmployeeId();
 		assertDoesNotThrow(() -> {
-			employeeService.delete(employeeId);
+			employeeService.deleteEmployee(employeeId);
 		});
 	}
 	
@@ -25,7 +25,7 @@ public class TestDeleteEmployee {
 	public void testDeleteEmployeeWithInvalidEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.delete(0);
+			employeeService.deleteEmployee(0);
 		});
 		String expectedMessage = "Invalid Employee Id";
 		String actualMessage = exception.getMessage();
@@ -37,7 +37,7 @@ public class TestDeleteEmployee {
 	public void testDeleteEmployeeWithNotExistEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.delete(500);
+			employeeService.deleteEmployee(500);
 		});
 		String expectedMessage = "Employee Id not found";
 		String actualMessage = exception.getMessage();

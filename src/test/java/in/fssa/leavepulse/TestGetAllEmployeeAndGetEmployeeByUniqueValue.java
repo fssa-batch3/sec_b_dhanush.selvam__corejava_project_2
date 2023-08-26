@@ -15,7 +15,7 @@ public class TestGetAllEmployeeAndGetEmployeeByUniqueValue {
 	public void testGetAllEmployee() {
 		EmployeeService employeeService = new EmployeeService();
 		assertDoesNotThrow(() -> {
-			System.out.println(employeeService.getAll());
+			System.out.println(employeeService.getAllEmployee());
 		});
 	}
 	

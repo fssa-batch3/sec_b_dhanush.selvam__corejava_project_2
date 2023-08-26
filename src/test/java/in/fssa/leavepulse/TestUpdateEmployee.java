@@ -21,7 +21,7 @@ public class TestUpdateEmployee {
 		int employeeId = new EmployeeDAO().getLastEmployeeId();
 		Employee employee = new Employee(employeeGenerator.nameGenerator(), employeeGenerator.nameGenerator(),"ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		assertDoesNotThrow(() -> {
-			employeeService.update(employeeId, employee);
+			employeeService.updateEmployee(employeeId, employee);
 		});
 	}
 
@@ -30,7 +30,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(0, employee);
+			employeeService.updateEmployee(0, employee);
 		});
 		String expectedMessage = "Invalid Employee Id";
 		String actualMessage = exception.getMessage();
@@ -42,7 +42,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(500, employee);
+			employeeService.updateEmployee(500, employee);
 		});
 		String expectedMessage = "Employee Id not found";
 		String actualMessage = exception.getMessage();
@@ -53,7 +53,7 @@ public class TestUpdateEmployee {
 	public void testUpdateEmployeeWithInvalidData() {
 		EmployeeService employeeService = new EmployeeService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, null);
+			employeeService.updateEmployee(4, null);
 		});
 		String expectedMessage = "Employee cannot be null";
 		String actualMessage = exception.getMessage();
@@ -65,7 +65,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee(null,"Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, employee);
+			employeeService.updateEmployee(4, employee);
 		});
 		String expectedMessage = "First Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -77,7 +77,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, employee);
+			employeeService.updateEmployee(4, employee);
 		});
 		String expectedMessage = "First Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -89,7 +89,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith",null,"ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, employee);
+			employeeService.updateEmployee(4, employee);
 		});
 		String expectedMessage = "Last Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -101,7 +101,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, employee);
+			employeeService.updateEmployee(4, employee);
 		});
 		String expectedMessage = "Last Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -113,7 +113,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,null,"No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, employee);
+			employeeService.updateEmployee(4, employee);
 		});
 		String expectedMessage = "Password cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -125,7 +125,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, employee);
+			employeeService.updateEmployee(4, employee);
 		});
 		String expectedMessage = "Password cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -137,7 +137,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa6712345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, employee);
+			employeeService.updateEmployee(4, employee);
 		});
 		String expectedMessage = "Password doesn't match the pattern";
 		String actualMessage = exception.getMessage();
@@ -149,7 +149,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345",null);
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, employee);
+			employeeService.updateEmployee(4, employee);
 		});
 		String expectedMessage = "Address cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -161,7 +161,7 @@ public class TestUpdateEmployee {
 		EmployeeService employeeService = new EmployeeService();
 		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.update(4, employee);
+			employeeService.updateEmployee(4, employee);
 		});
 		String expectedMessage = "Address cannot be null or empty";
 		String actualMessage = exception.getMessage();

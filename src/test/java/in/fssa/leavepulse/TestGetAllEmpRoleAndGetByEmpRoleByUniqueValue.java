@@ -15,7 +15,7 @@ public class TestGetAllEmpRoleAndGetByEmpRoleByUniqueValue {
 	public void testGetAllEmpRole() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
 		assertDoesNotThrow(() -> {
-			System.out.println(empRoleService.getAll());
+			System.out.println(empRoleService.getAllEmpRole());
 		});
 	}
 	

@@ -18,11 +18,11 @@ public class RequestService {
 	 * @return
 	 * @throws ServiceException
 	 */
-	public List<Request> getAll() throws ServiceException {
+	public List<Request> getAllRequest() throws ServiceException {
 
 		try {
-			RequestDAO requestDao = new RequestDAO();
-			return requestDao.getAll();
+			RequestDAO requestDAO = new RequestDAO();
+			return requestDAO.getAll();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -40,9 +40,9 @@ public class RequestService {
 	public Request findRequestByRequestId(int requestId) throws ServiceException, ValidationException {
 
 		try {
-			RequestDAO requestDao = new RequestDAO();
+			RequestDAO requestDAO = new RequestDAO();
 			RequestValidator.validateRequestId(requestId);
-			return requestDao.findRequestByRequestId(requestId);
+			return requestDAO.findRequestByRequestId(requestId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -60,10 +60,10 @@ public class RequestService {
 	public Request findRequestByLeaveId(int leaveId) throws ServiceException, ValidationException {
 
 		try {
-			RequestDAO requestDao = new RequestDAO();
+			RequestDAO requestDAO = new RequestDAO();
 			LeaveValidator.validateLeaveId(leaveId);
 			LeaveValidator.checkLeaveIdExist(leaveId);
-			return requestDao.findRequestByLeaveId(leaveId);
+			return requestDAO.findRequestByLeaveId(leaveId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -81,10 +81,10 @@ public class RequestService {
 	public Request findRequestByManagerId(int managerId) throws ServiceException, ValidationException {
 
 		try {
-			RequestDAO requestDao = new RequestDAO();
+			RequestDAO requestDAO = new RequestDAO();
 			EmployeeValidator.validateManagerId(managerId);
 			EmployeeValidator.checkManagerIdExist(managerId);
-			return requestDao.findRequestByLeaveId(managerId);
+			return requestDAO.findRequestByLeaveId(managerId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -98,18 +98,18 @@ public class RequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void create(Request request) throws ServiceException, ValidationException {
+	public void createRequest(Request request) throws ServiceException, ValidationException {
 
 		try {
-			RequestDAO requestDao = new RequestDAO();
-			RequestValidator.validate(request);
+			RequestDAO requestDAO = new RequestDAO();
+			RequestValidator.validateRequest(request);
 			LeaveValidator.validateLeaveId(request.getLeaveId());
 			EmployeeValidator.validateEmployeeId(request.getCreatedBy());
 			EmployeeValidator.validateManagerId(request.getManagerId());
 			LeaveValidator.checkLeaveIdExist(request.getLeaveId());
 			EmployeeValidator.checkEmployeeIdExist(request.getCreatedBy());
 			EmployeeValidator.checkManagerIdExist(request.getManagerId());
-			requestDao.create(request);
+			requestDAO.create(request);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -124,16 +124,16 @@ public class RequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void update(int requestId, Request request) throws ServiceException, ValidationException {
+	public void updateRequest(int requestId, Request request) throws ServiceException, ValidationException {
 
 		try {
-			RequestDAO requestDao = new RequestDAO();
+			RequestDAO requestDAO = new RequestDAO();
 			RequestValidator.validateRequestId(requestId);
-			RequestValidator.validate(request);
+			RequestValidator.validateRequest(request);
 			EmployeeValidator.validateManagerId(request.getModifiedBy());
 			RequestValidator.checkRequestIdExist(requestId);
 			EmployeeValidator.checkManagerIdExist(request.getModifiedBy());
-			requestDao.update(requestId, request);
+			requestDAO.update(requestId, request);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -147,13 +147,13 @@ public class RequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void delete(int requestId) throws ServiceException, ValidationException { 
+	public void deleteRequest(int requestId) throws ServiceException, ValidationException { 
 		
 		try {
-			RequestDAO requestDao = new RequestDAO();
+			RequestDAO requestDAO = new RequestDAO();
 			RequestValidator.validateRequestId(requestId);
 			RequestValidator.checkRequestIdExist(requestId);
-			requestDao.delete(requestId);
+			requestDAO.delete(requestId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());

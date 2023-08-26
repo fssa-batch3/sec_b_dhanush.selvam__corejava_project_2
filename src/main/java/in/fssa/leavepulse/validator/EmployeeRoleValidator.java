@@ -13,7 +13,7 @@ public class EmployeeRoleValidator {
 	 * @param empRole
 	 * @throws ValidationException
 	 */
-	public static void validate(EmployeeRole empRole) throws ValidationException {
+	public static void validateEmpRole(EmployeeRole empRole) throws ValidationException {
 
 		if (empRole == null)
 			throw new ValidationException("EmployeeRole cannot be null");
@@ -41,8 +41,8 @@ public class EmployeeRoleValidator {
 	public static void checkEmpRoleIdExist(int empRoleId) throws ValidationException {
 		
 		try {
-			EmployeeRoleDAO empRoleDao = new EmployeeRoleDAO();
-			if (empRoleDao.findEmpRoleByEmpRoleId(empRoleId) == null)
+			EmployeeRoleDAO empRoleDAO = new EmployeeRoleDAO();
+			if (empRoleDAO.findEmpRoleByEmpRoleId(empRoleId) == null)
 				throw new ValidationException("Employee-Role Id not found");
 		} catch (PersistenceException e) {
 			e.printStackTrace();

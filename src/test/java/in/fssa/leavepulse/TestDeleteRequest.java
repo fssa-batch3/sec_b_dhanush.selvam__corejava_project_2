@@ -17,7 +17,7 @@ public class TestDeleteRequest {
 		RequestService requestService = new RequestService();
 		int requestId = new RequestDAO().getLastRequestId();
 		assertDoesNotThrow(() -> {
-			requestService.delete(requestId);
+			requestService.deleteRequest(requestId);
 		});
 	}
 	
@@ -25,7 +25,7 @@ public class TestDeleteRequest {
 	public void testDeleteRequestWithInvalidRequestId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.delete(0);
+			requestService.deleteRequest(0);
 		});
 		String expectedMessage = "Invalid Request Id";
 		String actualMessage = exception.getMessage();
@@ -37,7 +37,7 @@ public class TestDeleteRequest {
 	public void testDeleteRequestWithNotExistRequestId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.delete(500);
+			requestService.deleteRequest(500);
 		});
 		String expectedMessage = "Request Id not found";
 		String actualMessage = exception.getMessage();

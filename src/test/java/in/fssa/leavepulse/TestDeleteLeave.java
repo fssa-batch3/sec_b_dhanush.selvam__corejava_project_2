@@ -17,7 +17,7 @@ public class TestDeleteLeave {
 		LeaveService leaveService = new LeaveService();
 		int leaveId = new LeaveDAO().getLastLeaveId();
 		assertDoesNotThrow(() -> {
-			leaveService.delete(leaveId);
+			leaveService.deleteLeave(leaveId);
 		});
 	}
 	
@@ -25,7 +25,7 @@ public class TestDeleteLeave {
 	public void testDeleteLeaveWithInvalidLeaveId() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.delete(0);
+			leaveService.deleteLeave(0);
 		});
 		String expectedMessage = "Invalid Leave Id";
 		String actualMessage = exception.getMessage();
@@ -36,7 +36,7 @@ public class TestDeleteLeave {
 	public void testDeleteLeaveWithNotExistLeaveId() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.delete(500);
+			leaveService.deleteLeave(500);
 		});
 		String expectedMessage = "Leave Id not found";
 		String actualMessage = exception.getMessage();

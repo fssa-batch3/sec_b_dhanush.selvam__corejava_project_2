@@ -15,7 +15,7 @@ public class TestGetAllLeaveAndGetLeaveByUniqueValue {
 	public void testGetAllLeave() {
 		LeaveService leaveService = new LeaveService();
 		assertDoesNotThrow(() -> {
-			System.out.println(leaveService.getAll());
+			System.out.println(leaveService.getAllLeave());
 		});
 	}
 	

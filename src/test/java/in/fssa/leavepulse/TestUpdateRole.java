@@ -20,7 +20,7 @@ public class TestUpdateRole {
 		int roleId = new RoleDAO().getLastRoleId();
 		Role role = new Role(new EmployeeGenerator().nameGenerator());
 		assertDoesNotThrow(() -> {
-			roleService.update(roleId,role);
+			roleService.updateRole(roleId,role);
 		});
 	}
 	
@@ -28,7 +28,7 @@ public class TestUpdateRole {
 	public void testUpdateRoleWithInvalidDataNull() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(2,null);
+			roleService.updateRole(2,null);
 		});
 		String expectedMessage = "Role cannot be null";
 		String actualMessage = exception.getMessage();
@@ -40,7 +40,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role(null);
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(2, role);
+			roleService.updateRole(2, role);
 		});
 		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -52,7 +52,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(2, role);
+			roleService.updateRole(2, role);
 		});
 		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -64,7 +64,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("Team Lead");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(500, role);
+			roleService.updateRole(500, role);
 		});
 		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();
@@ -76,7 +76,7 @@ public class TestUpdateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("CEO");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.update(2, role);
+			roleService.updateRole(2, role);
 		});
 		String expectedMessage = "Role Name already exist";
 		String actualMessage = exception.getMessage();

@@ -16,7 +16,7 @@ public class TestDeleteRole {
 	public void testDeleteRoleWithValidRoleId() {
 		RoleService roleService = new RoleService();
 		assertDoesNotThrow(() -> {
-			roleService.delete(new RoleDAO().getLastRoleId());
+			roleService.deleteRole(new RoleDAO().getLastRoleId());
 		});
 	}
 	
@@ -24,7 +24,7 @@ public class TestDeleteRole {
 	public void testDeleteRoleWithInvalidRoleId() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.delete(0);
+			roleService.deleteRole(0);
 		});
 		String expectedMessage = "Invalid Role Id";
 		String actualMessage = exception.getMessage();
@@ -35,7 +35,7 @@ public class TestDeleteRole {
 	public void testDeleteRoleWithNotExistRoleId() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.delete(500);
+			roleService.deleteRole(500);
 		});
 		String expectedMessage = "Role Id not found";
 		String actualMessage = exception.getMessage();

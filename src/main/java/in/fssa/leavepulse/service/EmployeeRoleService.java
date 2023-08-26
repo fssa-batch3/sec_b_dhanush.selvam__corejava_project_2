@@ -18,11 +18,11 @@ public class EmployeeRoleService {
 	 * @return
 	 * @throws ServiceException
 	 */
-	public List<EmployeeRole> getAll() throws ServiceException {
+	public List<EmployeeRole> getAllEmpRole() throws ServiceException {
 
 		try {
-			EmployeeRoleDAO employeeRoleDao = new EmployeeRoleDAO();
-			return employeeRoleDao.getAll();
+			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
+			return employeeRoleDAO.getAll();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -40,9 +40,9 @@ public class EmployeeRoleService {
 	public EmployeeRole findEmpRoleByEmpRoleId(int empRoleId) throws ServiceException, ValidationException {
 
 		try {
-			EmployeeRoleDAO employeeRoleDao = new EmployeeRoleDAO();
+			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			EmployeeRoleValidator.validateEmpRoleId(empRoleId);
-			return employeeRoleDao.findEmpRoleByEmpRoleId(empRoleId);
+			return employeeRoleDAO.findEmpRoleByEmpRoleId(empRoleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -60,10 +60,10 @@ public class EmployeeRoleService {
 	public EmployeeRole findEmpRoleByEmployeeId(int employeeId) throws ServiceException, ValidationException {
 
 		try {
-			EmployeeRoleDAO employeeRoleDao = new EmployeeRoleDAO();
+			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
 			EmployeeValidator.checkEmployeeIdExist(employeeId);
-			return employeeRoleDao.findEmpRoleByEmployeeId(employeeId);
+			return employeeRoleDAO.findEmpRoleByEmployeeId(employeeId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -81,10 +81,10 @@ public class EmployeeRoleService {
 	public List<EmployeeRole> findAllEmpRoleByManagerId(int managerId) throws ServiceException, ValidationException {
 
 		try {
-			EmployeeRoleDAO employeeRoleDao = new EmployeeRoleDAO();
+			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			EmployeeValidator.validateManagerId(managerId);
 			EmployeeValidator.checkManagerIdExist(managerId);
-			return employeeRoleDao.findAllEmpRoleByManagerId(managerId);
+			return employeeRoleDAO.findAllEmpRoleByManagerId(managerId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -101,10 +101,10 @@ public class EmployeeRoleService {
 	public List<EmployeeRole> findAllEmpRoleByRoleId(int roleId) throws ServiceException, ValidationException {
 
 		try {
-			EmployeeRoleDAO employeeRoleDao = new EmployeeRoleDAO();
+			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			RoleValidator.validateRoleId(roleId);
 			RoleValidator.checkRoleIdExist(roleId);
-			return employeeRoleDao.findAllEmpRoleByRoleId(roleId);
+			return employeeRoleDAO.findAllEmpRoleByRoleId(roleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -119,13 +119,13 @@ public class EmployeeRoleService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void create(int employeeId, int managerId, int roleId) throws ServiceException, ValidationException {
+	public void createEmpRole(int employeeId, int managerId, int roleId) throws ServiceException, ValidationException {
 
 		try {
-			EmployeeRoleDAO employeeRoleDao = new EmployeeRoleDAO();
+			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
 			EmployeeValidator.checkEmployeeIdExist(employeeId);
-			employeeRoleDao.create(employeeId, managerId, roleId);
+			employeeRoleDAO.create(employeeId, managerId, roleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -139,16 +139,16 @@ public class EmployeeRoleService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void update(int empRoleId, EmployeeRole empRole) throws ServiceException, ValidationException {
+	public void updateEmpRole(int empRoleId, EmployeeRole empRole) throws ServiceException, ValidationException {
 
 		try {
-			EmployeeRoleDAO employeeRoleDao = new EmployeeRoleDAO();
+			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			EmployeeRoleValidator.validateEmpRoleId(empRoleId);
-			EmployeeRoleValidator.validate(empRole);
+			EmployeeRoleValidator.validateEmpRole(empRole);
 			EmployeeRoleValidator.checkEmpRoleIdExist(empRoleId);
 			EmployeeValidator.checkManagerIdExist(empRole.getManagerId());
 			RoleValidator.checkRoleIdExist(empRole.getRoleId());
-			employeeRoleDao.update(empRoleId, empRole);
+			employeeRoleDAO.update(empRoleId, empRole);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -162,13 +162,13 @@ public class EmployeeRoleService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void delete(int empRoleId) throws ServiceException, ValidationException {
+	public void deleteEmpRole(int empRoleId) throws ServiceException, ValidationException {
 
 		try {
-			EmployeeRoleDAO empRoleDao = new EmployeeRoleDAO();
+			EmployeeRoleDAO empRoleDAO = new EmployeeRoleDAO();
 			EmployeeRoleValidator.validateEmpRoleId(empRoleId);
 			EmployeeRoleValidator.checkEmpRoleIdExist(empRoleId);
-			empRoleDao.delete(empRoleId);
+			empRoleDAO.delete(empRoleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());

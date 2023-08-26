@@ -13,7 +13,7 @@ public class LeaveValidator {
 	 * @param leave
 	 * @throws ValidationException
 	 */
-	public static void validate(Leave leave) throws ValidationException {
+	public static void validateLeave(Leave leave) throws ValidationException {
 
 		if (leave == null)
 			throw new ValidationException("Leave cannot be null");
@@ -40,8 +40,8 @@ public class LeaveValidator {
 	public static void checkLeaveIdExist(int leaveId) throws ValidationException {
 		
 		try {
-			LeaveDAO leaveDao = new LeaveDAO();
-			if (leaveDao.findLeaveByLeaveId(leaveId) == null)
+			LeaveDAO leaveDAO = new LeaveDAO();
+			if (leaveDAO.findLeaveByLeaveId(leaveId) == null)
 				throw new ValidationException("Leave Id not found");
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -70,8 +70,8 @@ public class LeaveValidator {
 	public static void checkLeaveNameExist(String leaveName) throws ValidationException {
 		
 		try {
-			LeaveDAO leaveDao = new LeaveDAO();
-			if (leaveDao.findLeaveByLeaveType(leaveName) != null)
+			LeaveDAO leaveDAO = new LeaveDAO();
+			if (leaveDAO.findLeaveByLeaveType(leaveName) != null)
 				throw new ValidationException("Leave Type already exist");
 		} catch (PersistenceException e) {
 			e.printStackTrace();

@@ -15,7 +15,7 @@ public class TestGetAllRoleAndGetRoleByUniqueValue {
 	public void testGetAllRoles() {
 		RoleService roleService = new RoleService();
 		assertDoesNotThrow(() -> {
-			System.out.println(roleService.getAll());
+			System.out.println(roleService.getAllRole());
 		});
 	}
 	
@@ -23,7 +23,7 @@ public class TestGetAllRoleAndGetRoleByUniqueValue {
 	public void testGetRoleByRoleId() {
 		RoleService roleService = new RoleService();
 		assertDoesNotThrow(() -> {
-			System.out.println(roleService.findRoleByRoleId(2));
+			System.out.println(roleService.findRoleByRoleId(1));
 		});
 	}
 	

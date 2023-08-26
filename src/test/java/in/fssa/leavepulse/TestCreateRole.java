@@ -18,7 +18,7 @@ public class TestCreateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role(new EmployeeGenerator().nameGenerator());
 		assertDoesNotThrow(() -> {
-			roleService.create(role);
+			roleService.createRole(role);
 		});
 	}
 	
@@ -26,7 +26,7 @@ public class TestCreateRole {
 	public void testCreateRoleWithInvalidDataNull() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.create(null);
+			roleService.createRole(null);
 		});
 		String expectedMessage = "Role cannot be null";
 		String actualMessage = exception.getMessage();
@@ -38,7 +38,7 @@ public class TestCreateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role(null);
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.create(role);
+			roleService.createRole(role);
 		});
 		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -50,7 +50,7 @@ public class TestCreateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.create(role);
+			roleService.createRole(role);
 		});
 		String expectedMessage = "Role Name cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -62,7 +62,7 @@ public class TestCreateRole {
 		RoleService roleService = new RoleService();
 		Role role = new Role("CEO");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			roleService.create(role);
+			roleService.createRole(role);
 		});
 		String expectedMessage = "Role Name already exist";
 		String actualMessage = exception.getMessage();

@@ -15,7 +15,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	public void testGetAllRequest() {
 		RequestService requestService = new RequestService();
 		assertDoesNotThrow(() -> {
-			System.out.println(requestService.getAll());
+			System.out.println(requestService.getAllRequest());
 		});
 	}
 	

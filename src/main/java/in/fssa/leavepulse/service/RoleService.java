@@ -16,11 +16,11 @@ public class RoleService {
 	 * @return
 	 * @throws ServiceException
 	 */
-	public List<Role> getAll() throws ServiceException {
+	public List<Role> getAllRole() throws ServiceException {
 
 		try {
-			RoleDAO roleDao = new RoleDAO();
-			return roleDao.getAll();
+			RoleDAO roleDAO = new RoleDAO();
+			return roleDAO.getAll();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -37,9 +37,9 @@ public class RoleService {
 	public Role findRoleByRoleId(int roleId) throws ServiceException, ValidationException {
 
 		try {
-			RoleDAO roleDao = new RoleDAO();
+			RoleDAO roleDAO = new RoleDAO();
 			RoleValidator.validateRoleId(roleId);
-			return roleDao.findRoleByRoleId(roleId);
+			return roleDAO.findRoleByRoleId(roleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -56,9 +56,9 @@ public class RoleService {
 	public Role findRoleByRoleName(String roleName) throws ServiceException, ValidationException {
 
 		try {
-			RoleDAO roleDao = new RoleDAO();
+			RoleDAO roleDAO = new RoleDAO();
 			RoleValidator.validateRoleName(roleName);
-			return roleDao.findRoleByRoleName(roleName);
+			return roleDAO.findRoleByRoleName(roleName);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -72,13 +72,13 @@ public class RoleService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void create(Role role) throws ServiceException, ValidationException {
+	public void createRole(Role role) throws ServiceException, ValidationException {
 
 		try {
-			RoleDAO roleDao = new RoleDAO();
-			RoleValidator.validate(role);
+			RoleDAO roleDAO = new RoleDAO();
+			RoleValidator.validateRole(role);
 			RoleValidator.checkRoleNameExist(role.getRoleName());
-			roleDao.create(role);
+			roleDAO.create(role);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -93,15 +93,15 @@ public class RoleService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void update(int roleId, Role role) throws ServiceException, ValidationException {
+	public void updateRole(int roleId, Role role) throws ServiceException, ValidationException {
 		
 		try {
-			RoleDAO roleDao = new RoleDAO();
+			RoleDAO roleDAO = new RoleDAO();
 			RoleValidator.validateRoleId(roleId);
-			RoleValidator.validate(role);
+			RoleValidator.validateRole(role);
 			RoleValidator.checkRoleIdExist(roleId);
 			RoleValidator.checkRoleNameExist(role.getRoleName());
-			roleDao.update(roleId, role);
+			roleDAO.update(roleId, role);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -115,13 +115,13 @@ public class RoleService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void delete (int roleId) throws ServiceException, ValidationException {
+	public void deleteRole (int roleId) throws ServiceException, ValidationException {
 		
 		try {
-			RoleDAO roleDao = new RoleDAO();
+			RoleDAO roleDAO = new RoleDAO();
 			RoleValidator.validateRoleId(roleId);
 			RoleValidator.checkRoleIdExist(roleId);
-			roleDao.delete(roleId);
+			roleDAO.delete(roleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());

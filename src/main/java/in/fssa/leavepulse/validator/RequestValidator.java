@@ -13,7 +13,7 @@ public class RequestValidator {
 	 * @param request
 	 * @throws ValidationException
 	 */
-	public static void validate(Request request) throws ValidationException {
+	public static void validateRequest(Request request) throws ValidationException {
 
 		if (request == null)
 			throw new ValidationException("Request cannot be null");
@@ -38,8 +38,8 @@ public class RequestValidator {
 	public static void checkRequestIdExist(int requestId) throws ValidationException {
 
 		try {
-			RequestDAO requestDao = new RequestDAO();
-			if (requestDao.findRequestByRequestId(requestId) == null)
+			RequestDAO requestDAO = new RequestDAO();
+			if (requestDAO.findRequestByRequestId(requestId) == null)
 				throw new ValidationException("Request Id not found");
 		} catch (PersistenceException e) {
 			e.printStackTrace();

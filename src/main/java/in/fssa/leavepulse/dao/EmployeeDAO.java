@@ -10,8 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.fssa.leavepulse.Interface.EmployeeInterface;
 import in.fssa.leavepulse.exception.PersistenceException;
+import in.fssa.leavepulse.interfaces.EmployeeInterface;
 import in.fssa.leavepulse.model.Employee;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
@@ -30,7 +30,7 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			String query = "SELECT * FROM employees WHERE is_active = 1";
+			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, hire_date, is_active FROM employees WHERE is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -81,7 +81,7 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			String query = "SELECT * from employees WHERE is_active = 1 AND employee_id = ?";
+			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, hire_date, is_active FROM employees WHERE is_active = 1 AND employee_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, employeeId);
@@ -130,7 +130,7 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			String query = "SELECT * from employees WHERE is_active = 1 AND email = ?";
+			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, hire_date, is_active FROM employees WHERE is_active = 1 AND email = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, email);
@@ -179,7 +179,7 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			String query = "SELECT * from employees WHERE is_active = 1 AND phone_no = ?";
+			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, hire_date, is_active FROM employees WHERE is_active = 1 AND phone_no = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setLong(1, phoneNo);

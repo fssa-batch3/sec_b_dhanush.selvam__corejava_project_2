@@ -16,11 +16,11 @@ public class LeaveService {
 	 * @return
 	 * @throws ServiceException
 	 */
-	public List<Leave> getAll() throws ServiceException {
+	public List<Leave> getAllLeave() throws ServiceException {
 		
 		try {
-			LeaveDAO leaveDao = new LeaveDAO();
-			return leaveDao.getAll();
+			LeaveDAO leaveDAO = new LeaveDAO();
+			return leaveDAO.getAll();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -38,9 +38,9 @@ public class LeaveService {
 	public Leave findLeaveByLeaveId(int leaveId) throws ServiceException, ValidationException {
 		
 		try {
-			LeaveDAO leaveDao = new LeaveDAO();
+			LeaveDAO leaveDAO = new LeaveDAO();
 			LeaveValidator.validateLeaveId(leaveId);
-			return leaveDao.findLeaveByLeaveId(leaveId);
+			return leaveDAO.findLeaveByLeaveId(leaveId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -58,9 +58,9 @@ public class LeaveService {
 	public Leave findLeaveByLeaveName(String leaveType) throws ServiceException, ValidationException {
 		
 		try {
-			LeaveDAO leaveDao = new LeaveDAO();
+			LeaveDAO leaveDAO = new LeaveDAO();
 			LeaveValidator.validateLeaveName(leaveType);
-			return leaveDao.findLeaveByLeaveType(leaveType);
+			return leaveDAO.findLeaveByLeaveType(leaveType);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -74,13 +74,13 @@ public class LeaveService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void create(Leave leave) throws ServiceException, ValidationException {
+	public void createLeave(Leave leave) throws ServiceException, ValidationException {
 		
 		try {
-			LeaveDAO leaveDao = new LeaveDAO();
-			LeaveValidator.validate(leave);
+			LeaveDAO leaveDAO = new LeaveDAO();
+			LeaveValidator.validateLeave(leave);
 			LeaveValidator.checkLeaveNameExist(leave.getLeaveType());
-			leaveDao.create(leave);
+			leaveDAO.create(leave);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -95,15 +95,15 @@ public class LeaveService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void update(int leaveId, Leave leave) throws ServiceException, ValidationException {
+	public void updateLeave(int leaveId, Leave leave) throws ServiceException, ValidationException {
 		
 		try {
-			LeaveDAO leaveDao = new LeaveDAO();
+			LeaveDAO leaveDAO = new LeaveDAO();
 			LeaveValidator.validateLeaveId(leaveId);
-			LeaveValidator.validate(leave);
+			LeaveValidator.validateLeave(leave);
 			LeaveValidator.checkLeaveIdExist(leaveId);
 			LeaveValidator.checkLeaveNameExist(leave.getLeaveType());
-			leaveDao.update(leaveId, leave);
+			leaveDAO.update(leaveId, leave);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -117,13 +117,13 @@ public class LeaveService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void delete(int leaveId) throws ServiceException, ValidationException {
+	public void deleteLeave(int leaveId) throws ServiceException, ValidationException {
 		
 		try {
-			LeaveDAO leaveDao = new LeaveDAO();
+			LeaveDAO leaveDAO = new LeaveDAO();
 			LeaveValidator.validateLeaveId(leaveId);
 			LeaveValidator.checkLeaveIdExist(leaveId);
-			leaveDao.delete(leaveId);
+			leaveDAO.delete(leaveId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());

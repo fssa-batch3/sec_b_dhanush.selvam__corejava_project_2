@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.fssa.leavepulse.Interface.RoleInterface;
 import in.fssa.leavepulse.exception.PersistenceException;
+import in.fssa.leavepulse.interfaces.RoleInterface;
 import in.fssa.leavepulse.model.Role;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
@@ -27,7 +27,7 @@ public class RoleDAO implements RoleInterface {
 
 		try {
 
-			String query = "SELECT * FROM roles WHERE is_active = 1";
+			String query = "SELECT role_id, role_name, is_active FROM roles WHERE is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -70,7 +70,7 @@ public class RoleDAO implements RoleInterface {
 
 		try {
 
-			String query = "SELECT * from roles WHERE is_active = 1 AND role_id = ?";
+			String query = "SELECT role_id, role_name, is_active from roles WHERE is_active = 1 AND role_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, roleId);
@@ -111,7 +111,7 @@ public class RoleDAO implements RoleInterface {
 
 		try {
 
-			String query = "SELECT * from roles WHERE is_active = 1 AND role_name = ?";
+			String query = "SELECT role_id, role_name, is_active from roles WHERE is_active = 1 AND role_name = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, roleName);

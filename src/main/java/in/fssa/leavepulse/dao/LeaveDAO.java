@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.fssa.leavepulse.Interface.LeaveInterface;
 import in.fssa.leavepulse.exception.PersistenceException;
+import in.fssa.leavepulse.interfaces.LeaveInterface;
 import in.fssa.leavepulse.model.Leave;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
@@ -27,7 +27,7 @@ public class LeaveDAO implements LeaveInterface {
 
 		try {
 
-			String query = "SELECT * FROM leave_type WHERE is_active = 1";
+			String query = "SELECT leave_id, leave_type, is_active FROM leave_types WHERE is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -70,7 +70,7 @@ public class LeaveDAO implements LeaveInterface {
 
 		try {
 
-			String query = "SELECT * from leave_type WHERE is_active = 1 AND leave_id = ?";
+			String query = "SELECT leave_id, leave_type, is_active from leave_types WHERE is_active = 1 AND leave_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, leaveId);
@@ -111,7 +111,7 @@ public class LeaveDAO implements LeaveInterface {
 
 		try {
 
-			String query = "SELECT * from leave_type WHERE is_active = 1 AND leave_type = ?";
+			String query = "SELECT leave_id, leave_type, is_active from leave_types WHERE is_active = 1 AND leave_type = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, leaveType);
@@ -147,7 +147,7 @@ public class LeaveDAO implements LeaveInterface {
 
 		try {
 
-			String query = "INSERT INTO leave_type (leave_type) VALUES (?)";
+			String query = "INSERT INTO leave_types (leave_type) VALUES (?)";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, leave.getLeaveType());
@@ -175,7 +175,7 @@ public class LeaveDAO implements LeaveInterface {
 
 		try {
 
-			String query = "UPDATE leave_type SET leave_type = ? WHERE leave_id = ? AND is_active = 1";
+			String query = "UPDATE leave_types SET leave_type = ? WHERE leave_id = ? AND is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, leave.getLeaveType());
@@ -204,7 +204,7 @@ public class LeaveDAO implements LeaveInterface {
 
 		try {
 
-			String query = "UPDATE leave_type SET is_active = 0 WHERE leave_id = ? AND is_active = 1";
+			String query = "UPDATE leave_types SET is_active = 0 WHERE leave_id = ? AND is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, leaveId);
@@ -228,7 +228,7 @@ public class LeaveDAO implements LeaveInterface {
 		ResultSet rs = null;
 		int leaveiId = 0;
 		try {
-			String query = "SELECT leave_id FROM leave_type WHERE is_active = 1 ORDER BY leave_id DESC LIMIT 1";
+			String query = "SELECT leave_id FROM leave_types WHERE is_active = 1 ORDER BY leave_id DESC LIMIT 1";
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();

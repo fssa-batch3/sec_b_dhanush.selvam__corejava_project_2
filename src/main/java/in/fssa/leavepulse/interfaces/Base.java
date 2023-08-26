@@ -1,4 +1,4 @@
-package in.fssa.leavepulse.Interface;
+package in.fssa.leavepulse.interfaces;
 
 import java.util.List; 
 

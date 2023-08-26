@@ -16,7 +16,7 @@ public class EmployeeValidator {
 	 * @param employee
 	 * @throws ValidationException
 	 */
-	public static void validate(Employee employee) throws ValidationException {
+	public static void validateEmployee(Employee employee) throws ValidationException {
 
 		if (employee == null)
 			throw new ValidationException("Employee cannot be null");
@@ -52,9 +52,9 @@ public class EmployeeValidator {
 	public static void checkEmployeeIdExist(int employeeId) throws ValidationException {
 
 		try {
-			EmployeeDAO employeeDao = new EmployeeDAO();
-			System.out.println(employeeDao.findEmployeeByEmployeeId(employeeId));
-			if (employeeDao.findEmployeeByEmployeeId(employeeId) == null)
+			EmployeeDAO employeeDAO = new EmployeeDAO();
+			System.out.println(employeeDAO.findEmployeeByEmployeeId(employeeId));
+			if (employeeDAO.findEmployeeByEmployeeId(employeeId) == null)
 				throw new ValidationException("Employee Id not found");
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -82,8 +82,8 @@ public class EmployeeValidator {
 	public static void checkManagerIdExist(int employeeId) throws ValidationException {
 
 		try {
-			EmployeeDAO employeeDao = new EmployeeDAO();
-			if (employeeDao.findEmployeeByEmployeeId(employeeId) == null)
+			EmployeeDAO employeeDAO = new EmployeeDAO();
+			if (employeeDAO.findEmployeeByEmployeeId(employeeId) == null)
 				throw new ValidationException("Manager Id not found");
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -117,8 +117,8 @@ public class EmployeeValidator {
 	public static void checkEmployeeEmailExist(String employeeEmail) throws ValidationException {
 
 		try {
-			EmployeeDAO employeeDao = new EmployeeDAO();
-			if (employeeDao.findEmployeeByEmployeeEmail(employeeEmail) != null)
+			EmployeeDAO employeeDAO = new EmployeeDAO();
+			if (employeeDAO.findEmployeeByEmployeeEmail(employeeEmail) != null)
 				throw new ValidationException("Email ID alreay exist");
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -147,8 +147,8 @@ public class EmployeeValidator {
 	public static void checkEmployeePhoneNoExist(long employeePhoneNo) throws ValidationException {
 
 		try {
-			EmployeeDAO employeeDao = new EmployeeDAO();
-			if (employeeDao.findEmployeeByEmployeePhoneNo(employeePhoneNo) != null)
+			EmployeeDAO employeeDAO = new EmployeeDAO();
+			if (employeeDAO.findEmployeeByEmployeePhoneNo(employeePhoneNo) != null)
 				throw new ValidationException("Phone Number alreay exist");
 		} catch (PersistenceException e) {
 			e.printStackTrace();

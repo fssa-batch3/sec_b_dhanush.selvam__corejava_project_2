@@ -13,7 +13,7 @@ public class RoleValidator {
 	 * @param role
 	 * @throws ValidationException
 	 */
-	public static void validate(Role role) throws ValidationException {
+	public static void validateRole(Role role) throws ValidationException {
 
 		if (role == null)
 			throw new ValidationException("Role cannot be null");
@@ -40,8 +40,8 @@ public class RoleValidator {
 	public static void checkRoleIdExist(int roleId) throws ValidationException {
 
 		try {
-			RoleDAO roleDao = new RoleDAO();
-			if (roleDao.findRoleByRoleId(roleId) == null)
+			RoleDAO roleDAO = new RoleDAO();
+			if (roleDAO.findRoleByRoleId(roleId) == null)
 				throw new ValidationException("Role Id not found");
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -70,8 +70,8 @@ public class RoleValidator {
 	public static void checkRoleNameExist(String roleName) throws ValidationException {
 
 		try {
-			RoleDAO roleDao = new RoleDAO();
-			if (roleDao.findRoleByRoleName(roleName) != null)
+			RoleDAO roleDAO = new RoleDAO();
+			if (roleDAO.findRoleByRoleName(roleName) != null)
 				throw new ValidationException("Role Name already exist");
 		} catch (PersistenceException e) {
 			e.printStackTrace();

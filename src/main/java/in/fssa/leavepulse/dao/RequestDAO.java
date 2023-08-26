@@ -10,8 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.fssa.leavepulse.Interface.RequestInterface;
 import in.fssa.leavepulse.exception.PersistenceException;
+import in.fssa.leavepulse.interfaces.RequestInterface;
 import in.fssa.leavepulse.model.Request;
 import in.fssa.leavepulse.model.Request.LeaveStatus;
 import in.fssa.leavepulse.util.ConnectionUtil;
@@ -32,7 +32,7 @@ public class RequestDAO implements RequestInterface{
 
 		try {
 
-			String query = "SELECT * FROM requests WHERE is_active = 1";
+			String query = "SELECT request_id, leave_id, start_date, end_date, reason, manager_id, created_at, status, comments FROM requests WHERE is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -82,7 +82,7 @@ public class RequestDAO implements RequestInterface{
 
 		try {
 
-			String query = "SELECT * FROM requests WHERE is_active = 1 AND request_id = ?";
+			String query = "SELECT request_id, leave_id, start_date, end_date, reason, manager_id, created_at, status, comments FROM requests WHERE is_active = 1 AND request_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, requestId);
@@ -131,7 +131,7 @@ public class RequestDAO implements RequestInterface{
 
 		try {
 
-			String query = "SELECT * FROM requests WHERE is_active = 1 AND leave_id = ?";
+			String query = "SELECT request_id, leave_id, start_date, end_date, reason, manager_id, created_at, status, comments FROM requests WHERE is_active = 1 AND leave_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, leaveId);
@@ -180,7 +180,7 @@ public class RequestDAO implements RequestInterface{
 
 		try {
 
-			String query = "SELECT * FROM requests WHERE is_active = 1 AND manager_id = ?";
+			String query = "SELECT request_id, leave_id, start_date, end_date, reason, manager_id, created_at, status, comments FROM requests WHERE is_active = 1 AND manager_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, managerId);

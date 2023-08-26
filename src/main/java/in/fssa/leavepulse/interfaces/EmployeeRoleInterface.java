@@ -1,4 +1,4 @@
-package in.fssa.leavepulse.Interface;
+package in.fssa.leavepulse.interfaces;
 
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.model.EmployeeRole;

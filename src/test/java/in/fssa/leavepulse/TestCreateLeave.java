@@ -18,7 +18,7 @@ public class TestCreateLeave {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave(new EmployeeGenerator().nameGenerator());
 		assertDoesNotThrow(() -> {
-			leaveService.create(leave);
+			leaveService.createLeave(leave);
 		});
 	}
 	
@@ -26,7 +26,7 @@ public class TestCreateLeave {
 	public void testCreateLeaveWithInvalidDataNull() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.create(null);
+			leaveService.createLeave(null);
 		});
 		String expectedMessage = "Leave cannot be null";
 		String actualMessage = exception.getMessage();
@@ -38,7 +38,7 @@ public class TestCreateLeave {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave(null);
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.create(leave);
+			leaveService.createLeave(leave);
 		});
 		String expectedMessage = "Leave Type cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -50,7 +50,7 @@ public class TestCreateLeave {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave("");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.create(leave);
+			leaveService.createLeave(leave);
 		});
 		String expectedMessage = "Leave Type cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -62,7 +62,7 @@ public class TestCreateLeave {
 		LeaveService leaveService = new LeaveService();
 		Leave leave = new Leave("Casual Leave");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			leaveService.create(leave);
+			leaveService.createLeave(leave);
 		});
 		String expectedMessage = "Leave Type already exist";
 		String actualMessage = exception.getMessage();

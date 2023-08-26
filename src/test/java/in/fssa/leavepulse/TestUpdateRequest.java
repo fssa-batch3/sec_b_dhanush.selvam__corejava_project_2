@@ -20,7 +20,7 @@ public class TestUpdateRequest {
 		int requestId = new RequestDAO().getLastRequestId();
 		Request request = new Request(LeaveStatus.Accepted, 3, "Permission Granted");
 		assertDoesNotThrow(() -> {
-			requestService.update(requestId, request);
+			requestService.updateRequest(requestId, request);
 		});
 	}
 	
@@ -29,7 +29,7 @@ public class TestUpdateRequest {
 		RequestService requestService = new RequestService();
 		Request request = new Request(LeaveStatus.Accepted, 3, "Permission Granted");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.update(0, request);
+			requestService.updateRequest(0, request);
 		});
 		String expectedMessage = "Invalid Request Id";
 		String actualMessage = exception.getMessage();
@@ -41,7 +41,7 @@ public class TestUpdateRequest {
 		RequestService requestService = new RequestService();
 		Request request = new Request(LeaveStatus.Accepted, 3, "Permission Granted");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.update(500, request);
+			requestService.updateRequest(500, request);
 		});
 		String expectedMessage = "Request Id not found";
 		String actualMessage = exception.getMessage();
@@ -52,7 +52,7 @@ public class TestUpdateRequest {
 	public void testUpdateRequestWithInvalidData() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.update(3, null);
+			requestService.updateRequest(3, null);
 		});
 		String expectedMessage = "Request cannot be null";
 		String actualMessage = exception.getMessage();
@@ -64,7 +64,7 @@ public class TestUpdateRequest {
 		RequestService requestService = new RequestService();
 		Request request = new Request(LeaveStatus.Accepted, 0, "Permission Granted");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.update(3, request);
+			requestService.updateRequest(3, request);
 		});
 		String expectedMessage = "Invalid Manager Id";
 		String actualMessage = exception.getMessage();
@@ -74,9 +74,9 @@ public class TestUpdateRequest {
 	@Test
 	public void testUpdateRequestWithNotExistManagerId() {
 		RequestService requestService = new RequestService();
-		Request request = new Request(LeaveStatus.Accepted, 50, "Permission Granted");
+		Request request = new Request(LeaveStatus.Accepted, 500, "Permission Granted");
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			requestService.update(2, request);
+			requestService.updateRequest(2, request);
 		});
 		String expectedMessage = "Manager Id not found";
 		String actualMessage = exception.getMessage();
