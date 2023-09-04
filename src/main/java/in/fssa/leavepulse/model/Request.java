@@ -133,7 +133,7 @@ public class Request implements Comparable<Request>{
 	@Override
 	public String toString() {
 		return "Request [requestId=" + requestId + ", leaveId=" + leaveId + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", reason=" + reason + ", managerId=" + managerId
+				+ endDate + ", reason=" + reason + ", employeeId=" + createdBy + ", managerId=" + managerId
 				+ ", createdAt=" + createdAt + ", leaveStatus=" + leaveStatus
 				+ ", comments=" + comments + "]";
 	}

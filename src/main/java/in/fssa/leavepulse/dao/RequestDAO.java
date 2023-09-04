@@ -32,7 +32,7 @@ public class RequestDAO implements RequestInterface{
 
 		try {
 
-			String query = "SELECT request_id, leave_id, start_date, end_date, reason, manager_id, created_at, status, comments FROM requests WHERE is_active = 1";
+			String query = "SELECT request_id, leave_id, start_date, end_date, reason, created_by, manager_id, created_at, status, comments FROM requests WHERE is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -49,6 +49,7 @@ public class RequestDAO implements RequestInterface{
 				String end_date = rs.getString("end_date");
 				request.setEndDate(LocalDate.parse(end_date, formatter));
 				request.setReason(rs.getString("reason"));
+				request.setCreatedBy(rs.getInt("created_by"));
 				request.setManagerId(rs.getInt("manager_id"));
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(LeaveStatus.valueOf(rs.getString("status")));
@@ -82,7 +83,7 @@ public class RequestDAO implements RequestInterface{
 
 		try {
 
-			String query = "SELECT request_id, leave_id, start_date, end_date, reason, manager_id, created_at, status, comments FROM requests WHERE is_active = 1 AND request_id = ?";
+			String query = "SELECT request_id, leave_id, start_date, end_date, reason, created_by, manager_id, created_at, status, comments FROM requests WHERE is_active = 1 AND request_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, requestId);
@@ -99,6 +100,7 @@ public class RequestDAO implements RequestInterface{
 				String end_date = rs.getString("end_date");
 				request.setEndDate(LocalDate.parse(end_date, formatter));
 				request.setReason(rs.getString("reason"));
+				request.setCreatedBy(rs.getInt("created_by"));
 				request.setManagerId(rs.getInt("manager_id"));
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(LeaveStatus.valueOf(rs.getString("status")));
@@ -122,23 +124,25 @@ public class RequestDAO implements RequestInterface{
 	 * @return
 	 * @throws PersistenceException
 	 */
-	public Request findRequestByLeaveId(int leaveId) throws PersistenceException {
+	public List<Request> findAllRequestByLeaveId(int leaveId) throws PersistenceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Request request = null;
+		List<Request> requestList = null;
 
 		try {
 
-			String query = "SELECT request_id, leave_id, start_date, end_date, reason, manager_id, created_at, status, comments FROM requests WHERE is_active = 1 AND leave_id = ?";
+			String query = "SELECT request_id, leave_id, start_date, end_date, reason, created_by, manager_id, created_at, status, comments FROM requests WHERE is_active = 1 AND leave_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, leaveId);
 			rs = ps.executeQuery();
+			requestList = new ArrayList<>();
 
-			if (rs.next()) {
+			while (rs.next()) {
 
+				Request request = new Request();
 				request = new Request();
 				request.setRequestId(rs.getInt("request_id"));
 				request.setLeaveId(rs.getInt("leave_id"));
@@ -148,10 +152,12 @@ public class RequestDAO implements RequestInterface{
 				String end_date = rs.getString("end_date");
 				request.setEndDate(LocalDate.parse(end_date, formatter));
 				request.setReason(rs.getString("reason"));
+				request.setCreatedBy(rs.getInt("created_by"));
 				request.setManagerId(rs.getInt("manager_id"));
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(LeaveStatus.valueOf(rs.getString("status")));
 				request.setComments(rs.getString("comments"));
+				requestList.add(request);
 			}
 
 		} catch (SQLException e) {
@@ -161,7 +167,7 @@ public class RequestDAO implements RequestInterface{
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
-		return request;
+		return requestList;
 
 	}
 
@@ -180,7 +186,7 @@ public class RequestDAO implements RequestInterface{
 
 		try {
 
-			String query = "SELECT request_id, leave_id, start_date, end_date, reason, manager_id, created_at, status, comments FROM requests WHERE is_active = 1 AND manager_id = ?";
+			String query = "SELECT request_id, leave_id, start_date, end_date, reason, created_by, manager_id, created_at, status, comments FROM requests WHERE is_active = 1 AND manager_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, managerId);
@@ -198,6 +204,7 @@ public class RequestDAO implements RequestInterface{
 				String end_date = rs.getString("end_date");
 				request.setEndDate(LocalDate.parse(end_date, formatter));
 				request.setReason(rs.getString("reason"));
+				request.setCreatedBy(rs.getInt("created_by"));
 				request.setManagerId(rs.getInt("manager_id"));
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(LeaveStatus.valueOf(rs.getString("status")));

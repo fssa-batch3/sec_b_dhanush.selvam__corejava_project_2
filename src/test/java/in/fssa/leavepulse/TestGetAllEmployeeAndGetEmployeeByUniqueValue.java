@@ -23,7 +23,7 @@ public class TestGetAllEmployeeAndGetEmployeeByUniqueValue {
 	public void testGetEmployeeByEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
 		assertDoesNotThrow(() -> {
-			System.out.println(employeeService.findEmployeeByEmployeeId(1));
+			System.out.println(employeeService.findEmployeeByEmployeeId(3));
 		});
 	}
 	

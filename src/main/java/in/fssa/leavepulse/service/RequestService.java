@@ -57,13 +57,13 @@ public class RequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public Request findRequestByLeaveId(int leaveId) throws ServiceException, ValidationException {
+	public List<Request> findRequestByLeaveId(int leaveId) throws ServiceException, ValidationException {
 
 		try {
 			RequestDAO requestDAO = new RequestDAO();
 			LeaveValidator.validateLeaveId(leaveId);
 			LeaveValidator.checkLeaveIdExist(leaveId);
-			return requestDAO.findRequestByLeaveId(leaveId);
+			return requestDAO.findAllRequestByLeaveId(leaveId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -78,13 +78,13 @@ public class RequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public Request findRequestByManagerId(int managerId) throws ServiceException, ValidationException {
+	public List<Request> findRequestByManagerId(int managerId) throws ServiceException, ValidationException {
 
 		try {
 			RequestDAO requestDAO = new RequestDAO();
 			EmployeeValidator.validateManagerId(managerId);
 			EmployeeValidator.checkManagerIdExist(managerId);
-			return requestDAO.findRequestByLeaveId(managerId);
+			return requestDAO.findAllRequestByManagerId(managerId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());

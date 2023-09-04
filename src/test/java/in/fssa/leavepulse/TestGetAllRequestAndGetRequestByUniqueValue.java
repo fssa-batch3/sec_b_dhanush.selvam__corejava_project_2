@@ -39,7 +39,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	}
 	
 	@Test
-	public void testFindRequestByLeaveId() {
+	public void testFindAllRequestByLeaveId() {
 		RequestService requestService = new RequestService();
 		assertDoesNotThrow(() -> {
 			System.out.println(requestService.findRequestByLeaveId(1));
@@ -47,7 +47,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	}
 	
 	@Test
-	public void testFindRequestByInvalidLeaveId() {
+	public void testFindAllRequestByInvalidLeaveId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(requestService.findRequestByLeaveId(0));
@@ -57,7 +57,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	@Test
-	public void testFindRequestByNotExistLeaveId() {
+	public void testFindAllRequestByNotExistLeaveId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(requestService.findRequestByLeaveId(500));
