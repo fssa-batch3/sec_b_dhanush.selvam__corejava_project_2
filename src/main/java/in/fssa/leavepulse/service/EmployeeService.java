@@ -160,5 +160,21 @@ public class EmployeeService {
 		}
 
 	}
+	
+	public int login(String email, String password) throws ServiceException, ValidationException {
+			
+		try {
+			EmployeeDAO employeeDAO = new EmployeeDAO();
+			EmployeeValidator.validateEmail(email);
+			EmployeeValidator.validatePassword(password);
+			EmployeeValidator.checkEmployeeEmailIs(email);
+			return employeeDAO.passwordChecker(email, password);
+		
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+			
+	}
 
 }

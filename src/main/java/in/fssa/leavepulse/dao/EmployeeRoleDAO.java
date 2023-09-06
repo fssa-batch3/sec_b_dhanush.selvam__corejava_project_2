@@ -7,13 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.fssa.leavepulse.dto.EmployeeRoleDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.interfaces.EmployeeRoleInterface;
 import in.fssa.leavepulse.model.EmployeeRole;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
-public class EmployeeRoleDAO implements EmployeeRoleInterface{
-	
+public class EmployeeRoleDAO implements EmployeeRoleInterface {
+
 	/**
 	 * 
 	 * @return
@@ -55,7 +56,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 		return employeeRoleList;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param empRoleId
@@ -67,17 +68,17 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		EmployeeRole empRole = null;
-		
+
 		try {
-			
+
 			String query = "SELECT emp_role_id, employee_id, manager_id, role_id, is_active from employee_role WHERE is_active = 1 AND emp_role_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, empRoleId);
 			rs = ps.executeQuery();
-			
+
 			if (rs.next()) {
 				empRole = new EmployeeRole();
 				empRole.setEmpRoleId(rs.getInt("emp_role_id"));
@@ -85,9 +86,9 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 				empRole.setManagerId(rs.getInt("manager_id"));
 				empRole.setRoleId(rs.getInt("role_id"));
 				empRole.setIsActive(rs.getBoolean("is_active"));
-				
+
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -96,9 +97,9 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return empRole;
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param employeeId
@@ -110,17 +111,17 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
 		EmployeeRole empRole = null;
-		
+
 		try {
-			
+
 			String query = "SELECT emp_role_id, employee_id, manager_id, role_id, is_active from employee_role WHERE is_active = 1 AND employee_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, employeeId);
 			rs = ps.executeQuery();
-			
+
 			if (rs.next()) {
 				empRole = new EmployeeRole();
 				empRole.setEmpRoleId(rs.getInt("emp_role_id"));
@@ -128,9 +129,9 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 				empRole.setManagerId(rs.getInt("manager_id"));
 				empRole.setRoleId(rs.getInt("role_id"));
 				empRole.setIsActive(rs.getBoolean("is_active"));
-				
+
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -139,9 +140,9 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return empRole;
-		
+
 	}
-	
+
 	/**
 	 * @param managerId
 	 * @return
@@ -184,7 +185,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 		return employeeRoleList;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param roleId
@@ -228,7 +229,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 		return employeeRoleList;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param employeeId
@@ -237,7 +238,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 	 * @throws PersistenceException
 	 */
 	public void create(int employeeId, int managerId, int roleId) throws PersistenceException {
-		
+
 		Connection con = null;
 		PreparedStatement ps = null;
 
@@ -250,7 +251,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 			ps.setInt(2, managerId);
 			ps.setInt(3, roleId);
 			ps.executeUpdate();
-			
+
 			System.out.println("New Employee-Role Created Successfully");
 
 		} catch (SQLException e) {
@@ -260,9 +261,9 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 		} finally {
 			ConnectionUtil.close(con, ps);
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param empRoleId
@@ -294,7 +295,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * @param empRoleId
@@ -323,7 +324,11 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 		}
 
 	}
-	
+
+	/**
+	 * 
+	 * @return
+	 */
 	public int getLastEmpRoleId() {
 
 		Connection conn = null;
@@ -345,6 +350,48 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface{
 			ConnectionUtil.close(conn, ps, rs);
 		}
 		return employeeId;
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public List<EmployeeRoleDTO> getAllEmpRoleWithEmployee() throws PersistenceException {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<EmployeeRoleDTO> empRoleList = null;
+		
+		try {
+			String query = "SELECT em.emp_role_id, e.first_name, e.last_name, m.first_name, m.last_name, r.role_name FROM employee_role em JOIN employees e ON em.employee_id = e.employee_id JOIN employees m ON em.manager_id = m.employee_id JOIN roles r ON em.role_id = r.role_id WHERE em.is_active = 1 AND e.is_active = 1 AND r.is_active = 1";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			empRoleList = new ArrayList<>();
+			
+			while (rs.next()) {
+				
+				EmployeeRoleDTO empRole = new EmployeeRoleDTO();
+				empRole.setEmpRoleId(rs.getInt("emp_role_id"));
+				empRole.setEmployeeName(rs.getString("e.first_name") + " " + rs.getString("e.last_name"));
+				empRole.setManagerName(rs.getString("m.first_name") + " " + rs.getString("m.last_name"));
+				empRole.setRoleName(rs.getString("role_name"));
+				empRoleList.add(empRole);
+				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new PersistenceException(e.getMessage());
+
+		} finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+
+		return empRoleList;
+		
 	}
 	
 }

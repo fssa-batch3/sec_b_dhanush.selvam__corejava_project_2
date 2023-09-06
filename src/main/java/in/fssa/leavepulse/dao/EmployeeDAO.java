@@ -340,5 +340,38 @@ public class EmployeeDAO implements EmployeeInterface {
 		}
 		return employeeId;
 	}
+	
+	private static final String USERPASSWORD = "password";
+	
+	public int passwordChecker(String email, String userPassword) throws PersistenceException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int id;
+		
+		try {
+			String query = "SELECT employee_id, password FROM employees WHERE is_active = 1 AND email = ?";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			
+			ps.setString(1, email);
+			
+			rs = ps.executeQuery();
+			if(rs.next() && (!rs.getString(USERPASSWORD).equals(userPassword))) {
+					throw new PersistenceException("Password mismatch");
+			}
+			 
+			id = rs.getInt("employee_id");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+		
+		return id;
+		
+	}
 
 }

@@ -22,14 +22,21 @@ public class EmployeeValidator {
 			throw new ValidationException("Employee cannot be null");
 
 		StringUtil.rejectIfInvalidString(employee.getFirst_name(), "First Name");
+		StringUtil.rejectIfInvalidName(employee.getFirst_name(), "First Name");
+
 		StringUtil.rejectIfInvalidString(employee.getLast_name(), "Last Name");
-		StringUtil.rejectIfInvalidString(employee.getFirst_name(), "First Name");
+		StringUtil.rejectIfInvalidName(employee.getLast_name(), "Last Name");
+
 		StringUtil.rejectIfInvalidString(employee.getEmail(), "Email");
 		validateEmail(employee.getEmail());
+		
 		validatePhoneNo(employee.getPhone_no());
+		
 		StringUtil.rejectIfInvalidString(employee.getPassword(), "Password");
 		validatePassword(employee.getPassword());
+		
 		StringUtil.rejectIfInvalidString(employee.getAddress(), "Address");
+		validateAddress(employee.getAddress());
 
 	}
 
@@ -126,6 +133,19 @@ public class EmployeeValidator {
 		}
 
 	}
+	
+	public static void checkEmployeeEmailIs(String employeeEmail) throws ValidationException {
+
+		try {
+			EmployeeDAO employeeDAO = new EmployeeDAO();
+			if (employeeDAO.findEmployeeByEmployeeEmail(employeeEmail) == null)
+				throw new ValidationException("Email ID not found");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ValidationException(e.getMessage());
+		}
+
+	}
 
 	/**
 	 * 
@@ -174,6 +194,16 @@ public class EmployeeValidator {
 		if (!matcher.matches())
 			throw new ValidationException("Password doesn't match the pattern");
 
+	}
+	
+	public static void validateAddress(String address) throws ValidationException {
+
+		String regex = "[a-zA-Z0-9.,-/()]+([ -][a-zA-Z0-9.,-/()]+)*";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(address);
+		if (matcher.matches() == false) {
+			throw new ValidationException("Invalid Address Pattern");
+		}
 	}
 
 }

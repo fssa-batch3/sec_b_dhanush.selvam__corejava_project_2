@@ -3,6 +3,7 @@ package in.fssa.leavepulse.service;
 import java.util.List;
 
 import in.fssa.leavepulse.dao.EmployeeRoleDAO;
+import in.fssa.leavepulse.dto.EmployeeRoleDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
@@ -174,6 +175,18 @@ public class EmployeeRoleService {
 			throw new ServiceException(e.getMessage());
 		}
 
+	}
+	
+	public List<EmployeeRoleDTO> getAllEmpRoleWithEmployee() throws ServiceException {
+		
+		try {
+			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
+			return employeeRoleDAO.getAllEmpRoleWithEmployee();
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+		
 	}
 
 }

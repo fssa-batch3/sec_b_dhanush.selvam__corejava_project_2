@@ -42,7 +42,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	public void testFindAllRequestByLeaveId() {
 		RequestService requestService = new RequestService();
 		assertDoesNotThrow(() -> {
-			System.out.println(requestService.findRequestByLeaveId(1));
+			System.out.println(requestService.findAllRequestByLeaveId(1));
 		});
 	}
 	
@@ -50,7 +50,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	public void testFindAllRequestByInvalidLeaveId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(requestService.findRequestByLeaveId(0));
+			System.out.println(requestService.findAllRequestByLeaveId(0));
 		});
 		String expectedMessage = "Invalid Leave Id";
 		String actualMessage = exception.getMessage();
@@ -60,7 +60,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	public void testFindAllRequestByNotExistLeaveId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(requestService.findRequestByLeaveId(500));
+			System.out.println(requestService.findAllRequestByLeaveId(500));
 		});
 		String expectedMessage = "Leave Id not found";
 		String actualMessage = exception.getMessage();
@@ -71,7 +71,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	public void testFindAllRequestByManagerId() {
 		RequestService requestService = new RequestService();
 		assertDoesNotThrow(() -> {
-			System.out.println(requestService.findRequestByManagerId(2));
+			System.out.println(requestService.findAllRequestByManagerId(2));
 		});
 	}
 	
@@ -79,7 +79,7 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	public void testGetRequestByInvalidManagerId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(requestService.findRequestByManagerId(0));
+			System.out.println(requestService.findAllRequestByManagerId(0));
 		});
 		String expectedMessage = "Invalid Manager Id";
 		String actualMessage = exception.getMessage();
@@ -90,10 +90,43 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	public void testGetRequestByNotExistManagerId() {
 		RequestService requestService = new RequestService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(requestService.findRequestByManagerId(500));
+			System.out.println(requestService.findAllRequestByManagerId(500));
 		});
 		String expectedMessage = "Manager Id not found";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
+	
+	@Test
+	public void testGetAllRequestWithEmployee() {
+		RequestService requestService = new RequestService();
+		assertDoesNotThrow(() -> {
+			System.out.println(requestService.getAllRequestWithEmployee());
+		});
+	}
+	
+	@Test
+	public void testFindRequestWithEmployeeByRequestId() {
+		RequestService requestService = new RequestService();
+		assertDoesNotThrow(() -> {
+			System.out.println(requestService.findRequestWithEmployeeByRequestId(1));
+		});
+	}
+	
+	@Test
+	public void testGetAllRequestWithEmployeeByManagerId() {
+		RequestService requestService = new RequestService();
+		assertDoesNotThrow(() -> {
+			System.out.println(requestService.getAllRequestWithEmployeeByManagerId(2));
+		});
+	}
+	
+	@Test
+	public void testGetAllRequestWithEmployeeByEmployeeId() {
+		RequestService requestService = new RequestService();
+		assertDoesNotThrow(() -> {
+			System.out.println(requestService.getAllRequestWithEmployeeByEmployeeId(3));
+		});
+	}
+	
 }

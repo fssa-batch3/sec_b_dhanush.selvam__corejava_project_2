@@ -3,6 +3,7 @@ package in.fssa.leavepulse.service;
 import java.util.List;
 
 import in.fssa.leavepulse.dao.RequestDAO;
+import in.fssa.leavepulse.dto.RequestDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
@@ -57,7 +58,7 @@ public class RequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public List<Request> findRequestByLeaveId(int leaveId) throws ServiceException, ValidationException {
+	public List<Request> findAllRequestByLeaveId(int leaveId) throws ServiceException, ValidationException {
 
 		try {
 			RequestDAO requestDAO = new RequestDAO();
@@ -78,7 +79,7 @@ public class RequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public List<Request> findRequestByManagerId(int managerId) throws ServiceException, ValidationException {
+	public List<Request> findAllRequestByManagerId(int managerId) throws ServiceException, ValidationException {
 
 		try {
 			RequestDAO requestDAO = new RequestDAO();
@@ -106,6 +107,7 @@ public class RequestService {
 			LeaveValidator.validateLeaveId(request.getLeaveId());
 			EmployeeValidator.validateEmployeeId(request.getCreatedBy());
 			EmployeeValidator.validateManagerId(request.getManagerId());
+
 			LeaveValidator.checkLeaveIdExist(request.getLeaveId());
 			EmployeeValidator.checkEmployeeIdExist(request.getCreatedBy());
 			EmployeeValidator.checkManagerIdExist(request.getManagerId());
@@ -140,15 +142,15 @@ public class RequestService {
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * @param requestId
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void deleteRequest(int requestId) throws ServiceException, ValidationException { 
-		
+	public void deleteRequest(int requestId) throws ServiceException, ValidationException {
+
 		try {
 			RequestDAO requestDAO = new RequestDAO();
 			RequestValidator.validateRequestId(requestId);
@@ -158,7 +160,72 @@ public class RequestService {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
 		}
-		
+
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 */
+	public List<RequestDTO> getAllRequestWithEmployee() throws ServiceException {
+
+		try {
+			RequestDAO requestDAO = new RequestDAO();
+			return requestDAO.getAllRequestWithEmployee();
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+
+	}
+
+	/**
+	 * 
+	 * @param requestId
+	 * @return
+	 * @throws ServiceException
+	 */
+	public RequestDTO findRequestWithEmployeeByRequestId(int requestId) throws ServiceException {
+
+		try {
+			RequestDAO requestDAO = new RequestDAO();
+			return requestDAO.findRequestWithEmployeeByRequestId(requestId);
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @param managerId
+	 * @return
+	 * @throws ServiceException
+	 */
+	public List<RequestDTO> getAllRequestWithEmployeeByManagerId(int managerId) throws ServiceException {
+
+		try {
+			RequestDAO requestDAO = new RequestDAO();
+			return requestDAO.getAllRequestWithEmployeeByManagerId(managerId);
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+
+	}
+	
+	public List<RequestDTO> getAllRequestWithEmployeeByEmployeeId(int employeeId) throws ServiceException {
+
+		try {
+			RequestDAO requestDAO = new RequestDAO();
+			return requestDAO.getAllRequestWithEmployeeByEmployeeId(employeeId);
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+
 	}
 
 }

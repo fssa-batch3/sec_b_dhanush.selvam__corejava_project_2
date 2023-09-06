@@ -59,6 +59,7 @@ public class LeaveValidator {
 	public static void validateLeaveName(String leaveName) throws ValidationException {
 
 		StringUtil.rejectIfInvalidString(leaveName, "Leave Type");
+		StringUtil.rejectIfInvalidName(leaveName, "Leave Type");
 	
 	}
 	

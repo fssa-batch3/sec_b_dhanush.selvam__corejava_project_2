@@ -1,5 +1,8 @@
 package in.fssa.leavepulse.util;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import in.fssa.leavepulse.exception.ValidationException;
 
 public class StringUtil {
@@ -51,6 +54,22 @@ public class StringUtil {
 	public static void rejectIfInvalidId(int input, String inputName) throws ValidationException {
 		
 		if (input < 1) throw new ValidationException("Invalid ".concat(inputName));
+		
+	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @param inputName
+	 * @throws ValidationException
+	 */
+	public static void rejectIfInvalidName(String name, String inputName) throws ValidationException {
+
+		String regex = "^(?=.{1,30}$)[a-zA-Z]{3,}(?:[ '-][a-zA-Z]+)*$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(name);
+		if (matcher.matches() == false)
+			throw new ValidationException(inputName.concat(" must contain only alphabets with minimum 3 letters and can have characters like(',-) with a single space and followed by letters"));
 		
 	}
 

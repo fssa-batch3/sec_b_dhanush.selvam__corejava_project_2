@@ -59,6 +59,7 @@ public class RoleValidator {
 	public static void validateRoleName(String roleName) throws ValidationException {
 
 		StringUtil.rejectIfInvalidString(roleName, "Role Name");
+		StringUtil.rejectIfInvalidName(roleName, "Role Name");
 
 	}
 
