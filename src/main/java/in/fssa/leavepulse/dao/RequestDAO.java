@@ -569,5 +569,55 @@ public class RequestDAO implements RequestInterface {
 		return requestList;
 
 	}
+	
+//	public List<String> getAllDateByEmployeeId(int id) throws PersistenceException {
+//		
+//		Connection con = null;
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
+//		List<String> dateList = null;
+//		
+//		try {
+//			String query = "SELECT start_date FROM requests WHERE is_active = 1 AND created_by = ?";
+//			con = ConnectionUtil.getConnection();
+//			ps = con.prepareStatement(query);
+//			ps.setInt(1, employeeId);
+//			rs = ps.executeQuery();
+//			requestList = new ArrayList<>();
+//
+//			while (rs.next()) {
+//
+//				RequestDTO request = new RequestDTO();
+//				request.setRequestId(rs.getInt("request_id"));
+//				request.setLeaveId(rs.getInt("leave_id"));
+//				String start_date = rs.getString("start_date");
+//				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//				request.setStartDate(LocalDate.parse(start_date, formatter));
+//				String end_date = rs.getString("end_date");
+//				request.setEndDate(LocalDate.parse(end_date, formatter));
+//				request.setReason(rs.getString("reason"));
+//				request.setCreatedBy(rs.getInt("created_by"));
+//				request.setManagerId(rs.getInt("manager_id"));
+//				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
+//				request.setLeaveStatus(RequestDTO.LeaveStatus.valueOf(rs.getString("status")));
+//				request.setComments(rs.getString("comments"));
+//				request.setEmployeeName(rs.getString("first_name") + " " + rs.getString("last_name"));
+//				request.setEmployeeEmail(rs.getString("email"));
+//				request.setLeaveType(rs.getString("leave_type"));
+//				requestList.add(request);
+//
+//			}
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			throw new PersistenceException(e.getMessage());
+//
+//		} finally {
+//			ConnectionUtil.close(con, ps, rs);
+//		}
+//
+//		return dateList;
+//		
+//	}
 
 }

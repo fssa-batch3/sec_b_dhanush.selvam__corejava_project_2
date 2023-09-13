@@ -99,7 +99,7 @@ public class RequestService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void createRequest(Request request) throws ServiceException, ValidationException {
+	public void createRequest(int id, Request request) throws ServiceException, ValidationException {
 
 		try {
 			RequestDAO requestDAO = new RequestDAO();
