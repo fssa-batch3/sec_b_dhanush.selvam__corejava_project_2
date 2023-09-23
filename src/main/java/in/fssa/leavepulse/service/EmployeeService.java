@@ -1,8 +1,9 @@
 package in.fssa.leavepulse.service;
 
-import java.util.List; 
+import java.util.List;
 
 import in.fssa.leavepulse.dao.EmployeeDAO;
+import in.fssa.leavepulse.dto.EmployeeDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
@@ -95,7 +96,8 @@ public class EmployeeService {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void createEmployee(Employee employee, int managerId, int roleId) throws ServiceException, ValidationException {
+	public void createEmployee(Employee employee, int managerId, int roleId)
+			throws ServiceException, ValidationException {
 
 		int generatedId = -1;
 
@@ -160,21 +162,101 @@ public class EmployeeService {
 		}
 
 	}
-	
+
+	/**
+	 * 
+	 * @param email
+	 * @param password
+	 * @return
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
 	public int login(String email, String password) throws ServiceException, ValidationException {
-			
+
 		try {
-			EmployeeDAO employeeDAO = new EmployeeDAO();
 			EmployeeValidator.validateEmail(email);
 			EmployeeValidator.validatePassword(password);
 			EmployeeValidator.checkEmployeeEmailIs(email);
-			return employeeDAO.passwordChecker(email, password);
-		
+			return new EmployeeDAO().passwordChecker(email, password);
+
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
 		}
-			
+
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 */
+	public int getTableLastEmployeeId() throws ServiceException {
+
+		try {
+			return new EmployeeDAO().getTableLastEmployeeId();
+
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 */
+	public List<EmployeeDTO> getAllEmployeeWithRole() throws ServiceException {
+
+		try {
+			return new EmployeeDAO().getAllEmployeeWithRole();
+
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 * @throws ValidationException 
+	 */
+	public List<EmployeeDTO> getAllEmployeeWithRoleByManagerId(int managerId) throws ServiceException, ValidationException {
+
+		try {
+			EmployeeValidator.validateEmployeeId(managerId);
+			return new EmployeeDAO().getAllEmployeeWithRoleByManagerId(managerId);
+
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+
+	}
+
+	/**
+	 * 
+	 * @param employeeId
+	 * @return
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
+	public EmployeeDTO findEmployeeWithRole(int employeeId) throws ServiceException, ValidationException {
+
+		try {
+			EmployeeValidator.validateEmployeeId(employeeId);
+			return new EmployeeDAO().findEmployeeWithRole(employeeId);
+
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+
 	}
 
 }

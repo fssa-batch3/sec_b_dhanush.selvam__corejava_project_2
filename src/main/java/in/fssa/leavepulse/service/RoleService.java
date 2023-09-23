@@ -128,5 +128,21 @@ public class RoleService {
 		}
 
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 */
+	public int getTableLastRoleId() throws ServiceException {
+		
+		try {
+			return new RoleDAO().getTableLastRoleId();
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+		
+	}
 
 }

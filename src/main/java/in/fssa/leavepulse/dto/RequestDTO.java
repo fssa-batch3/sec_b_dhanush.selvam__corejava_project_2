@@ -6,18 +6,16 @@ import java.time.LocalDate;
 public class RequestDTO {
 	
 	private int requestId;
-	private int leaveId;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private String reason;
-	private int createdBy;
-	private int managerId;
 	private Timestamp createdAt;
 	private LeaveStatus leaveStatus;
 	private String comments;
-	String employeeName;
-	String employeeEmail;
-	String leaveType;
+	private String employeeName;
+	private String employeeEmail;
+	private String leaveType;
+	private boolean cancelled_leave;
 	
 	public enum LeaveStatus {
 		Pending,
@@ -31,14 +29,6 @@ public class RequestDTO {
 
 	public void setRequestId(int requestId) {
 		this.requestId = requestId;
-	}
-
-	public int getLeaveId() {
-		return leaveId;
-	}
-
-	public void setLeaveId(int leaveId) {
-		this.leaveId = leaveId;
 	}
 
 	public LocalDate getStartDate() {
@@ -63,22 +53,6 @@ public class RequestDTO {
 
 	public void setReason(String reason) {
 		this.reason = reason;
-	}
-
-	public int getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public int getManagerId() {
-		return managerId;
-	}
-
-	public void setManagerId(int managerId) {
-		this.managerId = managerId;
 	}
 
 	public Timestamp getCreatedAt() {
@@ -129,12 +103,21 @@ public class RequestDTO {
 		this.leaveType = leaveType;
 	}
 	
+	public boolean getCancelledLeave() {
+		return cancelled_leave;
+	}
+	
+	public void setCancelledLeave(boolean cancelled_leave) {
+		this.cancelled_leave = cancelled_leave;
+	}
+	
 	@Override
 	public String toString() {
-		return "RequestDTO [requestId=" + requestId + ", leaveId=" + leaveId + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", reason=" + reason + ", createdBy=" + createdBy + ", managerId=" + managerId + ", createdAt=" + createdAt + ", leaveStatus=" + leaveStatus
-				+ ", comments=" + comments + ", employeeName=" + employeeName + ", employeeEmail=" + employeeEmail
-				+ ", leaveType=" + leaveType + "]";
+	    return "{requestId:" + requestId + ", startDate:\"" + startDate + "\", endDate:\"" + endDate
+	            + "\", reason:\"" + reason + "\", createdAt:\"" + createdAt + "\", leaveStatus:\"" + leaveStatus
+	            + "\", comments:\"" + comments + "\", employeeName:\"" + employeeName + "\", employeeEmail:\"" + employeeEmail
+	            + "\", leaveType:\"" + leaveType + "\", cancelledLeave:" + cancelled_leave + "}";
 	}
+
 
 }

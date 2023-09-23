@@ -1,6 +1,7 @@
 package in.fssa.leavepulse.model;
 
-import java.time.LocalDate;
+// import java.sql.Timestamp;
+import java.time.LocalDate; 
 
 public class Employee implements Comparable<Employee> {
 
@@ -12,6 +13,7 @@ public class Employee implements Comparable<Employee> {
 	private String password;
 	private String address;
 	private LocalDate hire_date;
+//	private Timestamp created_at;
 	private boolean isActive;
 
 	public Employee() {
@@ -82,14 +84,22 @@ public class Employee implements Comparable<Employee> {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
-	public LocalDate getHire_date() {
+	
+	public LocalDate getHireDate() {
 		return hire_date;
 	}
 
-	public void setHire_date(LocalDate hire_date) {
+	public void setHireDate(LocalDate hire_date) {
 		this.hire_date = hire_date;
 	}
+
+//	public Timestamp getCreatedAt() {
+//		return created_at;
+//	}
+//
+//	public void setCreatedAt(Timestamp created_at) {
+//		this.created_at = created_at;
+//	}
 	
 	public boolean isActive() {
 		return isActive;

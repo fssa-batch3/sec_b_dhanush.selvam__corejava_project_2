@@ -67,5 +67,13 @@ public class TestGetAllRoleAndGetRoleByUniqueValue {
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
+	
+	@Test
+	public void testGetTableLastRoleId() {
+		RoleService roleService = new RoleService();
+		assertDoesNotThrow(() -> {
+			System.out.println(roleService.getTableLastRoleId());
+		});
+	}
 
 }

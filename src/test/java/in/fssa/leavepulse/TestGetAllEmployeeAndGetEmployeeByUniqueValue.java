@@ -98,4 +98,35 @@ public class TestGetAllEmployeeAndGetEmployeeByUniqueValue {
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
+	@Test
+	public void testGetTableLastEmployeeId() {
+		EmployeeService employeeService = new EmployeeService();
+		assertDoesNotThrow(() -> {
+			System.out.println(employeeService.getTableLastEmployeeId());
+		});
+	}
+	
+	@Test
+	public void testGetAllEmployeeWithRole() {
+		EmployeeService employeeService = new EmployeeService();
+		assertDoesNotThrow(() -> {
+			System.out.println(employeeService.getAllEmployeeWithRole());
+		});
+	}
+	
+	@Test
+	public void testFindEmployeeWithRole() {
+		EmployeeService employeeService = new EmployeeService();
+		assertDoesNotThrow(() -> {
+			System.out.println(employeeService.findEmployeeWithRole(2));
+		});
+	}
+	
+	@Test
+	public void testGetAllEmployeeWithRoleByManagerId() {
+		EmployeeService employeeService = new EmployeeService();
+		assertDoesNotThrow(() -> {
+			System.out.println(employeeService.getAllEmployeeWithRoleByManagerId(2));
+		});
+	}
 }

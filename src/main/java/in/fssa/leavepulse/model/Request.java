@@ -1,6 +1,6 @@
 package in.fssa.leavepulse.model;
 
-import java.sql.Timestamp ;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class Request implements Comparable<Request>{

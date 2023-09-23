@@ -1,6 +1,6 @@
 package in.fssa.leavepulse.dao;
 
-import java.sql.Connection; 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +32,7 @@ public class RoleDAO implements RoleInterface {
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
 			rolesList = new ArrayList<>();
-			
+
 			while (rs.next()) {
 
 				Role role = new Role();
@@ -220,28 +220,59 @@ public class RoleDAO implements RoleInterface {
 		}
 
 	}
-	
+
+	/**
+	 * 
+	 */
 	public int getLastRoleId() {
-		
-	    Connection conn = null;
-	    PreparedStatement ps = null;
-	    ResultSet rs = null;
-	    int roleId = 0;
-	    try {
-	        String query = "SELECT role_id FROM roles WHERE is_active = 1 ORDER BY role_id DESC LIMIT 1";
-	        conn = ConnectionUtil.getConnection();
-	        ps = conn.prepareStatement(query);
-	        rs = ps.executeQuery();
-	        if (rs.next()) {
-	        	roleId = rs.getInt("role_id");   
-	        }
-	    } catch (SQLException e) {
-	        System.out.println(e.getMessage());
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int roleId = 0;
+		try {
+			String query = "SELECT role_id FROM roles WHERE is_active = 1 ORDER BY role_id DESC LIMIT 1";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				roleId = rs.getInt("role_id");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 //	        throw new PersistenceException(e.getMessage());
-	    } finally {
-	        ConnectionUtil.close(conn, ps, rs);
-	    }
-	    return roleId;
+		} finally {
+			ConnectionUtil.close(conn, ps, rs);
+		}
+		return roleId;
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public int getTableLastRoleId() throws PersistenceException {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int roleId = 0;
+		try {
+			String query = "SELECT role_id FROM roles ORDER BY role_id DESC LIMIT 1";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				roleId = rs.getInt("role_id");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+	        throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, ps, rs);
+		}
+		return roleId;
 	}
 
 }

@@ -1,13 +1,12 @@
 package in.fssa.leavepulse.dao;
 
-import java.sql.Connection; 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.fssa.leavepulse.dto.EmployeeRoleDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.interfaces.EmployeeRoleInterface;
 import in.fssa.leavepulse.model.EmployeeRole;
@@ -350,48 +349,6 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 			ConnectionUtil.close(conn, ps, rs);
 		}
 		return employeeId;
-	}
-
-	/**
-	 * 
-	 * @return
-	 * @throws PersistenceException
-	 */
-	public List<EmployeeRoleDTO> getAllEmpRoleWithEmployee() throws PersistenceException {
-
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		List<EmployeeRoleDTO> empRoleList = null;
-		
-		try {
-			String query = "SELECT em.emp_role_id, e.first_name, e.last_name, m.first_name, m.last_name, r.role_name FROM employee_role em JOIN employees e ON em.employee_id = e.employee_id JOIN employees m ON em.manager_id = m.employee_id JOIN roles r ON em.role_id = r.role_id WHERE em.is_active = 1 AND e.is_active = 1 AND r.is_active = 1";
-			con = ConnectionUtil.getConnection();
-			ps = con.prepareStatement(query);
-			rs = ps.executeQuery();
-			empRoleList = new ArrayList<>();
-			
-			while (rs.next()) {
-				
-				EmployeeRoleDTO empRole = new EmployeeRoleDTO();
-				empRole.setEmpRoleId(rs.getInt("emp_role_id"));
-				empRole.setEmployeeName(rs.getString("e.first_name") + " " + rs.getString("e.last_name"));
-				empRole.setManagerName(rs.getString("m.first_name") + " " + rs.getString("m.last_name"));
-				empRole.setRoleName(rs.getString("role_name"));
-				empRoleList.add(empRole);
-				
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new PersistenceException(e.getMessage());
-
-		} finally {
-			ConnectionUtil.close(con, ps, rs);
-		}
-
-		return empRoleList;
-		
 	}
 	
 }

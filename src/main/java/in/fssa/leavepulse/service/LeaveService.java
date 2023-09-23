@@ -130,5 +130,18 @@ public class LeaveService {
 		}
 		
 	}
+	
+	public int getTableLastLeaveId() throws ServiceException {
+		
+		try {
+			return new LeaveDAO().getTableLastLeaveId();
+			
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+			
+		}
+		
+	}
 
 }

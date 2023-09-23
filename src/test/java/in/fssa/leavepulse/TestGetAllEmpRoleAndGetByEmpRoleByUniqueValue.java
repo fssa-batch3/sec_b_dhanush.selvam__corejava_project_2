@@ -127,13 +127,5 @@ public class TestGetAllEmpRoleAndGetByEmpRoleByUniqueValue {
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
-	
-	@Test
-	public void testGetAllEmpRoleWithEmployee() {
-		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		assertDoesNotThrow(() -> {
-			System.out.println(empRoleService.getAllEmpRoleWithEmployee());
-		});
-	}
 
 }

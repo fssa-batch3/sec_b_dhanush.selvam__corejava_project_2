@@ -221,6 +221,10 @@ public class LeaveDAO implements LeaveInterface {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getLastLeaveId() {
 
 		Connection conn = null;
@@ -238,6 +242,34 @@ public class LeaveDAO implements LeaveInterface {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 //	        throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(conn, ps, rs);
+		}
+		return leaveiId;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public int getTableLastLeaveId() throws PersistenceException {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int leaveiId = 0;
+		try {
+			String query = "SELECT leave_id FROM leave_types ORDER BY leave_id DESC LIMIT 1";
+			conn = ConnectionUtil.getConnection();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				leaveiId = rs.getInt("leave_id");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+	        throw new PersistenceException(e.getMessage());
 		} finally {
 			ConnectionUtil.close(conn, ps, rs);
 		}

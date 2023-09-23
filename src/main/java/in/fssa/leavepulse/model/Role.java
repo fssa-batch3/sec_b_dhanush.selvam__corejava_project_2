@@ -36,7 +36,7 @@ public class Role implements Comparable<Role>{
 	
 	@Override
 	public String toString() {
-		return "Role [role_id=" + role_id + ", role_name=" + role_name + ", is_active=" + is_active + "]";
+	    return "{role_id:" + role_id + ", role_name:\"" + role_name + "\", is_active:" + is_active + "}";
 	}
 	
 	@Override

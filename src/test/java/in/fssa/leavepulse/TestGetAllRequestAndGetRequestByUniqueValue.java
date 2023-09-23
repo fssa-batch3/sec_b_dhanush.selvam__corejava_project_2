@@ -106,14 +106,6 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	}
 	
 	@Test
-	public void testFindRequestWithEmployeeByRequestId() {
-		RequestService requestService = new RequestService();
-		assertDoesNotThrow(() -> {
-			System.out.println(requestService.findRequestWithEmployeeByRequestId(1));
-		});
-	}
-	
-	@Test
 	public void testGetAllRequestWithEmployeeByManagerId() {
 		RequestService requestService = new RequestService();
 		assertDoesNotThrow(() -> {

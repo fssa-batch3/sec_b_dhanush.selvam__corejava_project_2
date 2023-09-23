@@ -35,7 +35,7 @@ public class Leave implements Comparable<Leave>{
 	
 	@Override
 	public String toString() {
-		return "Leave [leave_id=" + leave_id + ", leave_type=" + leave_type + ", is_active=" + is_active + "]";
+	    return "{leave_id:" + leave_id + ", leave_type:\"" + leave_type + "\", is_active:" + is_active + "}";
 	}
 
 	@Override
