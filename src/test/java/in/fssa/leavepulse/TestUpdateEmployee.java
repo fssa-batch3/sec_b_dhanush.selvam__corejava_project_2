@@ -1,6 +1,6 @@
 package in.fssa.leavepulse;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow; 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import in.fssa.leavepulse.dao.EmployeeDAO;
 import in.fssa.leavepulse.exception.ValidationException;
-import in.fssa.leavepulse.generator.EmployeeGenerator;
+import in.fssa.leavepulse.generator.Generator;
 import in.fssa.leavepulse.model.Employee;
 import in.fssa.leavepulse.service.EmployeeService;
 
@@ -17,9 +17,9 @@ public class TestUpdateEmployee {
 	@Test
 	public void testUpdateEmployeeWithValidData() {
 		EmployeeService employeeService = new EmployeeService();
-		EmployeeGenerator employeeGenerator = new EmployeeGenerator();
+		Generator employeeGenerator = new Generator();
 		int employeeId = new EmployeeDAO().getLastEmployeeId();
-		Employee employee = new Employee(employeeGenerator.nameGenerator(), employeeGenerator.nameGenerator(),"ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Employee employee = new Employee(employeeGenerator.nameGenerator(), employeeGenerator.nameGenerator(), employeeGenerator.numberGenenrator(), "No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		assertDoesNotThrow(() -> {
 			employeeService.updateEmployee(employeeId, employee);
 		});
@@ -28,7 +28,7 @@ public class TestUpdateEmployee {
 	@Test
 	public void testUpdateEmployeeWithInvalidEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Employee employee = new Employee("Ajith", "Kumar", 8387393849l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.updateEmployee(0, employee);
 		});
@@ -40,7 +40,7 @@ public class TestUpdateEmployee {
 	@Test
 	public void testUpdateEmployeeWithNotExistEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Employee employee = new Employee("Ajith", "Kumar", 8387393849l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.updateEmployee(500, employee);
 		});
@@ -63,7 +63,7 @@ public class TestUpdateEmployee {
 	@Test
 	public void testUpdateEmployeeWithFirstNameNull() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee(null,"Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Employee employee = new Employee(null, "Kumar" ,8387393849l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.updateEmployee(4, employee);
 		});
@@ -75,7 +75,7 @@ public class TestUpdateEmployee {
 	@Test
 	public void testUpdateEmployeeWithFirstNameEmpty() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Employee employee = new Employee("", "Kumar" ,8387393849l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.updateEmployee(4, employee);
 		});
@@ -85,9 +85,21 @@ public class TestUpdateEmployee {
 	}
 	
 	@Test
+	public void testUpdateEmployeeWithInvalidFirstName() {
+		EmployeeService employeeService = new EmployeeService();
+		Employee employee = new Employee("kdfj;^&87", "Kumar", 8387393849l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			employeeService.updateEmployee(4, employee);
+		});
+		String expectedMessage = "First Name must contain only alphabets with minimum 3 letters and spaces are allowed";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
 	public void testUpdateEmployeeWithLastNameNull() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith",null,"ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Employee employee = new Employee("Ajith", null, 8387393849l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.updateEmployee(4, employee);
 		});
@@ -99,7 +111,7 @@ public class TestUpdateEmployee {
 	@Test
 	public void testUpdateEmployeeWithLastNameEmpty() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith","","ajith@gmail.com",8387393849l,"Aa!12345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Employee employee = new Employee("Ajith", "", 8387393849l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.updateEmployee(4, employee);
 		});
@@ -109,37 +121,13 @@ public class TestUpdateEmployee {
 	}
 	
 	@Test
-	public void testUpdateEmployeeWithPasswordNull() {
+	public void testUpdateEmployeeWithInvalidLastName() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,null,"No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Employee employee = new Employee("Ajith", "jfdlj&*(78", 8387393849l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.updateEmployee(4, employee);
 		});
-		String expectedMessage = "Password cannot be null or empty";
-		String actualMessage = exception.getMessage();
-		assertTrue(expectedMessage.equals(actualMessage));
-	}
-	
-	@Test
-	public void testUpdateEmployeeWithPasswordEmpty() {
-		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"","No.23/10, 1st Avenue, Ashok Nagar - 600083");
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.updateEmployee(4, employee);
-		});
-		String expectedMessage = "Password cannot be null or empty";
-		String actualMessage = exception.getMessage();
-		assertTrue(expectedMessage.equals(actualMessage));
-	}
-	
-	@Test
-	public void testUpdateEmployeeWithInvalidPasswordFormat() {
-		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa6712345","No.23/10, 1st Avenue, Ashok Nagar - 600083");
-		Exception exception = assertThrows(ValidationException.class, () -> {
-			employeeService.updateEmployee(4, employee);
-		});
-		String expectedMessage = "Password doesn't match the pattern";
+		String expectedMessage = "Last Name must contain only alphabets with minimum 3 letters and spaces are allowed";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
@@ -147,7 +135,7 @@ public class TestUpdateEmployee {
 	@Test
 	public void testUpdateEmployeeWithAddressNull() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345",null);
+		Employee employee = new Employee("Ajith", "Kumar", 8387393849l, null);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.updateEmployee(4, employee);
 		});
@@ -157,9 +145,33 @@ public class TestUpdateEmployee {
 	}
 	
 	@Test
+	public void testUpdateEmployeeWithInvalidPhoneNo() {
+		EmployeeService employeeService = new EmployeeService();
+		Employee employee = new Employee("Ajith", "Kumar", 8387393l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			employeeService.updateEmployee(4, employee);
+		});
+		String expectedMessage = "Invalid Phone Number";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	public void testUpdateEmployeeWithAlreadyExistPhoneNo() {
+		EmployeeService employeeService = new EmployeeService();
+		Employee employee = new Employee("Ajith", "Kumar", 9025214260l, "No.23/10, 1st Avenue, Ashok Nagar - 600083");
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			employeeService.updateEmployee(4, employee);
+		});
+		String expectedMessage = "Phone Number alreay exist";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
 	public void testUpdateEmployeeWithAddressEmpty() {
 		EmployeeService employeeService = new EmployeeService();
-		Employee employee = new Employee("Ajith","Kumar","ajith@gmail.com",8387393849l,"Aa!12345","");
+		Employee employee = new Employee("Ajith", "Kumar", 8387393849l, "");
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			employeeService.updateEmployee(4, employee);
 		});
@@ -168,5 +180,16 @@ public class TestUpdateEmployee {
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 
+	@Test
+	public void testUpdateEmployeeWithInvalidAddress() {
+		EmployeeService employeeService = new EmployeeService();
+		Employee employee = new Employee("Ajith", "Kumar", 8387393849l, "dlj;!@#$%^ld@#$%^&*(83");
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			employeeService.updateEmployee(4, employee);
+		});
+		String expectedMessage = "Invalid Address Pattern";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
 
 }

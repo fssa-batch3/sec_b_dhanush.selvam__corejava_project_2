@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import in.fssa.leavepulse.exception.ValidationException;
+import in.fssa.leavepulse.model.Leave;
 import in.fssa.leavepulse.service.LeaveService;
 
 public class TestGetAllLeaveAndGetLeaveByUniqueValue {
@@ -31,7 +32,7 @@ public class TestGetAllLeaveAndGetLeaveByUniqueValue {
 	public void testGetLeaveByInvalidLeaveId() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(leaveService.findLeaveByLeaveId(0));
+			leaveService.findLeaveByLeaveId(0);
 		});
 		String expectedMessage = "Invalid Leave Id";
 		String actualMessage = exception.getMessage();
@@ -42,15 +43,15 @@ public class TestGetAllLeaveAndGetLeaveByUniqueValue {
 	public void testGetLeaveByLeaveType() {
 		LeaveService leaveService = new LeaveService();
 		assertDoesNotThrow(() -> {
-			System.out.println(leaveService.findLeaveByLeaveName("Personal Leave"));
+			System.out.println(leaveService.findLeaveByLeaveName("Sick Leave"));
 		});
 	}
 	
 	@Test
-	public void testGetLeaveByInvalidLeaveTypeNull() {
+	public void testGetLeaveByLeaveTypeNull() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(leaveService.findLeaveByLeaveName(null));
+			leaveService.findLeaveByLeaveName(null);
 		});
 		String expectedMessage = "Leave Type cannot be null or empty";
 		String actualMessage = exception.getMessage();
@@ -58,12 +59,24 @@ public class TestGetAllLeaveAndGetLeaveByUniqueValue {
 	}
 	
 	@Test
-	public void testGetLeaveByInvalidLeaveTypeEmpty() {
+	public void testGetLeaveByLeaveTypeEmpty() {
 		LeaveService leaveService = new LeaveService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
-			System.out.println(leaveService.findLeaveByLeaveName(""));
+			leaveService.findLeaveByLeaveName("");
 		});
 		String expectedMessage = "Leave Type cannot be null or empty";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	public void testGetLeaveByInvalidLeaveType() {
+		LeaveService leaveService = new LeaveService();
+		Leave leave = new Leave("fkd78^&*(", 5);
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			leaveService.updateLeave(4, leave);
+		});
+		String expectedMessage = "Leave Type must contain only alphabets with minimum 3 letters and spaces are allowed";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}

@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.fssa.leavepulse.exception.PersistenceException;
-import in.fssa.leavepulse.interfaces.RoleInterface;
 import in.fssa.leavepulse.model.Role;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
-public class RoleDAO implements RoleInterface {
+public class RoleDAO {
 
 	/**
+	 * 
 	 * @return
 	 * @throws PersistenceException
 	 */
@@ -27,7 +27,7 @@ public class RoleDAO implements RoleInterface {
 
 		try {
 
-			String query = "SELECT role_id, role_name, is_active FROM roles WHERE is_active = 1";
+			String query = "SELECT role_id, role_name FROM roles WHERE is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -38,7 +38,6 @@ public class RoleDAO implements RoleInterface {
 				Role role = new Role();
 				role.setRoleId(rs.getInt("role_id"));
 				role.setRoleName(rs.getString("role_name"));
-				role.setIsActive(rs.getBoolean("is_active"));
 				rolesList.add(role);
 
 			}
@@ -80,7 +79,6 @@ public class RoleDAO implements RoleInterface {
 				role = new Role();
 				role.setRoleId(rs.getInt("role_id"));
 				role.setRoleName(rs.getString("role_name"));
-				role.setIsActive(rs.getBoolean("is_active"));
 			}
 
 		} catch (SQLException e) {
@@ -121,7 +119,6 @@ public class RoleDAO implements RoleInterface {
 				role = new Role();
 				role.setRoleId(rs.getInt("role_id"));
 				role.setRoleName(rs.getString("role_name"));
-				role.setIsActive(rs.getBoolean("is_active"));
 			}
 
 		} catch (SQLException e) {
@@ -137,10 +134,11 @@ public class RoleDAO implements RoleInterface {
 	}
 
 	/**
-	 * @param role
+	 * 
+	 * @param roleName
 	 * @throws PersistenceException
 	 */
-	public void create(Role role) throws PersistenceException {
+	public void create(String roleName) throws PersistenceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -150,7 +148,7 @@ public class RoleDAO implements RoleInterface {
 			String query = "INSERT INTO roles (role_name) VALUES (?)";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setString(1, role.getRoleName());
+			ps.setString(1, roleName);
 			ps.executeUpdate();
 			System.out.println("New Role Created Successfully");
 
@@ -165,20 +163,22 @@ public class RoleDAO implements RoleInterface {
 	}
 
 	/**
-	 * @param roleId, role
+	 * 
+	 * @param roleId
+	 * @param roleName
 	 * @throws PersistenceException
 	 */
-	public void update(int roleId, Role role) throws PersistenceException {
+	public void update(int roleId, String roleName) throws PersistenceException {
 
 		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
 
-			String query = "UPDATE roles SET role_name = ? WHERE role_id = ? AND is_active = 1";
+			String query = "UPDATE roles SET role_name = ? WHERE is_active = 1 AND role_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setString(1, role.getRoleName());
+			ps.setString(1, roleName);
 			ps.setInt(2, roleId);
 			ps.executeUpdate();
 			System.out.println("Role Updated Successfully");
@@ -194,6 +194,7 @@ public class RoleDAO implements RoleInterface {
 	}
 
 	/**
+	 * 
 	 * @param roleId
 	 * @throws PersistenceException
 	 */
@@ -204,7 +205,7 @@ public class RoleDAO implements RoleInterface {
 
 		try {
 
-			String query = "UPDATE roles SET is_active = 0 WHERE role_id = ? AND is_active = 1";
+			String query = "UPDATE roles SET is_active = 0 WHERE is_active = 1 AND role_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, roleId);
@@ -223,6 +224,7 @@ public class RoleDAO implements RoleInterface {
 
 	/**
 	 * 
+	 * @return
 	 */
 	public int getLastRoleId() {
 
@@ -235,9 +237,9 @@ public class RoleDAO implements RoleInterface {
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
-			if (rs.next()) {
+			if (rs.next()) 
 				roleId = rs.getInt("role_id");
-			}
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 //	        throw new PersistenceException(e.getMessage());
@@ -263,9 +265,9 @@ public class RoleDAO implements RoleInterface {
 			conn = ConnectionUtil.getConnection();
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
-			if (rs.next()) {
+			if (rs.next())
 				roleId = rs.getInt("role_id");
-			}
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 	        throw new PersistenceException(e.getMessage());

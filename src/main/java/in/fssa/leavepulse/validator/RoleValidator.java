@@ -3,23 +3,9 @@ package in.fssa.leavepulse.validator;
 import in.fssa.leavepulse.dao.RoleDAO;
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.exception.ValidationException;
-import in.fssa.leavepulse.model.Role;
 import in.fssa.leavepulse.util.StringUtil;
 
 public class RoleValidator {
-
-	/**
-	 * 
-	 * @param role
-	 * @throws ValidationException
-	 */
-	public static void validateRole(Role role) throws ValidationException {
-
-		if (role == null)
-			throw new ValidationException("Role cannot be null");
-		validateRoleName(role.getRoleName());
-
-	}
 
 	/**
 	 * 
@@ -37,7 +23,7 @@ public class RoleValidator {
 	 * @param roleId
 	 * @throws ValidationException
 	 */
-	public static void checkRoleIdExist(int roleId) throws ValidationException {
+	public static void checkRoleIdIs(int roleId) throws ValidationException {
 
 		try {
 			RoleDAO roleDAO = new RoleDAO();
@@ -55,7 +41,7 @@ public class RoleValidator {
 	 * @param roleName
 	 * @throws ValidationException
 	 */
-	
+
 	public static void validateRoleName(String roleName) throws ValidationException {
 
 		StringUtil.rejectIfInvalidString(roleName, "Role Name");

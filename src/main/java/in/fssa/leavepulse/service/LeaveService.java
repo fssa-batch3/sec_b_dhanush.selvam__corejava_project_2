@@ -76,11 +76,22 @@ public class LeaveService {
 	 */
 	public void createLeave(Leave leave) throws ServiceException, ValidationException {
 		
+		List<Integer> employeesIdList = null;
+		Leave newLeave = null;
+		
 		try {
 			LeaveDAO leaveDAO = new LeaveDAO();
 			LeaveValidator.validateLeave(leave);
-			LeaveValidator.checkLeaveNameExist(leave.getLeaveType());
-			leaveDAO.create(leave);
+			LeaveValidator.validateLeaveName(leave.getLeaveType());
+			LeaveValidator.validateLeaveDays(leave.getLeaveDays());
+			LeaveValidator.checkLeaveNameExist(leave.getLeaveType());			
+			newLeave = leaveDAO.create(leave);
+			employeesIdList = new EmployeeService().getAllEmployeeId();
+			if (employeesIdList != null)
+				for (Integer id : employeesIdList) {
+					new LeaveBalanceService().createLeaveBalance(id, newLeave);
+				}
+			
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -101,8 +112,10 @@ public class LeaveService {
 			LeaveDAO leaveDAO = new LeaveDAO();
 			LeaveValidator.validateLeaveId(leaveId);
 			LeaveValidator.validateLeave(leave);
-			LeaveValidator.checkLeaveIdExist(leaveId);
-			LeaveValidator.checkLeaveNameExist(leave.getLeaveType());
+			LeaveValidator.validateLeaveName(leave.getLeaveType());
+			LeaveValidator.validateLeaveDays(leave.getLeaveDays());
+			LeaveValidator.checkLeaveIdIs(leaveId);
+			LeaveValidator.checkLeaveNameExistWhileUpdating(leaveId, leave.getLeaveType());
 			leaveDAO.update(leaveId, leave);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -119,11 +132,19 @@ public class LeaveService {
 	 */
 	public void deleteLeave(int leaveId) throws ServiceException, ValidationException {
 		
+		List<Integer> leaveBalIdList = null;
+		
 		try {
 			LeaveDAO leaveDAO = new LeaveDAO();
 			LeaveValidator.validateLeaveId(leaveId);
-			LeaveValidator.checkLeaveIdExist(leaveId);
+			LeaveValidator.checkLeaveIdIs(leaveId);
 			leaveDAO.delete(leaveId);
+			LeaveBalanceService leaveBalService = new LeaveBalanceService();
+			leaveBalIdList = leaveBalService.findAllLeaveBalanceIdByLeaveId(leaveId);
+			for (int id : leaveBalIdList) {
+				leaveBalService.deleteLeaveBalance(id);
+			}
+			
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -131,6 +152,11 @@ public class LeaveService {
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @throws ServiceException
+	 */
 	public int getTableLastLeaveId() throws ServiceException {
 		
 		try {

@@ -20,24 +20,7 @@ public class EmployeeValidator {
 
 		if (employee == null)
 			throw new ValidationException("Employee cannot be null");
-
-		StringUtil.rejectIfInvalidString(employee.getFirst_name(), "First Name");
-		StringUtil.rejectIfInvalidName(employee.getFirst_name(), "First Name");
-
-		StringUtil.rejectIfInvalidString(employee.getLast_name(), "Last Name");
-		StringUtil.rejectIfInvalidName(employee.getLast_name(), "Last Name");
-
-		StringUtil.rejectIfInvalidString(employee.getEmail(), "Email");
-		validateEmail(employee.getEmail());
 		
-		validatePhoneNo(employee.getPhone_no());
-		
-		StringUtil.rejectIfInvalidString(employee.getPassword(), "Password");
-		validatePassword(employee.getPassword());
-		
-		StringUtil.rejectIfInvalidString(employee.getAddress(), "Address");
-		validateAddress(employee.getAddress());
-
 	}
 
 	/**
@@ -56,11 +39,10 @@ public class EmployeeValidator {
 	 * @param employeeId
 	 * @throws ValidationException
 	 */
-	public static void checkEmployeeIdExist(int employeeId) throws ValidationException {
+	public static void checkEmployeeIdIs(int employeeId) throws ValidationException {
 
 		try {
 			EmployeeDAO employeeDAO = new EmployeeDAO();
-			System.out.println(employeeDAO.findEmployeeByEmployeeId(employeeId));
 			if (employeeDAO.findEmployeeByEmployeeId(employeeId) == null)
 				throw new ValidationException("Employee Id not found");
 		} catch (PersistenceException e) {
@@ -86,7 +68,7 @@ public class EmployeeValidator {
 	 * @param employeeId
 	 * @throws ValidationException
 	 */
-	public static void checkManagerIdExist(int employeeId) throws ValidationException {
+	public static void checkManagerIdIs(int employeeId) throws ValidationException {
 
 		try {
 			EmployeeDAO employeeDAO = new EmployeeDAO();
@@ -126,7 +108,7 @@ public class EmployeeValidator {
 		try {
 			EmployeeDAO employeeDAO = new EmployeeDAO();
 			if (employeeDAO.findEmployeeByEmployeeEmail(employeeEmail) != null)
-				throw new ValidationException("Email ID alreay exist");
+				throw new ValidationException("Email ID already exist");
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ValidationException(e.getMessage());
@@ -169,7 +151,7 @@ public class EmployeeValidator {
 		try {
 			EmployeeDAO employeeDAO = new EmployeeDAO();
 			if (employeeDAO.findEmployeeByEmployeePhoneNo(employeePhoneNo) != null)
-				throw new ValidationException("Phone Number alreay exist");
+				throw new ValidationException("Phone Number already exist");
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ValidationException(e.getMessage());
@@ -177,6 +159,20 @@ public class EmployeeValidator {
 
 	}
 
+	public static void checkEmployeePhoneNoExistWithEmployeeId(int employeeId, long employeePhoneNo) throws ValidationException {
+
+		try {
+			EmployeeDAO employeeDAO = new EmployeeDAO();
+			Employee employee = employeeDAO.findEmployeeByEmployeePhoneNo(employeePhoneNo);
+			if (employee != null && employee.getEmployeeId() != employeeId)
+				throw new ValidationException("Phone Number already exist");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ValidationException(e.getMessage());
+		}
+
+	}
+	
 	private static final String PASSWORD_PATTERN = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()_+])[A-Za-z\\d!@#$%^&*()_+]{8,24}";
 
 	/**
@@ -196,14 +192,45 @@ public class EmployeeValidator {
 
 	}
 	
+	/**
+	 * 
+	 * @param address
+	 * @throws ValidationException
+	 */
 	public static void validateAddress(String address) throws ValidationException {
 
-		String regex = "[a-zA-Z0-9.,-/()]+([ -][a-zA-Z0-9.,-/()]+)*";
+		StringUtil.rejectIfInvalidString(address, "Address");
+
+		String regex = "^[A-Za-z0-9\\s.,#/-]+$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(address);
 		if (matcher.matches() == false) {
 			throw new ValidationException("Invalid Address Pattern");
 		}
+	}
+	
+	/**
+	 * 
+	 * @param firstName
+	 * @throws ValidationException
+	 */
+	public static void validateFirstName(String firstName) throws ValidationException {
+		
+		StringUtil.rejectIfInvalidString(firstName, "First Name");
+		StringUtil.rejectIfInvalidName(firstName, "First Name");
+
+	}
+	
+	/**
+	 * 
+	 * @param lastName
+	 * @throws ValidationException
+	 */
+	public static void validateLastName(String lastName) throws ValidationException {
+		
+		StringUtil.rejectIfInvalidString(lastName, "Last Name");
+		StringUtil.rejectIfInvalidName(lastName, "Last Name");
+
 	}
 
 }

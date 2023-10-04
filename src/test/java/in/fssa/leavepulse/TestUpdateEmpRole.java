@@ -16,7 +16,7 @@ public class TestUpdateEmpRole {
 	@Test
 	public void testUpdateEmpRole() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		EmployeeRole empRole = new EmployeeRole(3, 3, 4);
+		EmployeeRole empRole = new EmployeeRole(3, 4);
 		int empRoleId = new EmployeeRoleDAO().getLastEmpRoleId();
 		assertDoesNotThrow(() -> {
 			empRoleService.updateEmpRole(empRoleId, empRole);
@@ -26,7 +26,7 @@ public class TestUpdateEmpRole {
 	@Test
 	public void testUpdateEmpRoleByInvalidEmpRoleId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		EmployeeRole empRole = new EmployeeRole(3, 1, 3);
+		EmployeeRole empRole = new EmployeeRole(1, 3);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			empRoleService.updateEmpRole(0, empRole);
 		});
@@ -38,7 +38,7 @@ public class TestUpdateEmpRole {
 	@Test
 	public void testUpdateEmpRoleByNotExistEmpRoleId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		EmployeeRole empRole = new EmployeeRole(3, 1, 3);
+		EmployeeRole empRole = new EmployeeRole(1, 3);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			empRoleService.updateEmpRole(500, empRole);
 		});
@@ -50,7 +50,7 @@ public class TestUpdateEmpRole {
 	@Test
 	public void testUpdateEmpRoleByInvalidManagerId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		EmployeeRole empRole = new EmployeeRole(3, 0, 3);
+		EmployeeRole empRole = new EmployeeRole(0, 3);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			empRoleService.updateEmpRole(3, empRole);
 		});
@@ -62,7 +62,7 @@ public class TestUpdateEmpRole {
 	@Test
 	public void testUpdateEmpRoleByNotExistManagerId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		EmployeeRole empRole = new EmployeeRole(3, 500, 3);
+		EmployeeRole empRole = new EmployeeRole(500, 3);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			empRoleService.updateEmpRole(4, empRole);
 		});
@@ -74,7 +74,7 @@ public class TestUpdateEmpRole {
 	@Test
 	public void testUpdateEmpRoleByInvalidRoleId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		EmployeeRole empRole = new EmployeeRole(3, 1, 0);
+		EmployeeRole empRole = new EmployeeRole(1, 0);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			empRoleService.updateEmpRole(4, empRole);
 		});
@@ -86,7 +86,7 @@ public class TestUpdateEmpRole {
 	@Test
 	public void testUpdateEmpRoleByNotExistRoleId() {
 		EmployeeRoleService empRoleService = new EmployeeRoleService();
-		EmployeeRole empRole = new EmployeeRole(3, 1, 500);
+		EmployeeRole empRole = new EmployeeRole(1, 500);
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			empRoleService.updateEmpRole(4, empRole);
 		});

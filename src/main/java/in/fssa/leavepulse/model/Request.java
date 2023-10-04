@@ -3,8 +3,8 @@ package in.fssa.leavepulse.model;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
-public class Request implements Comparable<Request>{
-	
+public class Request implements Comparable<Request> {
+
 	private int requestId;
 	private int leaveId;
 	private LocalDate startDate;
@@ -16,17 +16,15 @@ public class Request implements Comparable<Request>{
 	private Timestamp createdAt;
 	private LeaveStatus leaveStatus;
 	private String comments;
-	
+
 	public enum LeaveStatus {
-		Pending,
-		Accepted,
-		Rejected
+		Pending, Accepted, Rejected, Cancelled
 	}
-	
+
 	public Request() {
-		
+
 	}
-	
+
 	public Request(int leaveId, LocalDate startDate, LocalDate endDate, String reason, int createdBy, int managerId) {
 		this.leaveId = leaveId;
 		this.startDate = startDate;
@@ -35,13 +33,13 @@ public class Request implements Comparable<Request>{
 		this.createdBy = createdBy;
 		this.managerId = managerId;
 	}
-	
+
 	public Request(LeaveStatus leaveStatus, int modifiedBy, String comments) {
 		this.leaveStatus = leaveStatus;
 		this.modifiedBy = modifiedBy;
 		this.comments = comments;
 	}
-	
+
 	public int getRequestId() {
 		return requestId;
 	}
@@ -81,7 +79,7 @@ public class Request implements Comparable<Request>{
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
-	
+
 	public int getCreatedBy() {
 		return createdBy;
 	}
@@ -132,20 +130,20 @@ public class Request implements Comparable<Request>{
 
 	@Override
 	public String toString() {
-		return "Request [requestId=" + requestId + ", leaveId=" + leaveId + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", reason=" + reason + ", employeeId=" + createdBy + ", managerId=" + managerId
-				+ ", createdAt=" + createdAt + ", leaveStatus=" + leaveStatus
-				+ ", comments=" + comments + "]";
+		return "{ \"requestId\": " + requestId + ", \"leaveId\": " + leaveId + ", \"startDate\": \"" + startDate
+				+ "\", \"endDate\": \"" + endDate + "\", \"reason\": \"" + reason + "\", \"createdBy\": " + createdBy
+				+ "\"managerId\": " + managerId + ", \"createdAt\": \"" + createdAt + "\", \"leaveStatus\": \""
+				+ leaveStatus + "\", \"comments\": \"" + comments + "\"}";
 	}
 
 	@Override
 	public int compareTo(Request o) {
 		if (this.getRequestId() == o.getRequestId())
-		return 0;
+			return 0;
 		else {
 			if (this.getRequestId() > o.getRequestId())
 				return 1;
-			else 
+			else
 				return -1;
 		}
 	}

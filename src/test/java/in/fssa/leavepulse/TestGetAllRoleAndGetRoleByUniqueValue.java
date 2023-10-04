@@ -47,7 +47,7 @@ public class TestGetAllRoleAndGetRoleByUniqueValue {
 	}
 	
 	@Test
-	public void testGetRoleByInvalidRoleNameNull() {
+	public void testGetRoleByRoleNameNull() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(roleService.findRoleByRoleName(null));
@@ -58,12 +58,23 @@ public class TestGetAllRoleAndGetRoleByUniqueValue {
 	}
 	
 	@Test
-	public void testGetRoleByInvalidRoleNameEmpty() {
+	public void testGetRoleByRoleNameEmpty() {
 		RoleService roleService = new RoleService();
 		Exception exception = assertThrows(ValidationException.class, () -> {
 			System.out.println(roleService.findRoleByRoleName(""));
 		});
 		String expectedMessage = "Role Name cannot be null or empty";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	public void testGetRoleByInvalidRoleName() {
+		RoleService roleService = new RoleService();
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			System.out.println(roleService.findRoleByRoleName("fhh*(98"));
+		});
+		String expectedMessage = "Role Name must contain only alphabets with minimum 3 letters and spaces are allowed";
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}

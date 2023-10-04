@@ -1,6 +1,6 @@
 package in.fssa.leavepulse.generator;
 
-public class EmployeeGenerator {
+public class Generator {
 
 	String alphabet = "abcdefghijklmnopqrstuvwyz";
 

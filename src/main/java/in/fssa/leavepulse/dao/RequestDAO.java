@@ -12,12 +12,11 @@ import java.util.List;
 
 import in.fssa.leavepulse.dto.RequestDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
-import in.fssa.leavepulse.interfaces.RequestInterface;
 import in.fssa.leavepulse.model.Request;
 import in.fssa.leavepulse.model.Request.LeaveStatus;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
-public class RequestDAO implements RequestInterface {
+public class RequestDAO {
 
 	/**
 	 * 
@@ -242,7 +241,7 @@ public class RequestDAO implements RequestInterface {
 			ps.setInt(1, request.getLeaveId());
 			ps.setString(2, request.getStartDate().toString());
 			ps.setString(3, request.getEndDate().toString());
-			ps.setString(4, request.getReason());
+			ps.setString(4, request.getReason().trim());
 			ps.setInt(5, request.getCreatedBy());
 			ps.setInt(6, request.getCreatedBy());
 			ps.setInt(7, request.getManagerId());
@@ -293,7 +292,7 @@ public class RequestDAO implements RequestInterface {
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * @param requestId
@@ -305,11 +304,12 @@ public class RequestDAO implements RequestInterface {
 		PreparedStatement ps = null;
 
 		try {
-
-			String query = "UPDATE requests SET cancelled_leave = 1 WHERE is_active = 1 AND request_id = ?";
+			String status = LeaveStatus.Cancelled.toString();
+		    String query = "UPDATE requests SET status = ? WHERE is_active = 1 AND request_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, requestId);
+			ps.setString(1, status);
+			ps.setInt(2, requestId);
 			ps.executeUpdate();
 			System.out.println("Request Cancelled Successfully");
 
@@ -392,7 +392,7 @@ public class RequestDAO implements RequestInterface {
 		List<RequestDTO> requestList = null;
 
 		try {
-			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, r.cancelled_leave, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leave_types l ON r.leave_id = l.leave_id WHERE r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1";
+			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, r.created_by, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leaves l ON r.leave_id = l.leave_id WHERE r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -411,9 +411,10 @@ public class RequestDAO implements RequestInterface {
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(RequestDTO.LeaveStatus.valueOf(rs.getString("status")));
 				request.setComments(rs.getString("comments"));
-				request.setCancelledLeave(rs.getBoolean("cancelled_leave"));
+				request.setEmployeeId(rs.getInt("created_by"));
 				request.setEmployeeName(rs.getString("first_name") + " " + rs.getString("last_name"));
 				request.setEmployeeEmail(rs.getString("email"));
+				request.setLeaveId(rs.getInt("leave_id"));
 				request.setLeaveType(rs.getString("leave_type"));
 				requestList.add(request);
 
@@ -445,7 +446,7 @@ public class RequestDAO implements RequestInterface {
 		List<RequestDTO> requestList = null;
 
 		try {
-			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, r.cancelled_leave, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leave_types l ON r.leave_id = l.leave_id WHERE r.manager_id = ? AND r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1";
+			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leaves l ON r.leave_id = l.leave_id WHERE r.manager_id = ? AND r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, managerId);
@@ -465,9 +466,10 @@ public class RequestDAO implements RequestInterface {
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(RequestDTO.LeaveStatus.valueOf(rs.getString("status")));
 				request.setComments(rs.getString("comments"));
-				request.setCancelledLeave(rs.getBoolean("cancelled_leave"));
+				request.setEmployeeId(rs.getInt("created_by"));
 				request.setEmployeeName(rs.getString("first_name") + " " + rs.getString("last_name"));
 				request.setEmployeeEmail(rs.getString("email"));
+				request.setLeaveId(rs.getInt("leave_id"));
 				request.setLeaveType(rs.getString("leave_type"));
 				requestList.add(request);
 
@@ -484,7 +486,7 @@ public class RequestDAO implements RequestInterface {
 		return requestList;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param employeeId
@@ -499,7 +501,7 @@ public class RequestDAO implements RequestInterface {
 		List<RequestDTO> requestList = null;
 
 		try {
-			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, r.cancelled_leave, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leave_types l ON r.leave_id = l.leave_id WHERE r.created_by = ? AND r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1";
+			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leaves l ON r.leave_id = l.leave_id WHERE r.created_by = ? AND r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, employeeId);
@@ -519,9 +521,9 @@ public class RequestDAO implements RequestInterface {
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(RequestDTO.LeaveStatus.valueOf(rs.getString("status")));
 				request.setComments(rs.getString("comments"));
-				request.setCancelledLeave(rs.getBoolean("cancelled_leave"));
 				request.setEmployeeName(rs.getString("first_name") + " " + rs.getString("last_name"));
 				request.setEmployeeEmail(rs.getString("email"));
+				request.setLeaveId(rs.getInt("leave_id"));
 				request.setLeaveType(rs.getString("leave_type"));
 				requestList.add(request);
 
@@ -538,6 +540,51 @@ public class RequestDAO implements RequestInterface {
 		return requestList;
 
 	}
-	
+
+	/**
+	 * 
+	 * @param employeeId
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public List<Request> getAllLeaveDateByEmployeeId(int employeeId) throws PersistenceException {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Request> dateList = null;
+		String today = LocalDate.now().toString();
+
+		try {
+			String query = "SELECT start_date, end_date FROM requests WHERE is_active = 1 AND created_by = ? AND (status = 'Pending' OR status = 'Accepted') AND end_date >= '" + today + "'";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			ps.setInt(1, employeeId);
+			rs = ps.executeQuery();
+			dateList = new ArrayList<>();
+
+			while (rs.next()) {
+
+				Request request = new Request();
+				String start_date = rs.getString("start_date");
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				request.setStartDate(LocalDate.parse(start_date, formatter));
+				String end_date = rs.getString("end_date");
+				request.setEndDate(LocalDate.parse(end_date, formatter));
+				dateList.add(request);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new PersistenceException(e.getMessage());
+
+		} finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+
+		return dateList;
+
+	}
 
 }

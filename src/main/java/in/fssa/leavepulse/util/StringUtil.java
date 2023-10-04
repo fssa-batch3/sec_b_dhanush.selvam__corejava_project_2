@@ -65,11 +65,11 @@ public class StringUtil {
 	 */
 	public static void rejectIfInvalidName(String name, String inputName) throws ValidationException {
 
-		String regex = "^(?=.{1,30}$)[a-zA-Z]{3,}(?:[ '-][a-zA-Z]+)*$";
+		String regex = "^[A-Za-z\\s]{3,24}$";
 		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(name);
+		Matcher matcher = pattern.matcher(name.trim());
 		if (matcher.matches() == false)
-			throw new ValidationException(inputName.concat(" must contain only alphabets with minimum 3 letters and can have characters like(',-) with a single space and followed by letters"));
+			throw new ValidationException(inputName.concat(" must contain only alphabets with minimum 3 letters and spaces are allowed"));
 		
 	}
 

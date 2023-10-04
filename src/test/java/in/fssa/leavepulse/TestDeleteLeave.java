@@ -15,7 +15,7 @@ public class TestDeleteLeave {
 	@Test
 	public void testDeleteLeaveWithValidLeaveId() {
 		LeaveService leaveService = new LeaveService();
-		int leaveId = new LeaveDAO().getLastLeaveId();
+		 int leaveId = new LeaveDAO().getLastLeaveId();
 		assertDoesNotThrow(() -> {
 			leaveService.deleteLeave(leaveId);
 		});

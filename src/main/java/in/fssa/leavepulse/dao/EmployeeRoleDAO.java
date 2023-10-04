@@ -8,11 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.fssa.leavepulse.exception.PersistenceException;
-import in.fssa.leavepulse.interfaces.EmployeeRoleInterface;
 import in.fssa.leavepulse.model.EmployeeRole;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
-public class EmployeeRoleDAO implements EmployeeRoleInterface {
+public class EmployeeRoleDAO {
 
 	/**
 	 * 
@@ -28,7 +27,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 
 		try {
 
-			String query = "SELECT emp_role_id, employee_id, manager_id, role_id, is_active FROM employee_role WHERE is_active = 1";
+			String query = "SELECT emp_role_id, employee_id, manager_id, role_id FROM employee_role WHERE is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -41,7 +40,6 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 				empRole.setEmployeeId(rs.getInt("employee_id"));
 				empRole.setManagerId(rs.getInt("manager_id"));
 				empRole.setRoleId(rs.getInt("role_id"));
-				empRole.setIsActive(rs.getBoolean("is_active"));
 				employeeRoleList.add(empRole);
 			}
 
@@ -72,7 +70,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 
 		try {
 
-			String query = "SELECT emp_role_id, employee_id, manager_id, role_id, is_active from employee_role WHERE is_active = 1 AND emp_role_id = ?";
+			String query = "SELECT emp_role_id, employee_id, manager_id, role_id from employee_role WHERE is_active = 1 AND emp_role_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, empRoleId);
@@ -84,8 +82,6 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 				empRole.setEmployeeId(rs.getInt("employee_id"));
 				empRole.setManagerId(rs.getInt("manager_id"));
 				empRole.setRoleId(rs.getInt("role_id"));
-				empRole.setIsActive(rs.getBoolean("is_active"));
-
 			}
 
 		} catch (SQLException e) {
@@ -115,7 +111,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 
 		try {
 
-			String query = "SELECT emp_role_id, employee_id, manager_id, role_id, is_active from employee_role WHERE is_active = 1 AND employee_id = ?";
+			String query = "SELECT emp_role_id, employee_id, manager_id, role_id from employee_role WHERE is_active = 1 AND employee_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, employeeId);
@@ -127,8 +123,6 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 				empRole.setEmployeeId(rs.getInt("employee_id"));
 				empRole.setManagerId(rs.getInt("manager_id"));
 				empRole.setRoleId(rs.getInt("role_id"));
-				empRole.setIsActive(rs.getBoolean("is_active"));
-
 			}
 
 		} catch (SQLException e) {
@@ -156,7 +150,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 
 		try {
 
-			String query = "SELECT emp_role_id, employee_id, manager_id, role_id, is_active FROM employee_role WHERE is_active = 1 AND manager_id = ?";
+			String query = "SELECT emp_role_id, employee_id, manager_id, role_id FROM employee_role WHERE is_active = 1 AND manager_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, managerId);
@@ -170,7 +164,6 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 				empRole.setEmployeeId(rs.getInt("employee_id"));
 				empRole.setManagerId(rs.getInt("manager_id"));
 				empRole.setRoleId(rs.getInt("role_id"));
-				empRole.setIsActive(rs.getBoolean("is_active"));
 				employeeRoleList.add(empRole);
 			}
 
@@ -200,7 +193,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 
 		try {
 
-			String query = "SELECT emp_role_id, employee_id, manager_id, role_id, is_active FROM employee_role WHERE is_active = 1 AND role_id = ?";
+			String query = "SELECT emp_role_id, employee_id, manager_id, role_id FROM employee_role WHERE is_active = 1 AND role_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, roleId);
@@ -214,7 +207,6 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 				empRole.setEmployeeId(rs.getInt("employee_id"));
 				empRole.setManagerId(rs.getInt("manager_id"));
 				empRole.setRoleId(rs.getInt("role_id"));
-				empRole.setIsActive(rs.getBoolean("is_active"));
 				employeeRoleList.add(empRole);
 			}
 
@@ -276,7 +268,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 
 		try {
 
-			String query = "UPDATE employee_role SET manager_id = ?, role_id = ? WHERE emp_role_id = ? AND is_active = 1";
+			String query = "UPDATE employee_role SET manager_id = ?, role_id = ? WHERE is_active = 1 AND emp_role_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, empRole.getManagerId());
@@ -307,7 +299,7 @@ public class EmployeeRoleDAO implements EmployeeRoleInterface {
 
 		try {
 
-			String query = "UPDATE employee_role SET is_active = 0 WHERE emp_role_id = ? AND is_active = 1";
+			String query = "UPDATE employee_role SET is_active = 0 WHERE is_active = 1 AND emp_role_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, empRoleId);

@@ -114,11 +114,84 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 	}
 	
 	@Test
+	public void testGetAllRequestWithEmployeeByInvalidManagerId() {
+		RequestService requestService = new RequestService();
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			System.out.println(requestService.findAllRequestByManagerId(0));
+		});
+		String expectedMessage = "Invalid Manager Id";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	public void testGetAllRequestWithEmployeeByNotExistManagerId() {
+		RequestService requestService = new RequestService();
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			System.out.println(requestService.findAllRequestByManagerId(500));
+		});
+		String expectedMessage = "Manager Id not found";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
 	public void testGetAllRequestWithEmployeeByEmployeeId() {
 		RequestService requestService = new RequestService();
 		assertDoesNotThrow(() -> {
 			System.out.println(requestService.getAllRequestWithEmployeeByEmployeeId(3));
 		});
+	}
+	
+	@Test
+	public void testGetAllRequestWithEmployeeByInvalidEmployeeId() {
+		RequestService requestService = new RequestService();
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			System.out.println(requestService.getAllRequestWithEmployeeByEmployeeId(500));
+		});
+		String expectedMessage = "Employee Id not found";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	public void testGetAllRequestWithEmployeeByNotExistEmployeeId() {
+		RequestService requestService = new RequestService();
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			System.out.println(requestService.getAllRequestWithEmployeeByEmployeeId(500));
+		});
+		String expectedMessage = "Employee Id not found";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	public void testGetAllLeaveDateByEmployeeId() {
+		RequestService requestService = new RequestService();
+		assertDoesNotThrow(() -> {
+			System.out.println(requestService.getAllLeaveDateByEmployeeId(13));
+		});
+	}
+	
+	@Test
+	public void testGetAllLeaveDateByInvalidEmployeeId() {
+		RequestService requestService = new RequestService();
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			System.out.println(requestService.getAllLeaveDateByEmployeeId(0));
+		});
+		String expectedMessage = "Invalid Employee Id";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	@Test
+	public void testGetAllLeaveDateByNotExistEmployeeId() {
+		RequestService requestService = new RequestService();
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			System.out.println(requestService.getAllLeaveDateByEmployeeId(500));
+		});
+		String expectedMessage = "Employee Id not found";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
 }

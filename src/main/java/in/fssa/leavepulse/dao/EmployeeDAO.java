@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-//import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,11 +12,10 @@ import java.util.List;
 
 import in.fssa.leavepulse.dto.EmployeeDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
-import in.fssa.leavepulse.interfaces.EmployeeInterface;
 import in.fssa.leavepulse.model.Employee;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
-public class EmployeeDAO implements EmployeeInterface {
+public class EmployeeDAO {
 
 	/**
 	 * @return
@@ -32,7 +30,7 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, hire_date, is_active FROM employees WHERE is_active = 1";
+			String query = "SELECT employee_id, first_name, last_name, email, phone_no, address, password, joining_date FROM employees WHERE is_active = 1 AND joining_date <= CURDATE()";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -41,18 +39,16 @@ public class EmployeeDAO implements EmployeeInterface {
 			while (rs.next()) {
 
 				Employee employee = new Employee();
-				employee.setEmployee_id(rs.getInt("employee_id"));
-				employee.setFirst_name(rs.getString("first_name"));
-				employee.setLast_name(rs.getString("last_name"));
+				employee.setEmployeeId(rs.getInt("employee_id"));
+				employee.setFirstName(rs.getString("first_name"));
+				employee.setLastName(rs.getString("last_name"));
 				employee.setEmail(rs.getString("email"));
-				employee.setPhone_no(rs.getLong("phone_no"));
-				employee.setPassword(rs.getString("password"));
+				employee.setPhoneNo(rs.getLong("phone_no"));
 				employee.setAddress(rs.getString("address"));
-				String hire_date = rs.getString("hire_date");
+				employee.setPassword(rs.getString("password"));
+				String joiningDate = rs.getString("joining_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				employee.setHireDate(LocalDate.parse(hire_date, formatter));
-//				employee.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
-				employee.setActive(rs.getBoolean("is_active"));
+				employee.setJoiningDate(LocalDate.parse(joiningDate, formatter));
 				employeesList.add(employee);
 
 			}
@@ -65,6 +61,40 @@ public class EmployeeDAO implements EmployeeInterface {
 			ConnectionUtil.close(con, ps, rs);
 		}
 		return employeesList;
+
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public List<Integer> getAllId() throws PersistenceException {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Integer> employeesIdList = null;
+
+		try {
+
+			String query = "SELECT employee_id FROM employees WHERE is_active = 1 AND joining_date <= CURDATE()";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			employeesIdList = new ArrayList<>();
+
+			while (rs.next())
+				employeesIdList.add(rs.getInt("employee_id"));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+		return employeesIdList;
 
 	}
 
@@ -84,7 +114,7 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, hire_date, is_active FROM employees WHERE is_active = 1 AND employee_id = ?";
+			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, joining_date FROM employees WHERE is_active = 1 AND employee_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, employeeId);
@@ -92,18 +122,16 @@ public class EmployeeDAO implements EmployeeInterface {
 
 			if (rs.next()) {
 				employee = new Employee();
-				employee.setEmployee_id(rs.getInt("employee_id"));
-				employee.setFirst_name(rs.getString("first_name"));
-				employee.setLast_name(rs.getString("last_name"));
+				employee.setEmployeeId(rs.getInt("employee_id"));
+				employee.setFirstName(rs.getString("first_name"));
+				employee.setLastName(rs.getString("last_name"));
 				employee.setEmail(rs.getString("email"));
-				employee.setPhone_no(rs.getLong("phone_no"));
+				employee.setPhoneNo(rs.getLong("phone_no"));
 				employee.setPassword(rs.getString("password"));
 				employee.setAddress(rs.getString("address"));
-				String hire_date = rs.getString("hire_date");
+				String joiningDate = rs.getString("joining_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				employee.setHireDate(LocalDate.parse(hire_date, formatter));
-//				employee.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
-				employee.setActive(rs.getBoolean("is_active"));
+				employee.setJoiningDate(LocalDate.parse(joiningDate, formatter));
 			}
 
 		} catch (SQLException e) {
@@ -134,7 +162,7 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, hire_date, is_active FROM employees WHERE is_active = 1 AND email = ?";
+			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, joining_date FROM employees WHERE is_active = 1 AND email = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, email);
@@ -142,18 +170,16 @@ public class EmployeeDAO implements EmployeeInterface {
 
 			if (rs.next()) {
 				employee = new Employee();
-				employee.setEmployee_id(rs.getInt("employee_id"));
-				employee.setFirst_name(rs.getString("first_name"));
-				employee.setLast_name(rs.getString("last_name"));
+				employee.setEmployeeId(rs.getInt("employee_id"));
+				employee.setFirstName(rs.getString("first_name"));
+				employee.setLastName(rs.getString("last_name"));
 				employee.setEmail(rs.getString("email"));
-				employee.setPhone_no(rs.getLong("phone_no"));
+				employee.setPhoneNo(rs.getLong("phone_no"));
 				employee.setPassword(rs.getString("password"));
 				employee.setAddress(rs.getString("address"));
-				String hire_date = rs.getString("hire_date");
+				String joiningDate = rs.getString("joining_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				employee.setHireDate(LocalDate.parse(hire_date, formatter));
-//				employee.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
-				employee.setActive(rs.getBoolean("is_active"));
+				employee.setJoiningDate(LocalDate.parse(joiningDate, formatter));
 			}
 
 		} catch (SQLException e) {
@@ -184,7 +210,7 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 
-			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, hire_date, is_active FROM employees WHERE is_active = 1 AND phone_no = ?";
+			String query = "SELECT employee_id, first_name, last_name, email, phone_no, password, address, joining_date FROM employees WHERE is_active = 1 AND phone_no = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setLong(1, phoneNo);
@@ -192,18 +218,16 @@ public class EmployeeDAO implements EmployeeInterface {
 
 			if (rs.next()) {
 				employee = new Employee();
-				employee.setEmployee_id(rs.getInt("employee_id"));
-				employee.setFirst_name(rs.getString("first_name"));
-				employee.setLast_name(rs.getString("last_name"));
+				employee.setEmployeeId(rs.getInt("employee_id"));
+				employee.setFirstName(rs.getString("first_name"));
+				employee.setLastName(rs.getString("last_name"));
 				employee.setEmail(rs.getString("email"));
-				employee.setPhone_no(rs.getLong("phone_no"));
+				employee.setPhoneNo(rs.getLong("phone_no"));
 				employee.setPassword(rs.getString("password"));
 				employee.setAddress(rs.getString("address"));
-				String hire_date = rs.getString("hire_date");
+				String joiningDate = rs.getString("joining_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				employee.setHireDate(LocalDate.parse(hire_date, formatter));
-//				employee.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
-				employee.setActive(rs.getBoolean("is_active"));
+				employee.setJoiningDate(LocalDate.parse(joiningDate, formatter));
 			}
 
 		} catch (SQLException e) {
@@ -231,19 +255,16 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 			
-			LocalDate date = LocalDate.now();
-			String hire_date = date.toString();
-
-			String query = "INSERT INTO employees (first_name, last_name, email, phone_no, password, address, hire_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			String query = "INSERT INTO employees (first_name, last_name, email, phone_no, password, address, joining_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1, employee.getFirst_name());
-			ps.setString(2, employee.getLast_name());
+			ps.setString(1, employee.getFirstName());
+			ps.setString(2, employee.getLastName());
 			ps.setString(3, employee.getEmail());
-			ps.setLong(4, employee.getPhone_no());
+			ps.setLong(4, employee.getPhoneNo());
 			ps.setString(5, employee.getPassword());
 			ps.setString(6, employee.getAddress());
-			ps.setString(7, hire_date);
+			ps.setString(7, employee.getJoiningDate().toString());
 			ps.executeUpdate();
 
 			rs = ps.getGeneratedKeys();
@@ -278,9 +299,9 @@ public class EmployeeDAO implements EmployeeInterface {
 			String query = "UPDATE employees SET first_name = ?, last_name = ?, phone_no = ?, address = ? WHERE employee_id = ? AND is_active = 1";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setString(1, employee.getFirst_name());
-			ps.setString(2, employee.getLast_name());
-			ps.setLong(3, employee.getPhone_no());
+			ps.setString(1, employee.getFirstName());
+			ps.setString(2, employee.getLastName());
+			ps.setLong(3, employee.getPhoneNo());
 			ps.setString(4, employee.getAddress());
 			ps.setInt(5, employeeId);
 			ps.executeUpdate();
@@ -393,6 +414,11 @@ public class EmployeeDAO implements EmployeeInterface {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 * @throws PersistenceException
+	 */
 	public int getTableLastEmployeeId() throws PersistenceException {
 
 		Connection conn = null;
@@ -429,7 +455,7 @@ public class EmployeeDAO implements EmployeeInterface {
 		List<EmployeeDTO> employeesList = null;
 
 		try {
-			String query = "SELECT e.employee_id, e.first_name, e.last_name, e.email, e.phone_no, e.address, e.hire_date, r.role_name, m.employee_id, m.email FROM employee_role er JOIN employees e ON er.employee_id = e.employee_id JOIN employees m ON er.manager_id = m.employee_id JOIN roles r ON er.role_id = r.role_id WHERE e.is_active = 1 AND er.is_active = 1 AND r.is_active = 1";
+			String query = "SELECT e.employee_id, e.first_name, e.last_name, e.email, e.phone_no, e.address, e.joining_date, r.role_name, m.employee_id, m.email FROM employee_role er JOIN employees e ON er.employee_id = e.employee_id JOIN employees m ON er.manager_id = m.employee_id JOIN roles r ON er.role_id = r.role_id WHERE e.is_active = 1 AND er.is_active = 1 AND r.is_active = 1 AND e.joining_date <= CURDATE()";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -444,10 +470,9 @@ public class EmployeeDAO implements EmployeeInterface {
 				employee.setEmail(rs.getString("email"));
 				employee.setPhoneNo(rs.getLong("phone_no"));
 				employee.setAddress(rs.getString("address"));
-				String hire_date = rs.getString("hire_date");
+				String joiningDate = rs.getString("joining_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				employee.setHireDate(LocalDate.parse(hire_date, formatter));
-//				employee.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
+				employee.setJoiningDate(LocalDate.parse(joiningDate, formatter));
 				employee.setManagerId(rs.getInt("m.employee_id"));
 				employee.setManagerEmail(rs.getString("m.email"));
 				employee.setRoleName(rs.getString("role_name"));
@@ -481,7 +506,7 @@ public class EmployeeDAO implements EmployeeInterface {
 		List<EmployeeDTO> employeesList = null;
 
 		try {
-			String query = "SELECT e.employee_id, e.first_name, e.last_name, e.email, e.phone_no, e.address, e.hire_date, r.role_name, m.employee_id, m.email FROM employee_role er JOIN employees e ON er.employee_id = e.employee_id JOIN employees m ON er.manager_id = m.employee_id JOIN roles r ON er.role_id = r.role_id WHERE e.is_active = 1 AND er.is_active = 1 AND r.is_active = 1 AND er.manager_id = ?";
+			String query = "SELECT e.employee_id, e.first_name, e.last_name, e.email, e.phone_no, e.address, e.joining_date, r.role_name, m.employee_id, m.email FROM employee_role er JOIN employees e ON er.employee_id = e.employee_id JOIN employees m ON er.manager_id = m.employee_id JOIN roles r ON er.role_id = r.role_id WHERE e.is_active = 1 AND er.is_active = 1 AND r.is_active = 1 AND er.manager_id = ? AND e.joining_date <= CURDATE()";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, managerId);
@@ -497,10 +522,9 @@ public class EmployeeDAO implements EmployeeInterface {
 				employee.setEmail(rs.getString("email"));
 				employee.setPhoneNo(rs.getLong("phone_no"));
 				employee.setAddress(rs.getString("address"));
-				String hire_date = rs.getString("hire_date");
+				String joiningDate = rs.getString("joining_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				employee.setHireDate(LocalDate.parse(hire_date, formatter));
-//				employee.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
+				employee.setJoiningDate(LocalDate.parse(joiningDate, formatter));
 				employee.setManagerId(rs.getInt("m.employee_id"));
 				employee.setManagerEmail(rs.getString("m.email"));
 				employee.setRoleName(rs.getString("role_name"));
@@ -535,7 +559,7 @@ public class EmployeeDAO implements EmployeeInterface {
 
 		try {
 			
-			String query = "SELECT e.employee_id, e.first_name, e.last_name, e.email, e.phone_no, e.address, e.password, e.hire_date, r.role_name, m.employee_id, m.email FROM employee_role er JOIN employees e ON er.employee_id = e.employee_id JOIN employees m ON er.manager_id = m.employee_id JOIN roles r ON er.role_id = r.role_id WHERE e.is_active = 1 AND er.is_active = 1 AND r.is_active = 1 AND e.employee_id = ?";
+			String query = "SELECT e.employee_id, e.first_name, e.last_name, e.email, e.phone_no, e.address, e.password, e.joining_date, r.role_name, m.employee_id, m.email FROM employee_role er JOIN employees e ON er.employee_id = e.employee_id JOIN employees m ON er.manager_id = m.employee_id JOIN roles r ON er.role_id = r.role_id WHERE e.is_active = 1 AND er.is_active = 1 AND r.is_active = 1 AND e.employee_id = ?";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, employeeId);
@@ -551,10 +575,9 @@ public class EmployeeDAO implements EmployeeInterface {
 				employee.setPhoneNo(rs.getLong("phone_no"));
 				employee.setAddress(rs.getString("address"));
 				employee.setPassword(rs.getString("password"));
-				String hire_date = rs.getString("hire_date");
+				String joiningDate = rs.getString("joining_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				employee.setHireDate(LocalDate.parse(hire_date, formatter));
-//				employee.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
+				employee.setJoiningDate(LocalDate.parse(joiningDate, formatter));
 				employee.setManagerId(rs.getInt("m.employee_id"));
 				employee.setManagerEmail(rs.getString("m.email"));
 				employee.setRoleName(rs.getString("role_name"));

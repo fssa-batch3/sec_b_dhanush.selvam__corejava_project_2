@@ -3,7 +3,6 @@ package in.fssa.leavepulse.service;
 import java.util.List;
 
 import in.fssa.leavepulse.dao.EmployeeRoleDAO;
-import in.fssa.leavepulse.dto.EmployeeDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
@@ -63,7 +62,7 @@ public class EmployeeRoleService {
 		try {
 			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
-			EmployeeValidator.checkEmployeeIdExist(employeeId);
+			EmployeeValidator.checkEmployeeIdIs(employeeId);
 			return employeeRoleDAO.findEmpRoleByEmployeeId(employeeId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -84,7 +83,7 @@ public class EmployeeRoleService {
 		try {
 			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			EmployeeValidator.validateManagerId(managerId);
-			EmployeeValidator.checkManagerIdExist(managerId);
+			EmployeeValidator.checkManagerIdIs(managerId);
 			return employeeRoleDAO.findAllEmpRoleByManagerId(managerId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -104,7 +103,7 @@ public class EmployeeRoleService {
 		try {
 			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			RoleValidator.validateRoleId(roleId);
-			RoleValidator.checkRoleIdExist(roleId);
+			RoleValidator.checkRoleIdIs(roleId);
 			return employeeRoleDAO.findAllEmpRoleByRoleId(roleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -125,7 +124,11 @@ public class EmployeeRoleService {
 		try {
 			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
-			EmployeeValidator.checkEmployeeIdExist(employeeId);
+			EmployeeValidator.validateManagerId(managerId);
+			RoleValidator.validateRoleId(roleId);
+			EmployeeValidator.checkEmployeeIdIs(employeeId);
+			EmployeeValidator.checkManagerIdIs(managerId);
+			RoleValidator.checkRoleIdIs(roleId);
 			employeeRoleDAO.create(employeeId, managerId, roleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -146,9 +149,11 @@ public class EmployeeRoleService {
 			EmployeeRoleDAO employeeRoleDAO = new EmployeeRoleDAO();
 			EmployeeRoleValidator.validateEmpRoleId(empRoleId);
 			EmployeeRoleValidator.validateEmpRole(empRole);
+			EmployeeValidator.validateManagerId(empRole.getManagerId());
+			RoleValidator.validateRoleId(empRole.getRoleId());
 			EmployeeRoleValidator.checkEmpRoleIdExist(empRoleId);
-			EmployeeValidator.checkManagerIdExist(empRole.getManagerId());
-			RoleValidator.checkRoleIdExist(empRole.getRoleId());
+			EmployeeValidator.checkManagerIdIs(empRole.getManagerId());
+			RoleValidator.checkRoleIdIs(empRole.getRoleId());
 			employeeRoleDAO.update(empRoleId, empRole);
 		} catch (PersistenceException e) {
 			e.printStackTrace();

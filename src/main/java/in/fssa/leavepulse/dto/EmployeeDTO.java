@@ -1,45 +1,43 @@
 package in.fssa.leavepulse.dto;
 
-//import java.sql.Timestamp;
 import java.time.LocalDate;
 
 public class EmployeeDTO {
 
-	private int employee_id;
-	private String first_name;
-	private String last_name;
+	private int employeeId;
+	private String firstName;
+	private String lastName;
 	private String email;
-	private long phone_no;
+	private long phoneNo;
 	private String password;
 	private String address;
-//	private Timestamp created_at;
-	private LocalDate hire_date;
-	private int manager_id;
-	private String manager_email;
-	private String role_name;
+	private LocalDate joiningDate;
+	private int managerId;
+	private String managerEmail;
+	private String roleName;
 
 	public int getEmployeeId() {
-		return employee_id;
+		return employeeId;
 	}
 
-	public void setEmployeeId(int employee_id) {
-		this.employee_id = employee_id;
+	public void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
 	}
 
 	public String getFirstName() {
-		return first_name;
+		return firstName;
 	}
 
-	public void setFirstName(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getLastName() {
-		return last_name;
+		return lastName;
 	}
 
-	public void setLastName(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -51,11 +49,11 @@ public class EmployeeDTO {
 	}
 
 	public long getPhoneNo() {
-		return phone_no;
+		return phoneNo;
 	}
 
-	public void setPhoneNo(long phone_no) {
-		this.phone_no = phone_no;
+	public void setPhoneNo(long phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 
 	public String getPassword() {
@@ -73,49 +71,45 @@ public class EmployeeDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	public LocalDate getHireDate() {
-		return hire_date;
+
+	public LocalDate getJoiningDate() {
+		return joiningDate;
 	}
 
-	public void setHireDate(LocalDate hire_date) {
-		this.hire_date = hire_date;
+	public void setJoiningDate(LocalDate joiningDate) {
+		this.joiningDate = joiningDate;
 	}
 
-//	public Timestamp getCreatedAt() {
-//		return created_at;
-//	}
-//
-//	public void setCreatedAt(Timestamp created_at) {
-//		this.created_at = created_at;
-//	}
-	
 	public int getManagerId() {
-		return manager_id;
-	}
-	public void setManagerId(int manager_id) {
-		this.manager_id = manager_id;
-	}
-	public String getManagerEmail() {
-		return manager_email;
-	}
-	public void setManagerEmail(String manager_email) {
-		this.manager_email = manager_email;
-	}
-	public String getRoleName() {
-		return role_name;
+		return managerId;
 	}
 
-	public void setRoleName(String role_name) {
-		this.role_name = role_name;
+	public void setManagerId(int managerId) {
+		this.managerId = managerId;
+	}
+
+	public String getManagerEmail() {
+		return managerEmail;
+	}
+
+	public void setManagerEmail(String managerEmail) {
+		this.managerEmail = managerEmail;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
 	@Override
 	public String toString() {
-	    return "{employee_id:" + employee_id + ", first_name:\"" + first_name + "\", last_name:\"" + last_name
-	            + "\", email:\"" + email + "\", phone_no:" + phone_no + ", password:\"" + password + "\", address:\"" + address
-	            + "\", hire_date:\"" + hire_date + "\" , manager_id:" + manager_id + ", manager_email:\"" + manager_email + "\", roleName:\"" + role_name + "\"}";
+		return "{ \"employeeId\": " + employeeId + ", \"firstName\": \"" + firstName + "\", \"lastName\": \"" + lastName
+				+ "\", \"email\": \"" + email + "\", \"phoneNo\": " + phoneNo + ", \"password\": \"" + password
+				+ "\", \"address\": \"" + address + "\", \"joiningDate\": \"" + joiningDate + "\", \"managerId\": "
+				+ managerId + ", \"managerEmail\": \"" + managerEmail + "\", \"roleName\": \"" + roleName + "\" }";
 	}
-
-
+	
 }

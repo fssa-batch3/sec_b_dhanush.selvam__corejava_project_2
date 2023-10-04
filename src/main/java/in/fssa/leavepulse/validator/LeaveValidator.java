@@ -17,8 +17,6 @@ public class LeaveValidator {
 
 		if (leave == null)
 			throw new ValidationException("Leave cannot be null");
-		validateLeaveName(leave.getLeaveType());
-
 	}
 	
 	/**
@@ -37,7 +35,7 @@ public class LeaveValidator {
 	 * @param leaveId
 	 * @throws ValidationException
 	 */
-	public static void checkLeaveIdExist(int leaveId) throws ValidationException {
+	public static void checkLeaveIdIs(int leaveId) throws ValidationException {
 		
 		try {
 			LeaveDAO leaveDAO = new LeaveDAO();
@@ -80,5 +78,30 @@ public class LeaveValidator {
 		}
 		
 	}
+	
+	public static void checkLeaveNameExistWhileUpdating(int leaveId, String leaveName) throws ValidationException {
+		
+		try {
+			LeaveDAO leaveDAO = new LeaveDAO();
+			Leave leave = leaveDAO.findLeaveByLeaveType(leaveName);
+			if (leave != null && leave.getLeaveId() != leaveId)
+				throw new ValidationException("Leave Type already exist");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ValidationException(e.getMessage());
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @param leaveDays
+	 * @throws ValidationException
+	 */
+	public static void validateLeaveDays(int leaveDays) throws ValidationException {
+		
+		if (leaveDays < 1) throw new ValidationException("Leave Days cannot be less than 1");
+		
+	} 
 	
 }

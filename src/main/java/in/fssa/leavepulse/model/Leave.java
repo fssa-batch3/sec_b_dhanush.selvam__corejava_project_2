@@ -1,41 +1,47 @@
 package in.fssa.leavepulse.model;
 
-public class Leave implements Comparable<Leave>{
-	
-	private int leave_id;
-	private String leave_type;
-	private boolean is_active;
-	
+public class Leave implements Comparable<Leave> {
+
+	private int leaveId;
+	private String leaveType;
+	private int leaveDays;
+
 	public Leave() {
-		
+
 	}
-	
-	public Leave(String leave_type) {
-		this.leave_type = leave_type;
+
+	public Leave(String leaveType, int leaveDays) {
+		this.leaveType = leaveType;
+		this.leaveDays = leaveDays;
 	}
 
 	public int getLeaveId() {
-		return leave_id;
+		return leaveId;
 	}
-	public void setLeaveId(int leave_id) {
-		this.leave_id = leave_id;
+
+	public void setLeaveId(int leaveId) {
+		this.leaveId = leaveId;
 	}
+
 	public String getLeaveType() {
-		return leave_type;
+		return leaveType;
 	}
+
 	public void setLeaveType(String leave_type) {
-		this.leave_type = leave_type;
+		this.leaveType = leave_type;
 	}
-	public boolean isIsActive() {
-		return is_active;
+
+	public int getLeaveDays() {
+		return leaveDays;
 	}
-	public void setIsActive(boolean is_active) {
-		this.is_active = is_active;
+
+	public void setLeaveDays(int leaveDays) {
+		this.leaveDays = leaveDays;
 	}
-	
+
 	@Override
 	public String toString() {
-	    return "{leave_id:" + leave_id + ", leave_type:\"" + leave_type + "\", is_active:" + is_active + "}";
+		return "{leaveId:" + leaveId + ", leaveType:\"" + leaveType + "\", leaveDays:" + leaveDays + "}";
 	}
 
 	@Override
@@ -49,5 +55,5 @@ public class Leave implements Comparable<Leave>{
 				return -1;
 		}
 	}
-	
+
 }

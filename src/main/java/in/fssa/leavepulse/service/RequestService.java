@@ -63,7 +63,7 @@ public class RequestService {
 		try {
 			RequestDAO requestDAO = new RequestDAO();
 			LeaveValidator.validateLeaveId(leaveId);
-			LeaveValidator.checkLeaveIdExist(leaveId);
+			LeaveValidator.checkLeaveIdIs(leaveId);
 			return requestDAO.findAllRequestByLeaveId(leaveId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -84,7 +84,7 @@ public class RequestService {
 		try {
 			RequestDAO requestDAO = new RequestDAO();
 			EmployeeValidator.validateManagerId(managerId);
-			EmployeeValidator.checkManagerIdExist(managerId);
+			EmployeeValidator.checkManagerIdIs(managerId);
 			return requestDAO.findAllRequestByManagerId(managerId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -104,13 +104,16 @@ public class RequestService {
 		try {
 			RequestDAO requestDAO = new RequestDAO();
 			RequestValidator.validateRequest(request);
+			RequestValidator.validateStartDate(request.getStartDate());
+			RequestValidator.validateEndDate(request.getStartDate(), request.getEndDate());
+			RequestValidator.validateReason(request.getReason());
 			LeaveValidator.validateLeaveId(request.getLeaveId());
 			EmployeeValidator.validateEmployeeId(request.getCreatedBy());
 			EmployeeValidator.validateManagerId(request.getManagerId());
-
-			LeaveValidator.checkLeaveIdExist(request.getLeaveId());
-			EmployeeValidator.checkEmployeeIdExist(request.getCreatedBy());
-			EmployeeValidator.checkManagerIdExist(request.getManagerId());
+			LeaveValidator.checkLeaveIdIs(request.getLeaveId());
+//			RequestValidator.checkLeaveDateExist(request.getCreatedBy(), request.getStartDate(), request.getEndDate());
+			EmployeeValidator.checkEmployeeIdIs(request.getCreatedBy());
+			EmployeeValidator.checkManagerIdIs(request.getManagerId());
 			requestDAO.create(request);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -133,8 +136,9 @@ public class RequestService {
 			RequestValidator.validateRequestId(requestId);
 			RequestValidator.validateRequest(request);
 			EmployeeValidator.validateManagerId(request.getModifiedBy());
+			RequestValidator.validateReason(request.getComments());
 			RequestValidator.checkRequestIdExist(requestId);
-			EmployeeValidator.checkManagerIdExist(request.getModifiedBy());
+			EmployeeValidator.checkManagerIdIs(request.getModifiedBy());
 			requestDAO.update(requestId, request);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -204,11 +208,14 @@ public class RequestService {
 	 * @param managerId
 	 * @return
 	 * @throws ServiceException
+	 * @throws ValidationException 
 	 */
-	public List<RequestDTO> getAllRequestWithEmployeeByManagerId(int managerId) throws ServiceException {
+	public List<RequestDTO> getAllRequestWithEmployeeByManagerId(int managerId) throws ServiceException, ValidationException {
 
 		try {
 			RequestDAO requestDAO = new RequestDAO();
+			EmployeeValidator.validateManagerId(managerId);
+			EmployeeValidator.checkManagerIdIs(managerId);
 			return requestDAO.getAllRequestWithEmployeeByManagerId(managerId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -222,12 +229,36 @@ public class RequestService {
 	 * @param employeeId
 	 * @return
 	 * @throws ServiceException
+	 * @throws ValidationException 
 	 */
-	public List<RequestDTO> getAllRequestWithEmployeeByEmployeeId(int employeeId) throws ServiceException {
+	public List<RequestDTO> getAllRequestWithEmployeeByEmployeeId(int employeeId) throws ServiceException, ValidationException {
 
 		try {
 			RequestDAO requestDAO = new RequestDAO();
+			EmployeeValidator.validateEmployeeId(employeeId);
+			EmployeeValidator.checkEmployeeIdIs(employeeId);
 			return requestDAO.getAllRequestWithEmployeeByEmployeeId(employeeId);
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @param employeeId
+	 * @return
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
+	public List<Request> getAllLeaveDateByEmployeeId(int employeeId) throws ServiceException, ValidationException {
+
+		try {
+			RequestDAO requestDAO = new RequestDAO();
+			EmployeeValidator.validateEmployeeId(employeeId);
+			EmployeeValidator.checkEmployeeIdIs(employeeId);
+			return requestDAO.getAllLeaveDateByEmployeeId(employeeId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());

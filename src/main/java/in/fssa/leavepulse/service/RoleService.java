@@ -68,17 +68,17 @@ public class RoleService {
 
 	/**
 	 * 
-	 * @param role
+	 * @param roleName
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void createRole(Role role) throws ServiceException, ValidationException {
+	public void createRole(String roleName) throws ServiceException, ValidationException {
 
 		try {
 			RoleDAO roleDAO = new RoleDAO();
-			RoleValidator.validateRole(role);
-			RoleValidator.checkRoleNameExist(role.getRoleName());
-			roleDAO.create(role);
+			RoleValidator.validateRoleName(roleName);
+			RoleValidator.checkRoleNameExist(roleName);
+			roleDAO.create(roleName);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -89,19 +89,20 @@ public class RoleService {
 	/**
 	 * 
 	 * @param roleId
-	 * @param role
+	 * @param roleName
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public void updateRole(int roleId, Role role) throws ServiceException, ValidationException {
+	public void updateRole(int roleId, String roleName) throws ServiceException, ValidationException {
 		
 		try {
 			RoleDAO roleDAO = new RoleDAO();
 			RoleValidator.validateRoleId(roleId);
-			RoleValidator.validateRole(role);
-			RoleValidator.checkRoleIdExist(roleId);
-			RoleValidator.checkRoleNameExist(role.getRoleName());
-			roleDAO.update(roleId, role);
+			RoleValidator.validateRoleName(roleName);
+			RoleValidator.checkRoleIdIs(roleId);
+			RoleValidator.checkRoleNameExist(roleName);
+			roleDAO.update(roleId, roleName);
+			
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
@@ -120,7 +121,7 @@ public class RoleService {
 		try {
 			RoleDAO roleDAO = new RoleDAO();
 			RoleValidator.validateRoleId(roleId);
-			RoleValidator.checkRoleIdExist(roleId);
+			RoleValidator.checkRoleIdIs(roleId);
 			roleDAO.delete(roleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();

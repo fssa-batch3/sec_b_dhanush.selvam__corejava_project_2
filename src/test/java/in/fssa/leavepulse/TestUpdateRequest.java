@@ -18,7 +18,7 @@ public class TestUpdateRequest {
 	public void testUpdateRequestWithValidData() {
 		RequestService requestService = new RequestService();
 		int requestId = new RequestDAO().getLastRequestId();
-		Request request = new Request(LeaveStatus.Accepted, 3, "Permission Granted");
+		Request request = new Request(LeaveStatus.Accepted, 1, "Permission Granted");
 		assertDoesNotThrow(() -> {
 			requestService.updateRequest(requestId, request);
 		});
@@ -82,4 +82,50 @@ public class TestUpdateRequest {
 		String actualMessage = exception.getMessage();
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
+	
+	@Test
+	public void testCreateRequestWithInvalidComment() {
+		RequestService requestService = new RequestService();
+		Request request = new Request(LeaveStatus.Accepted, 1, "fg@#z45)(*");
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			requestService.updateRequest(2, request);
+		});
+		String expectedMessage = "Only alphanumeric characters and spaces are allowed";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+	}
+	
+	@Test
+	public void testCancelRequestWithValidData() {
+		RequestService requestService = new RequestService();
+		int requestId = new RequestDAO().getLastRequestId();
+		assertDoesNotThrow(() -> {
+			requestService.cancelRequest(requestId);
+		});
+	}
+	
+	@Test
+	public void testCancelRequestWithInvalidRequestId() {
+		RequestService requestService = new RequestService();
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			requestService.deleteRequest(0);
+		});
+		String expectedMessage = "Invalid Request Id";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+
+	}
+	
+	@Test
+	public void testCancelRequestWithNotExistRequestId() {
+		RequestService requestService = new RequestService();
+		Exception exception = assertThrows(ValidationException.class, () -> {
+			requestService.deleteRequest(500);
+		});
+		String expectedMessage = "Request Id not found";
+		String actualMessage = exception.getMessage();
+		assertTrue(expectedMessage.equals(actualMessage));
+
+	}
+	
 }

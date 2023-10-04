@@ -1,56 +1,61 @@
 package in.fssa.leavepulse.model;
 
-// import java.sql.Timestamp;
-import java.time.LocalDate; 
+import java.time.LocalDate;
 
 public class Employee implements Comparable<Employee> {
 
-	private int employee_id;
-	private String first_name;
-	private String last_name;
+	private int employeeId;
+	private String firstName;
+	private String lastName;
 	private String email;
-	private long phone_no;
+	private long phoneNo;
 	private String password;
 	private String address;
-	private LocalDate hire_date;
-//	private Timestamp created_at;
-	private boolean isActive;
+	private LocalDate joiningDate;
 
 	public Employee() {
 
 	}
 
-	public Employee(String first_name, String last_name, String email, long phone_no, String password, String address) {
-		this.first_name = first_name;
-		this.last_name = last_name;
+	public Employee(String firstName, String lastName, String email, long phoneNo, String password, String address, LocalDate joiningDate) {
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
-		this.phone_no = phone_no;
+		this.phoneNo = phoneNo;
 		this.password = password;
+		this.address = address;
+		this.joiningDate = joiningDate;
+	}
+	
+	public Employee(String firstName, String lastName, long phoneNo, String address) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phoneNo = phoneNo;
 		this.address = address;
 	}
 
-	public int getEmployee_id() {
-		return employee_id;
+	public int getEmployeeId() {
+		return employeeId;
 	}
 
-	public void setEmployee_id(int employee_id) {
-		this.employee_id = employee_id;
+	public void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
 	}
 
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLast_name() {
-		return last_name;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -61,12 +66,12 @@ public class Employee implements Comparable<Employee> {
 		this.email = email;
 	}
 
-	public long getPhone_no() {
-		return phone_no;
+	public long getPhoneNo() {
+		return phoneNo;
 	}
 
-	public void setPhone_no(long phone_no) {
-		this.phone_no = phone_no;
+	public void setPhoneNo(long phoneNo) {
+		this.phoneNo = phoneNo;
 	}
 
 	public String getPassword() {
@@ -84,44 +89,28 @@ public class Employee implements Comparable<Employee> {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	public LocalDate getHireDate() {
-		return hire_date;
+
+	public LocalDate getJoiningDate() {
+		return joiningDate;
 	}
 
-	public void setHireDate(LocalDate hire_date) {
-		this.hire_date = hire_date;
-	}
-
-//	public Timestamp getCreatedAt() {
-//		return created_at;
-//	}
-//
-//	public void setCreatedAt(Timestamp created_at) {
-//		this.created_at = created_at;
-//	}
-	
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setJoiningDate(LocalDate joiningDate) {
+		this.joiningDate = joiningDate;
 	}
 
 	@Override
 	public String toString() {
-		return "Employee [employee_id=" + employee_id + ", first_name=" + first_name + ", last_name=" + last_name
-				+ ", email=" + email + ", phone_no=" + phone_no + ", password=" + password + ", address=" + address
-				+ ", hire_date=" + hire_date + ", isActive=" + isActive + "]";
+		return "{employeeId:" + employeeId + ", firstName:\"" + firstName + "\", lastName:\"" + lastName
+				+ "\", email:\"" + email + "\", phoneNo:" + phoneNo + ", password:\"" + password + "\", address:\""
+				+ address + "\", joiningDate:\"" + joiningDate + "\"}";
 	}
 
 	@Override
 	public int compareTo(Employee o) {
-		if (this.getEmployee_id() == o.getEmployee_id())
+		if (this.getEmployeeId() == o.getEmployeeId())
 			return 0;
 		else {
-			if (this.getEmployee_id() > o.getEmployee_id())
+			if (this.getEmployeeId() > o.getEmployeeId())
 				return 1;
 			else
 				return -1;

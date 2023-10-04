@@ -23,7 +23,7 @@ public class TestGetAllEmployeeAndGetEmployeeByUniqueValue {
 	public void testGetEmployeeByEmployeeId() {
 		EmployeeService employeeService = new EmployeeService();
 		assertDoesNotThrow(() -> {
-			System.out.println(employeeService.findEmployeeByEmployeeId(3));
+			System.out.println(employeeService.findEmployeeByEmployeeId(1));
 		});
 	}
 	
@@ -118,7 +118,7 @@ public class TestGetAllEmployeeAndGetEmployeeByUniqueValue {
 	public void testFindEmployeeWithRole() {
 		EmployeeService employeeService = new EmployeeService();
 		assertDoesNotThrow(() -> {
-			System.out.println(employeeService.findEmployeeWithRole(2));
+			System.out.println(employeeService.findEmployeeWithRole(1));
 		});
 	}
 	
@@ -126,7 +126,7 @@ public class TestGetAllEmployeeAndGetEmployeeByUniqueValue {
 	public void testGetAllEmployeeWithRoleByManagerId() {
 		EmployeeService employeeService = new EmployeeService();
 		assertDoesNotThrow(() -> {
-			System.out.println(employeeService.getAllEmployeeWithRoleByManagerId(2));
+			System.out.println(employeeService.getAllEmployeeWithRoleByManagerId(1));
 		});
 	}
 }

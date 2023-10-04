@@ -16,7 +16,7 @@ public class EmployeeRoleValidator {
 	public static void validateEmpRole(EmployeeRole empRole) throws ValidationException {
 
 		if (empRole == null)
-			throw new ValidationException("EmployeeRole cannot be null");
+			throw new ValidationException("Employee-Role cannot be null");
 			EmployeeValidator.validateManagerId(empRole.getManagerId());
 			RoleValidator.validateRoleId(empRole.getRoleId());
 

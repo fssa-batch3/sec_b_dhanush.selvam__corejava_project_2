@@ -2,41 +2,36 @@ package in.fssa.leavepulse.model;
 
 public class Role implements Comparable<Role>{
 
-	private int role_id;
-	private String role_name;
-	private boolean is_active;
+	private int roleId;
+	private String roleName;
 	
 	public Role() {
 		
 	}
 	
-	public Role(String role_name) {
-		this.role_name = role_name;
+	public Role(String roleName) {
+		this.roleName = roleName;
 	}
 	
 	public int getRoleId() {
-		return role_id;
-	}
-	public void setRoleId(int role_id) {
-		this.role_id = role_id;
-	}
-	public String getRoleName() {
-		return role_name;
-	}
-	public void setRoleName(String role_name) {
-		this.role_name = role_name;
+		return roleId;
 	}
 	
-	public boolean getIsActive() {
-		return is_active;
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
 	}
-	public void setIsActive(boolean is_active) {
-		this.is_active = is_active;
+	
+	public String getRoleName() {
+		return roleName;
+	}
+	
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 	
 	@Override
 	public String toString() {
-	    return "{role_id:" + role_id + ", role_name:\"" + role_name + "\", is_active:" + is_active + "}";
+	    return "{roleId:" + roleId + ", roleName:\"" + roleName +"\"}";
 	}
 	
 	@Override
