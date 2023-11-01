@@ -1,6 +1,7 @@
 package in.fssa.leavepulse.validator;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -11,6 +12,7 @@ import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.model.Request;
+import in.fssa.leavepulse.service.LeaveBalanceService;
 import in.fssa.leavepulse.service.RequestService;
 import in.fssa.leavepulse.util.StringUtil;
 
@@ -43,7 +45,7 @@ public class RequestValidator {
 	 * @param requestId
 	 * @throws ValidationException
 	 */
-	public static void checkRequestIdExist(int requestId) throws ValidationException {
+	public static void checkRequestIdIs(int requestId) throws ValidationException {
 
 		try {
 			RequestDAO requestDAO = new RequestDAO();
@@ -94,7 +96,7 @@ public class RequestValidator {
 	 */
 	public static void validateReason(String reason) throws ValidationException {
 
-		String regex = "^[A-Za-z0-9\\s\\-:;.]*$";
+		String regex = "^[A-Za-z0-9\\s\\-:;.,]*$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(reason.trim());
 		if (matcher.matches() == false)
@@ -102,8 +104,14 @@ public class RequestValidator {
 
 	}
 
-	public static void checkLeaveDateExist(int employeeId, LocalDate startDate, LocalDate endDate)
-			throws ValidationException {
+	/**
+	 * 
+	 * @param employeeId
+	 * @param startDate
+	 * @param endDate
+	 * @throws ValidationException
+	 */
+	public static void checkLeaveDateExist(int employeeId, LocalDate startDate, LocalDate endDate) throws ValidationException {
 
 		List<Request> datesList = new ArrayList<>();
 
@@ -113,19 +121,33 @@ public class RequestValidator {
 
 			for (Request request : datesList) {
 				
-				if (request.getStartDate().isEqual(startDate) || request.getStartDate().isEqual(endDate)
+				if ( request.getStartDate().isEqual(startDate) || request.getStartDate().isEqual(endDate)
 						|| request.getEndDate().isEqual(startDate) || request.getEndDate().isEqual(endDate)
-						|| (request.getStartDate().isBefore(startDate) && request.getStartDate().isAfter(endDate))
-						|| (request.getStartDate().isAfter(startDate) && request.getEndDate().isBefore(endDate))
-						|| (request.getEndDate().isBefore(startDate) && request.getEndDate().isAfter(endDate)))
-					throw new ValidationException("You have been already applied a leave request in these days");
-
+						|| (startDate.isBefore(request.getStartDate()) && endDate.isAfter(request.getStartDate()))
+						|| (startDate.isBefore(request.getEndDate()) && endDate.isAfter(request.getEndDate()))
+						|| (startDate.isAfter(request.getStartDate()) && endDate.isBefore(request.getEndDate())) )
+					throw new ValidationException("You have already applied a leave request in these days");
 			}
 
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static void checkLeaveBalanceofLeaveType(LocalDate startDate, LocalDate endDate, int leaveId, int employeeId) throws ValidationException {
+		
+        try {
+        	
+            int daysDifference = (int) ChronoUnit.DAYS.between(startDate, endDate);
+			int remainingLeaveCount = new LeaveBalanceService().remainingLeaveCountOfALeaveType(employeeId, leaveId);
+			if (daysDifference > remainingLeaveCount)
+				throw new ValidationException("Insufficient availability of leave days");
+			
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

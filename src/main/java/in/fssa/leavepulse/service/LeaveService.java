@@ -138,12 +138,12 @@ public class LeaveService {
 			LeaveDAO leaveDAO = new LeaveDAO();
 			LeaveValidator.validateLeaveId(leaveId);
 			LeaveValidator.checkLeaveIdIs(leaveId);
-			leaveDAO.delete(leaveId);
 			LeaveBalanceService leaveBalService = new LeaveBalanceService();
 			leaveBalIdList = leaveBalService.findAllLeaveBalanceIdByLeaveId(leaveId);
 			for (int id : leaveBalIdList) {
 				leaveBalService.deleteLeaveBalance(id);
 			}
+			leaveDAO.delete(leaveId);
 			
 		} catch (PersistenceException e) {
 			e.printStackTrace();

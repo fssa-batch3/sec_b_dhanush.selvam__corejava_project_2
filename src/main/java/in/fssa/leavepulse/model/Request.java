@@ -16,6 +16,7 @@ public class Request implements Comparable<Request> {
 	private Timestamp createdAt;
 	private LeaveStatus leaveStatus;
 	private String comments;
+	private String lossOfPay;
 
 	public enum LeaveStatus {
 		Pending, Accepted, Rejected, Cancelled
@@ -25,13 +26,14 @@ public class Request implements Comparable<Request> {
 
 	}
 
-	public Request(int leaveId, LocalDate startDate, LocalDate endDate, String reason, int createdBy, int managerId) {
+	public Request(int leaveId, LocalDate startDate, LocalDate endDate, String reason, int createdBy, int managerId, String lossOfPay) {
 		this.leaveId = leaveId;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.reason = reason;
 		this.createdBy = createdBy;
 		this.managerId = managerId;
+		this.lossOfPay = lossOfPay;
 	}
 
 	public Request(LeaveStatus leaveStatus, int modifiedBy, String comments) {
@@ -128,12 +130,20 @@ public class Request implements Comparable<Request> {
 		this.comments = comments;
 	}
 
+	public String getLossOfPay() {
+		return lossOfPay;
+	}
+
+	public void setLossOfPay(String lossOfPay) {
+		this.lossOfPay = lossOfPay;
+	}
+	
 	@Override
 	public String toString() {
-		return "{ \"requestId\": " + requestId + ", \"leaveId\": " + leaveId + ", \"startDate\": \"" + startDate
-				+ "\", \"endDate\": \"" + endDate + "\", \"reason\": \"" + reason + "\", \"createdBy\": " + createdBy
-				+ "\"managerId\": " + managerId + ", \"createdAt\": \"" + createdAt + "\", \"leaveStatus\": \""
-				+ leaveStatus + "\", \"comments\": \"" + comments + "\"}";
+		return "{requestId: " + requestId + ", leaveId: " + leaveId + ", startDate: \"" + startDate + "\", endDate: \""
+				+ endDate + "\", reason: \"" + reason + "\", createdBy: " + createdBy + ", managerId: " + managerId
+				+ ", createdAt: \"" + createdAt + "\", leaveStatus: \"" + leaveStatus + "\", comments: \"" + comments
+				+ "\", lossOfPay: \"" + lossOfPay + "\"}";
 	}
 
 	@Override

@@ -151,7 +151,7 @@ public class EmployeeRoleService {
 			EmployeeRoleValidator.validateEmpRole(empRole);
 			EmployeeValidator.validateManagerId(empRole.getManagerId());
 			RoleValidator.validateRoleId(empRole.getRoleId());
-			EmployeeRoleValidator.checkEmpRoleIdExist(empRoleId);
+			EmployeeRoleValidator.checkEmpRoleIdIs(empRoleId);
 			EmployeeValidator.checkManagerIdIs(empRole.getManagerId());
 			RoleValidator.checkRoleIdIs(empRole.getRoleId());
 			employeeRoleDAO.update(empRoleId, empRole);
@@ -173,7 +173,7 @@ public class EmployeeRoleService {
 		try {
 			EmployeeRoleDAO empRoleDAO = new EmployeeRoleDAO();
 			EmployeeRoleValidator.validateEmpRoleId(empRoleId);
-			EmployeeRoleValidator.checkEmpRoleIdExist(empRoleId);
+			EmployeeRoleValidator.checkEmpRoleIdIs(empRoleId);
 			empRoleDAO.delete(empRoleId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();

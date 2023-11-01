@@ -194,4 +194,12 @@ public class TestGetAllRequestAndGetRequestByUniqueValue {
 		assertTrue(expectedMessage.equals(actualMessage));
 	}
 	
+	@Test
+	public void testFindEmployeeLastLossOfPayId() {
+		RequestService requestService = new RequestService();
+		assertDoesNotThrow(() -> {
+			System.out.println(requestService.findEmployeeLastLossOfPayId(2));
+		});
+	}
+	
 }

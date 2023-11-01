@@ -27,8 +27,8 @@ public class Leave implements Comparable<Leave> {
 		return leaveType;
 	}
 
-	public void setLeaveType(String leave_type) {
-		this.leaveType = leave_type;
+	public void setLeaveType(String leaveType) {
+		this.leaveType = leaveType;
 	}
 
 	public int getLeaveDays() {

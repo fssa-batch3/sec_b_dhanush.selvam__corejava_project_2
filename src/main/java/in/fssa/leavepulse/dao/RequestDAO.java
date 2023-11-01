@@ -8,7 +8,9 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import in.fssa.leavepulse.dto.RequestDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
@@ -43,11 +45,11 @@ public class RequestDAO {
 				Request request = new Request();
 				request.setRequestId(rs.getInt("request_id"));
 				request.setLeaveId(rs.getInt("leave_id"));
-				String start_date = rs.getString("start_date");
+				String startDate = rs.getString("start_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				request.setStartDate(LocalDate.parse(start_date, formatter));
-				String end_date = rs.getString("end_date");
-				request.setEndDate(LocalDate.parse(end_date, formatter));
+				request.setStartDate(LocalDate.parse(startDate, formatter));
+				String endDate = rs.getString("end_date");
+				request.setEndDate(LocalDate.parse(endDate, formatter));
 				request.setReason(rs.getString("reason"));
 				request.setCreatedBy(rs.getInt("created_by"));
 				request.setManagerId(rs.getInt("manager_id"));
@@ -94,11 +96,11 @@ public class RequestDAO {
 				request = new Request();
 				request.setRequestId(rs.getInt("request_id"));
 				request.setLeaveId(rs.getInt("leave_id"));
-				String start_date = rs.getString("start_date");
+				String startDate = rs.getString("start_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				request.setStartDate(LocalDate.parse(start_date, formatter));
-				String end_date = rs.getString("end_date");
-				request.setEndDate(LocalDate.parse(end_date, formatter));
+				request.setStartDate(LocalDate.parse(startDate, formatter));
+				String endDate = rs.getString("end_date");
+				request.setEndDate(LocalDate.parse(endDate, formatter));
 				request.setReason(rs.getString("reason"));
 				request.setCreatedBy(rs.getInt("created_by"));
 				request.setManagerId(rs.getInt("manager_id"));
@@ -146,11 +148,11 @@ public class RequestDAO {
 				request = new Request();
 				request.setRequestId(rs.getInt("request_id"));
 				request.setLeaveId(rs.getInt("leave_id"));
-				String start_date = rs.getString("start_date");
+				String startDate = rs.getString("start_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				request.setStartDate(LocalDate.parse(start_date, formatter));
-				String end_date = rs.getString("end_date");
-				request.setEndDate(LocalDate.parse(end_date, formatter));
+				request.setStartDate(LocalDate.parse(startDate, formatter));
+				String endDate = rs.getString("end_date");
+				request.setEndDate(LocalDate.parse(endDate, formatter));
 				request.setReason(rs.getString("reason"));
 				request.setCreatedBy(rs.getInt("created_by"));
 				request.setManagerId(rs.getInt("manager_id"));
@@ -198,11 +200,11 @@ public class RequestDAO {
 				Request request = new Request();
 				request.setRequestId(rs.getInt("request_id"));
 				request.setLeaveId(rs.getInt("leave_id"));
-				String start_date = rs.getString("start_date");
+				String startDate = rs.getString("start_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				request.setStartDate(LocalDate.parse(start_date, formatter));
-				String end_date = rs.getString("end_date");
-				request.setEndDate(LocalDate.parse(end_date, formatter));
+				request.setStartDate(LocalDate.parse(startDate, formatter));
+				String endDate = rs.getString("end_date");
+				request.setEndDate(LocalDate.parse(endDate, formatter));
 				request.setReason(rs.getString("reason"));
 				request.setCreatedBy(rs.getInt("created_by"));
 				request.setManagerId(rs.getInt("manager_id"));
@@ -219,8 +221,8 @@ public class RequestDAO {
 		} finally {
 			ConnectionUtil.close(con, ps, rs);
 		}
+		
 		return requestList;
-
 	}
 
 	/**
@@ -235,7 +237,7 @@ public class RequestDAO {
 
 		try {
 
-			String query = "INSERT INTO requests (leave_id, start_date, end_date, reason, created_by, modified_by, manager_id) VALUES (?,?,?,?,?,?,?)";
+			String query = "INSERT INTO requests (leave_id, start_date, end_date, reason, created_by, modified_by, manager_id, loss_of_pay) VALUES (?,?,?,?,?,?,?,?)";
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, request.getLeaveId());
@@ -245,6 +247,7 @@ public class RequestDAO {
 			ps.setInt(5, request.getCreatedBy());
 			ps.setInt(6, request.getCreatedBy());
 			ps.setInt(7, request.getManagerId());
+			ps.setString(8, request.getLossOfPay());
 			ps.executeUpdate();
 
 			System.out.println("New Request Created Successfully");
@@ -392,7 +395,7 @@ public class RequestDAO {
 		List<RequestDTO> requestList = null;
 
 		try {
-			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, r.created_by, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leaves l ON r.leave_id = l.leave_id WHERE r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1";
+			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, r.loss_of_pay, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leaves l ON r.leave_id = l.leave_id AND r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1 ORDER BY r.request_id ASC"; 
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -402,11 +405,11 @@ public class RequestDAO {
 
 				RequestDTO request = new RequestDTO();
 				request.setRequestId(rs.getInt("request_id"));
-				String start_date = rs.getString("start_date");
+				String startDate = rs.getString("start_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				request.setStartDate(LocalDate.parse(start_date, formatter));
-				String end_date = rs.getString("end_date");
-				request.setEndDate(LocalDate.parse(end_date, formatter));
+				request.setStartDate(LocalDate.parse(startDate, formatter));
+				String endDate = rs.getString("end_date");
+				request.setEndDate(LocalDate.parse(endDate, formatter));
 				request.setReason(rs.getString("reason"));
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(RequestDTO.LeaveStatus.valueOf(rs.getString("status")));
@@ -416,6 +419,7 @@ public class RequestDAO {
 				request.setEmployeeEmail(rs.getString("email"));
 				request.setLeaveId(rs.getInt("leave_id"));
 				request.setLeaveType(rs.getString("leave_type"));
+				request.setLossOfPay(rs.getString("loss_of_pay"));
 				requestList.add(request);
 
 			}
@@ -428,7 +432,45 @@ public class RequestDAO {
 			ConnectionUtil.close(con, ps, rs);
 		}
 
-		return requestList;
+		Map<String, List<RequestDTO>> lossOfPayMap = new HashMap<>();
+		List<RequestDTO> newRequestList = new ArrayList<>();
+		List<RequestDTO> resultRequestList = new ArrayList<>();
+
+		for (RequestDTO request : requestList) {
+		    if (request.getLossOfPay() != null) {
+		        lossOfPayMap
+		            .computeIfAbsent(request.getLossOfPay(), k -> new ArrayList<>())
+		            .add(request);
+		    }
+		}
+				
+		for (Map.Entry<String, List<RequestDTO>> entry : lossOfPayMap.entrySet()) {
+		    List<RequestDTO> requests = entry.getValue();
+		    LocalDate startDate = requests.get(0).getStartDate();
+		    requests.get(requests.size() - 1).setStartDate(startDate);
+		}
+				
+		String previousLOP = "";
+				
+		for (RequestDTO request : requestList) {
+			
+			if (request.getLossOfPay() == null) 
+				newRequestList.add(request);
+			
+			else {
+								
+				if (!request.getLossOfPay().equals(previousLOP)) {
+					List<RequestDTO> requests = lossOfPayMap.get(request.getLossOfPay());
+					newRequestList.add(requests.get(requests.size() - 1));
+					previousLOP = request.getLossOfPay();
+				}
+			}
+		}
+				
+		for (int i = newRequestList.size() - 1; i >= 0; i--)
+			resultRequestList.add(newRequestList.get(i));
+		
+		return resultRequestList;
 
 	}
 
@@ -446,7 +488,7 @@ public class RequestDAO {
 		List<RequestDTO> requestList = null;
 
 		try {
-			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leaves l ON r.leave_id = l.leave_id WHERE r.manager_id = ? AND r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1";
+			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, r.loss_of_pay, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leaves l ON r.leave_id = l.leave_id WHERE r.manager_id = ? AND r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1 ORDER BY r.request_id ASC"; 
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, managerId);
@@ -457,11 +499,11 @@ public class RequestDAO {
 
 				RequestDTO request = new RequestDTO();
 				request.setRequestId(rs.getInt("request_id"));
-				String start_date = rs.getString("start_date");
+				String startDate = rs.getString("start_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				request.setStartDate(LocalDate.parse(start_date, formatter));
-				String end_date = rs.getString("end_date");
-				request.setEndDate(LocalDate.parse(end_date, formatter));
+				request.setStartDate(LocalDate.parse(startDate, formatter));
+				String endDate = rs.getString("end_date");
+				request.setEndDate(LocalDate.parse(endDate, formatter));
 				request.setReason(rs.getString("reason"));
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(RequestDTO.LeaveStatus.valueOf(rs.getString("status")));
@@ -471,6 +513,7 @@ public class RequestDAO {
 				request.setEmployeeEmail(rs.getString("email"));
 				request.setLeaveId(rs.getInt("leave_id"));
 				request.setLeaveType(rs.getString("leave_type"));
+				request.setLossOfPay(rs.getString("loss_of_pay"));
 				requestList.add(request);
 
 			}
@@ -483,8 +526,46 @@ public class RequestDAO {
 			ConnectionUtil.close(con, ps, rs);
 		}
 
-		return requestList;
+		Map<String, List<RequestDTO>> lossOfPayMap = new HashMap<>();
+		List<RequestDTO> newRequestList = new ArrayList<>();
+		List<RequestDTO> resultRequestList = new ArrayList<>();
 
+		for (RequestDTO request : requestList) {
+		    if (request.getLossOfPay() != null) {
+		        lossOfPayMap
+		            .computeIfAbsent(request.getLossOfPay(), k -> new ArrayList<>())
+		            .add(request);
+		    }
+		}
+				
+		for (Map.Entry<String, List<RequestDTO>> entry : lossOfPayMap.entrySet()) {
+		    List<RequestDTO> requests = entry.getValue();
+		    LocalDate startDate = requests.get(0).getStartDate();
+		    requests.get(requests.size() - 1).setStartDate(startDate);
+		}
+				
+		String previousLOP = "";
+				
+		for (RequestDTO request : requestList) {
+			
+			if (request.getLossOfPay() == null) 
+				newRequestList.add(request);
+			
+			else {
+								
+				if (!request.getLossOfPay().equals(previousLOP)) {
+					List<RequestDTO> requests = lossOfPayMap.get(request.getLossOfPay());
+					newRequestList.add(requests.get(requests.size() - 1));
+					previousLOP = request.getLossOfPay();
+				}
+			}
+		}
+				
+		for (int i = newRequestList.size() - 1; i >= 0; i--)
+			resultRequestList.add(newRequestList.get(i));
+		
+		return resultRequestList;
+		
 	}
 
 	/**
@@ -501,7 +582,7 @@ public class RequestDAO {
 		List<RequestDTO> requestList = null;
 
 		try {
-			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leaves l ON r.leave_id = l.leave_id WHERE r.created_by = ? AND r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1";
+			String query = "SELECT r.request_id, r.leave_id, r.start_date, r.end_date, r.reason, r.created_by, r.manager_id, r.created_at, r.status, r.comments, r.loss_of_pay, e.first_name, e.last_name, e.email, l.leave_type FROM requests r JOIN employees e ON r.created_by = e.employee_id JOIN leaves l ON r.leave_id = l.leave_id WHERE r.created_by = ? AND r.is_active = 1 AND e.is_active = 1 AND l.is_active = 1 ORDER BY r.request_id ASC"; 
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, employeeId);
@@ -512,11 +593,11 @@ public class RequestDAO {
 
 				RequestDTO request = new RequestDTO();
 				request.setRequestId(rs.getInt("request_id"));
-				String start_date = rs.getString("start_date");
+				String startDate = rs.getString("start_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				request.setStartDate(LocalDate.parse(start_date, formatter));
-				String end_date = rs.getString("end_date");
-				request.setEndDate(LocalDate.parse(end_date, formatter));
+				request.setStartDate(LocalDate.parse(startDate, formatter));
+				String endDate = rs.getString("end_date");
+				request.setEndDate(LocalDate.parse(endDate, formatter));
 				request.setReason(rs.getString("reason"));
 				request.setCreatedAt(Timestamp.valueOf(rs.getString("created_at")));
 				request.setLeaveStatus(RequestDTO.LeaveStatus.valueOf(rs.getString("status")));
@@ -525,6 +606,7 @@ public class RequestDAO {
 				request.setEmployeeEmail(rs.getString("email"));
 				request.setLeaveId(rs.getInt("leave_id"));
 				request.setLeaveType(rs.getString("leave_type"));
+				request.setLossOfPay(rs.getString("loss_of_pay"));
 				requestList.add(request);
 
 			}
@@ -537,7 +619,45 @@ public class RequestDAO {
 			ConnectionUtil.close(con, ps, rs);
 		}
 
-		return requestList;
+		Map<String, List<RequestDTO>> lossOfPayMap = new HashMap<>();
+		List<RequestDTO> newRequestList = new ArrayList<>();
+		List<RequestDTO> resultRequestList = new ArrayList<>();
+
+		for (RequestDTO request : requestList) {
+		    if (request.getLossOfPay() != null) {
+		        lossOfPayMap
+		            .computeIfAbsent(request.getLossOfPay(), k -> new ArrayList<>())
+		            .add(request);
+		    }
+		}
+				
+		for (Map.Entry<String, List<RequestDTO>> entry : lossOfPayMap.entrySet()) {
+		    List<RequestDTO> requests = entry.getValue();
+		    LocalDate startDate = requests.get(0).getStartDate();
+		    requests.get(requests.size() - 1).setStartDate(startDate);
+		}
+				
+		String previousLOP = "";
+				
+		for (RequestDTO request : requestList) {
+			
+			if (request.getLossOfPay() == null) 
+				newRequestList.add(request);
+			
+			else {
+								
+				if (!request.getLossOfPay().equals(previousLOP)) {
+					List<RequestDTO> requests = lossOfPayMap.get(request.getLossOfPay());
+					newRequestList.add(requests.get(requests.size() - 1));
+					previousLOP = request.getLossOfPay();
+				}
+			}
+		}
+				
+		for (int i = newRequestList.size() - 1; i >= 0; i--)
+			resultRequestList.add(newRequestList.get(i));
+		
+		return resultRequestList;
 
 	}
 
@@ -566,11 +686,11 @@ public class RequestDAO {
 			while (rs.next()) {
 
 				Request request = new Request();
-				String start_date = rs.getString("start_date");
+				String startDate = rs.getString("start_date");
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				request.setStartDate(LocalDate.parse(start_date, formatter));
-				String end_date = rs.getString("end_date");
-				request.setEndDate(LocalDate.parse(end_date, formatter));
+				request.setStartDate(LocalDate.parse(startDate, formatter));
+				String endDate = rs.getString("end_date");
+				request.setEndDate(LocalDate.parse(endDate, formatter));
 				dateList.add(request);
 
 			}
@@ -586,5 +706,42 @@ public class RequestDAO {
 		return dateList;
 
 	}
+	
+	/**
+	 * 
+	 * @param employeeId
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public String findEmployeeLastLossOfPayId(int employeeId) throws PersistenceException {
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String lossOfPayId = null;
 
+		try {
+
+			String query = "SELECT loss_of_pay FROM requests WHERE is_active = 1 AND created_by = ? AND loss_of_pay IS NOT NULL ORDER BY request_id DESC";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			ps.setInt(1, employeeId);
+			rs = ps.executeQuery();
+
+			if (rs.next()) lossOfPayId = rs.getString("loss_of_pay");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new PersistenceException(e.getMessage());
+			
+		} finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+		
+		if (lossOfPayId == null) return null;
+		else return lossOfPayId.substring((employeeId + "").length());
+		
+	}
+	
 }

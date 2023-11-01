@@ -18,6 +18,7 @@ public class RequestDTO {
 	private String employeeEmail;
 	private int leaveId;
 	private String leaveType;
+	private String lossOfPay;
 
 	public enum LeaveStatus {
 		Pending, Accepted, Rejected, Cancelled
@@ -86,7 +87,7 @@ public class RequestDTO {
 	public void setCancelledLeave(boolean cancelledLeave) {
 		this.cancelledLeave = cancelledLeave;
 	}
-	
+
 	public int getEmployeeId() {
 		return employeeId;
 	}
@@ -127,12 +128,21 @@ public class RequestDTO {
 		this.leaveType = leaveType;
 	}
 
+	public String getLossOfPay() {
+		return lossOfPay;
+	}
+
+	public void setLossOfPay(String lossOfPay) {
+		this.lossOfPay = lossOfPay;
+	}
+
 	@Override
 	public String toString() {
 		return "{requestId:" + requestId + ", startDate:\"" + startDate + "\", endDate:\"" + endDate + "\", reason:\""
 				+ reason + "\", createdAt:\"" + createdAt + "\", leaveStatus:\"" + leaveStatus + "\", comments:\""
 				+ comments + "\", employeeId:" + employeeId + ", employeeName:\"" + employeeName
-				+ "\", employeeEmail:\"" + employeeEmail + "\", leaveId:" + leaveId + ", leaveType:\"" + leaveType + "\"}";
+				+ "\", employeeEmail:\"" + employeeEmail + "\", leaveId:" + leaveId + ", leaveType:\"" + leaveType
+				+ "\", lossOfPay: \"" + lossOfPay + "\"}";
 	}
 
 }

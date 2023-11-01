@@ -14,17 +14,19 @@ public class ConnectionUtil {
 	 */
 	public static Connection getConnection() {
 		
-		String hostName = System.getenv("DATABASE_HOSTNAME");
-		String dataBaseName = "dhanush_selvam_corejava_project";
-
 		Connection connection = null;
-		String url = "jdbc:mysql://" + hostName + ":3306/" + dataBaseName;
+		
+		String url;
 		String userName;
 		String passWord;
 
-//		 url = System.getenv("DATABASE_HOSTNAME");
-		 userName = System.getenv("DATABASE_USERNAME");
-		 passWord = System.getenv("DATABASE_PASSWORD");
+//		url = System.getenv("DATABASE_HOSTNAME");
+//		userName = System.getenv("DATABASE_USERNAME");
+//		passWord = System.getenv("DATABASE_PASSWORD");
+		
+		url = "jdbc:mysql://localhost:3306/leavepulse";
+		userName = "root";
+		passWord = "123456";
 
 		try {
 

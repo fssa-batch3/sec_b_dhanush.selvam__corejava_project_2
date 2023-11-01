@@ -10,6 +10,7 @@ import java.util.List;
 import in.fssa.leavepulse.dto.LeaveBalanceDTO;
 import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.model.Leave;
+import in.fssa.leavepulse.model.LeaveBalance;
 import in.fssa.leavepulse.util.ConnectionUtil;
 
 public class LeaveBalanceDAO {
@@ -204,6 +205,14 @@ public class LeaveBalanceDAO {
 
 	}
 	
+	/**
+	 * 
+	 * @param type
+	 * @param employeeId
+	 * @param leaveId
+	 * @param days
+	 * @throws PersistenceException
+	 */
 	public void update(String type, int employeeId, int leaveId, int days) throws PersistenceException {
 
 		Connection con = null;
@@ -211,10 +220,12 @@ public class LeaveBalanceDAO {
 		
 		try {
 			String query = null;
+			
 			if (type.equals("update")) 
 				query = "UPDATE leave_balance SET available_leave_days = available_leave_days - ? WHERE is_active = 1 AND employee_id =  ? AND leave_id = ?";
 			else if (type.equals("cancel"))
 				query = "UPDATE leave_balance SET available_leave_days = available_leave_days + ? WHERE is_active = 1 AND employee_id =  ? AND leave_id = ?";
+			
 			con = ConnectionUtil.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setInt(1, days);
@@ -259,6 +270,79 @@ public class LeaveBalanceDAO {
 		} finally {
 			ConnectionUtil.close(con, ps);
 		}
+
+	}
+	
+	/**
+	 * 
+	 * @param employeeId
+	 * @param leaveId
+	 * @return
+	 * @throws PersistenceException
+	 */
+	public int remainingLeaveCountOfALeaveType(int employeeId, int leaveId) throws PersistenceException {
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int count = 0;
+		
+		try {
+			
+			String query = "SELECT available_leave_days FROM leave_balance WHERE is_active = 1 AND employee_id = ? AND leave_id = ?";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			ps.setInt(1, employeeId);
+			ps.setInt(2, leaveId);
+			rs = ps.executeQuery();
+			if (rs.next())
+				count = rs.getInt("available_leave_days");
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(con, ps);
+		}
+		
+		return count;
+
+	}
+	
+	public List<LeaveBalance> findAllAvailableLeavesByEmployeeId(int employeeId) throws PersistenceException {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		List<LeaveBalance> leaveList = null;
+
+		try {
+
+			String query = "SELECT leave_id, available_leave_days from leave_balance WHERE is_active = 1 AND employee_id = ? AND available_leave_days > 0";
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
+			ps.setInt(1, employeeId);
+			rs = ps.executeQuery();
+			leaveList = new ArrayList<>();
+
+			while (rs.next()) {
+				LeaveBalance leave = new LeaveBalance();
+				leave.setLeaveId(rs.getInt("leave_id"));
+				leave.setAvailableLeaveDays(rs.getInt("available_leave_days"));
+				leaveList.add(leave);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			throw new PersistenceException(e.getMessage());
+		} finally {
+			ConnectionUtil.close(con, ps, rs);
+		}
+
+		return leaveList;
 
 	}
 

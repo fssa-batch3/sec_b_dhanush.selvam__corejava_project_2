@@ -353,23 +353,23 @@ public class EmployeeDAO {
 	 */
 	public int getLastEmployeeId() {
 
-		Connection conn = null;
+		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int employeeId = 0;
 		try {
 			String query = "SELECT employee_id FROM employees WHERE is_active = 1 ORDER BY created_at DESC LIMIT 1";
-			conn = ConnectionUtil.getConnection();
-			ps = conn.prepareStatement(query);
+			con = ConnectionUtil.getConnection();
+			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
-			if (rs.next()) {
+			if (rs.next()) 
 				employeeId = rs.getInt("employee_id");
-			}
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 //	        throw new PersistenceException(e.getMessage());
 		} finally {
-			ConnectionUtil.close(conn, ps, rs);
+			ConnectionUtil.close(con, ps, rs);
 		}
 		return employeeId;
 	}

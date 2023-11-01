@@ -38,7 +38,7 @@ public class EmployeeRoleValidator {
 	 * @param empRoleId
 	 * @throws ValidationException
 	 */
-	public static void checkEmpRoleIdExist(int empRoleId) throws ValidationException {
+	public static void checkEmpRoleIdIs(int empRoleId) throws ValidationException {
 		
 		try {
 			EmployeeRoleDAO empRoleDAO = new EmployeeRoleDAO();

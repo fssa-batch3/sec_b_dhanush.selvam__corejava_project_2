@@ -8,6 +8,7 @@ import in.fssa.leavepulse.exception.PersistenceException;
 import in.fssa.leavepulse.exception.ServiceException;
 import in.fssa.leavepulse.exception.ValidationException;
 import in.fssa.leavepulse.model.Leave;
+import in.fssa.leavepulse.model.LeaveBalance;
 import in.fssa.leavepulse.validator.EmployeeValidator;
 import in.fssa.leavepulse.validator.LeaveBalanceValidator;
 import in.fssa.leavepulse.validator.LeaveValidator;
@@ -28,6 +29,7 @@ public class LeaveBalanceService {
 		try {
 			LeaveBalanceDAO leaveBalDAO = new  LeaveBalanceDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
+			EmployeeValidator.checkEmployeeIdIs(employeeId);
 			leaveBalIdList = leaveBalDAO.findAllLeaveBalanceIdByEmployeeId(employeeId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -51,6 +53,7 @@ public class LeaveBalanceService {
 		try {
 			LeaveBalanceDAO leaveBalDAO = new  LeaveBalanceDAO();
 			EmployeeValidator.validateEmployeeId(employeeId);
+			EmployeeValidator.checkEmployeeIdIs(employeeId);
 			leaveBalList = leaveBalDAO.findAllLeaveBalanceByEmployeeId(employeeId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -74,6 +77,7 @@ public class LeaveBalanceService {
 		try {
 			LeaveBalanceDAO leaveBalDAO = new  LeaveBalanceDAO();
 			LeaveValidator.validateLeaveId(leaveId);
+			LeaveValidator.checkLeaveIdIs(leaveId);
 			leaveBalIdList = leaveBalDAO.findAllLeaveBalanceIdByLeaveId(leaveId);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
@@ -107,6 +111,15 @@ public class LeaveBalanceService {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param type
+	 * @param employeeId
+	 * @param leaveId
+	 * @param days
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
 	public void updateLeaveBalance(String type, int employeeId, int leaveId, int days) throws ServiceException, ValidationException {
 		
 		try {
@@ -143,6 +156,54 @@ public class LeaveBalanceService {
 			e.printStackTrace();
 			throw new ServiceException(e.getMessage());
 		}
+	}
+	
+	/**
+	 * 
+	 * @param employeeId
+	 * @param leaveId
+	 * @return
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
+	public int remainingLeaveCountOfALeaveType(int employeeId, int leaveId) throws ServiceException, ValidationException {
+		
+		try {
+			LeaveBalanceDAO leaveBalDAO = new  LeaveBalanceDAO();
+			EmployeeValidator.validateEmployeeId(employeeId);
+			LeaveValidator.validateLeaveId(leaveId);
+			EmployeeValidator.checkEmployeeIdIs(employeeId);
+			LeaveValidator.checkLeaveIdIs(leaveId);
+			return leaveBalDAO.remainingLeaveCountOfALeaveType(employeeId, leaveId);
+			
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param employeeId
+	 * @return
+	 * @throws ServiceException
+	 * @throws ValidationException
+	 */
+	public List<LeaveBalance> findAllAvailableLeavesByEmployeeId(int employeeId) throws ServiceException, ValidationException {
+		
+		List<LeaveBalance> leaveBalIdList = null;
+		
+		try {
+			LeaveBalanceDAO leaveBalDAO = new  LeaveBalanceDAO();
+			EmployeeValidator.validateEmployeeId(employeeId);
+			EmployeeValidator.checkEmployeeIdIs(employeeId);
+			leaveBalIdList = leaveBalDAO.findAllAvailableLeavesByEmployeeId(employeeId);
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw new ServiceException(e.getMessage());
+		}
+		
+		return leaveBalIdList;
 	}
 	
 }
